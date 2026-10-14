@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/wigi-design-system-ef477c14-3c6e-4d00-bd78-9401c685bc3b/colors_and_type.css">
+<script src="_ds/wigi-design-system-ef477c14-3c6e-4d00-bd78-9401c685bc3b/_ds_bundle.js"></script>
+<style>
+@keyframes momBeeFly{from{offset-distance:0%}to{offset-distance:100%}}
+@keyframes momBeeWing{0%,100%{transform:scaleY(1)}50%{transform:scaleY(.35)}}
+@keyframes momDots{0%,100%{opacity:.25}50%{opacity:1}}
+</style>
+</helmet>
+<div style="position:relative;background:#FFFFFF;color:#1C1C1C;font-family:'Inter',system-ui,sans-serif;min-height:900px;display:flex;flex-direction:column;overflow:hidden;">
+  <header style="height:48px;border-bottom:1px solid #ECECEC;display:flex;align-items:center;justify-content:space-between;padding:0 18px 0 12px;gap:16px;flex:none;">
+    <div style="display:flex;align-items:center;gap:6px;">
+      <span style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;"><img src="https://unpkg.com/lucide-static@0.460.0/icons/menu.svg" style="width:20px;height:20px;"></span>
+      <img src="assets/ecopetrol-logo.png" alt="Ecopetrol" style="height:26px;width:auto;display:block;margin:0 14px 0 4px;">
+      <button onClick="{{ cycleRange }}" title="Rango de tiempo" style="height:28px;border:1px solid #E3E3E3;border-radius:14px;padding:0 12px 0 13px;font-size:11px;font-weight:500;background:#FFFFFF;cursor:pointer;display:flex;align-items:center;gap:10px;min-width:104px;justify-content:space-between;">{{ range }}<span style="font-size:7px;">▼</span></button>
+      <button onClick="{{ openBobee }}" title="BOBee Intelligence" style="width:36px;height:36px;border:0;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:8px;margin-left:10px;" style-hover="background:#F3F3F3">
+        <span style="position:relative;width:18px;height:14px;display:block;">
+          <span style="position:absolute;left:2px;top:3px;width:14px;height:10px;border-radius:50%;border:1.6px solid #1C1C1C;box-sizing:border-box;background:repeating-linear-gradient(90deg,#FFFFFF 0 3px,#1C1C1C 3px 4.5px);"></span>
+          <span style="position:absolute;left:4px;top:-1px;width:5px;height:6px;border-radius:50%;border:1.4px solid #1C1C1C;box-sizing:border-box;background:#FFFFFF;"></span>
+          <span style="position:absolute;left:9px;top:-1px;width:5px;height:6px;border-radius:50%;border:1.4px solid #1C1C1C;box-sizing:border-box;background:#FFFFFF;"></span>
+        </span>
+      </button>
+      <button onClick="{{ openAlerts }}" title="Alert Intelligence" style="position:relative;width:36px;height:36px;border:0;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:8px;" style-hover="background:#F3F3F3"><img src="https://unpkg.com/lucide-static@0.460.0/icons/triangle-alert.svg" style="width:18px;height:18px;"><span style="position:absolute;top:4px;right:2px;min-width:15px;height:15px;border-radius:8px;background:#E98C83;color:#FFFFFF;font-size:9px;font-weight:600;display:flex;align-items:center;justify-content:center;padding:0 3px;">{{ alertCount }}</span></button>
+      <button onClick="{{ openAlarms }}" title="Alarm Intelligence" style="position:relative;width:36px;height:36px;border:0;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:8px;" style-hover="background:#F3F3F3"><img src="https://unpkg.com/lucide-static@0.460.0/icons/bell-ring.svg" style="width:18px;height:18px;"><span style="position:absolute;top:4px;right:2px;min-width:15px;height:15px;border-radius:8px;background:#E98C83;color:#FFFFFF;font-size:9px;font-weight:600;display:flex;align-items:center;justify-content:center;padding:0 3px;">{{ alarmCount }}</span></button>
+      <button onClick="{{ openActions }}" title="Action Intelligence" style="width:36px;height:36px;border:0;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:8px;" style-hover="background:#F3F3F3"><img src="https://unpkg.com/lucide-static@0.460.0/icons/zap.svg" style="width:18px;height:18px;"></button>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span style="font-size:11px;color:#6D6D6D;white-space:nowrap;">Ecopetrol · {{ seg }}</span>
+      <span style="width:1px;height:16px;background:#E3E3E3;"></span>
+      <div style="display:flex;align-items:center;gap:7px;">
+        <span style="width:16px;height:18px;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:#1C1C1C;display:flex;align-items:center;justify-content:center;"><span style="width:8px;height:9px;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:#F2CE5C;"></span></span>
+        <span style="font-size:11px;font-weight:700;letter-spacing:.02em;">MOMENTUM</span>
+      </div>
+    </div>
+  </header>
+
+  <main style="flex:1;padding:22px 18px 24px;display:flex;flex-direction:column;">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;">
+      <div style="font-size:9.5px;font-weight:600;letter-spacing:.2em;color:#6D6D6D;">{{ journeyTitle }}</div>
+      <div style="display:flex;align-items:baseline;gap:8px;">
+        <span style="font-size:9.5px;font-weight:600;letter-spacing:.2em;color:#6D6D6D;">SALUD DEL JOURNEY</span>
+        <span style="font-size:18px;font-weight:600;">{{ journeyScore }}</span><span style="font-size:10px;color:#888888;">/100</span>
+        <span style="font-size:9px;font-weight:600;letter-spacing:.12em;color:{{ journeyColor }};">{{ journeyLabel }}</span>
+      </div>
+    </div>
+
+    <div style="display:flex;justify-content:center;overflow:hidden;padding:18px 0 4px;">
+      <div style="display:flex;flex-direction:column;align-items:center;flex:none;">
+        <div style="display:flex;gap:13px;">
+          <sc-for list="{{ row1 }}" as="h" hint-placeholder-count="10">
+            <sc-if value="{{ h.empty }}" hint-placeholder-val="{{ true }}">
+              <div style="width:106px;height:122px;position:relative;flex:none;">
+                <div style="position:absolute;inset:0;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:#EFEFEF;"></div>
+                <div style="position:absolute;inset:5px;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:#FFFFFF;"></div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ h.active }}" hint-placeholder-val="{{ false }}">
+              <div title="{{ h.title }}" onClick="{{ h.open }}" style="width:106px;height:122px;position:relative;flex:none;cursor:pointer;transition:transform .2s,filter .2s;transform:{{ h.scale }};filter:{{ h.filter }};">
+                <div style="position:absolute;inset:0;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:{{ h.ring }};"></div>
+                <div style="position:absolute;inset:7px;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:#FFFFFF;display:flex;align-items:center;justify-content:center;">
+                  <span style="width:40px;height:40px;background:{{ h.icon }} center/contain no-repeat;"></span>
+                </div>
+                <sc-if value="{{ h.flag }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:22px;right:8px;width:9px;height:9px;border-radius:50%;background:{{ h.flagColor }};box-shadow:0 0 0 2px #FFFFFF;"></span></sc-if>
+                {{ h.bee }}
+              </div>
+            </sc-if>
+          </sc-for>
+        </div>
+        <div style="display:flex;gap:39px;margin-top:-16px;">
+          <sc-for list="{{ row2 }}" as="h" hint-placeholder-count="9">
+            <sc-if value="{{ h.empty }}" hint-placeholder-val="{{ true }}">
+              <div style="width:80px;height:92px;position:relative;flex:none;">
+                <div style="position:absolute;inset:0;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:#EFEFEF;"></div>
+                <div style="position:absolute;inset:5px;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:#FFFFFF;"></div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ h.active }}" hint-placeholder-val="{{ false }}">
+              <div title="{{ h.title }}" onClick="{{ h.open }}" style="width:80px;height:92px;position:relative;flex:none;cursor:pointer;transition:transform .2s,filter .2s;transform:{{ h.scale }};filter:{{ h.filter }};">
+                <div style="position:absolute;inset:0;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:{{ h.ring }};"></div>
+                <div style="position:absolute;inset:6px;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:#FFFFFF;display:flex;align-items:center;justify-content:center;">
+                  <span style="width:30px;height:30px;background:{{ h.icon }} center/contain no-repeat;"></span>
+                </div>
+                <sc-if value="{{ h.flag }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:16px;right:6px;width:8px;height:8px;border-radius:50%;background:{{ h.flagColor }};box-shadow:0 0 0 2px #FFFFFF;"></span></sc-if>
+                {{ h.bee }}
+              </div>
+            </sc-if>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:4px 18px;padding:10px 0 22px;">
+      <sc-for list="{{ legend }}" as="l" hint-placeholder-count="7">
+        <button onClick="{{ l.open }}" style="display:flex;align-items:center;gap:6px;background:none;border:0;cursor:pointer;padding:4px 2px;font-size:11px;">
+          <span style="width:7px;height:7px;border-radius:50%;background:{{ l.color }};"></span>
+          <span style="color:#888888;font-weight:600;">{{ l.n }}</span>
+          <span style="color:#1C1C1C;white-space:nowrap;">{{ l.name }}</span>
+        </button>
+      </sc-for>
+    </div>
+
+    <div style="font-size:9.5px;font-weight:600;letter-spacing:.2em;color:#6D6D6D;margin-bottom:10px;">RESULTADOS CLAVE DEL NEGOCIO</div>
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;">
+      <sc-for list="{{ kbrs }}" as="k" hint-placeholder-count="3">
+        <section title="Abrir detalle" onClick="{{ k.open }}" style="border:1px solid #E6E6E6;border-radius:10px;padding:14px 16px 12px;cursor:pointer;background:{{ k.bg }};display:flex;flex-direction:column;gap:6px;transition:background .2s;" style-hover="border-color:#CFCFCF">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+            <h2 style="margin:0;font-size:9.5px;font-weight:600;letter-spacing:.16em;color:#6D6D6D;">{{ k.title }}</h2>
+            <span style="font-size:9.5px;font-weight:600;letter-spacing:.08em;color:{{ k.deltaColor }};white-space:nowrap;">{{ k.delta }}</span>
+          </div>
+          <div style="display:flex;align-items:baseline;gap:6px;"><span style="font-size:30px;font-weight:600;letter-spacing:-.02em;">{{ k.value }}</span><span style="font-size:11px;color:#888888;white-space:nowrap;">{{ k.unit }}</span></div>
+          <div style="height:40px;">
+            <svg viewBox="0 0 600 40" preserveAspectRatio="none" style="width:100%;height:40px;display:block;"><polyline points="{{ k.points }}" fill="none" stroke="#E6968E" stroke-width="1.6" vector-effect="non-scaling-stroke"></polyline></svg>
+          </div>
+          <div style="font-size:9px;font-weight:600;letter-spacing:.16em;color:#9A9A9A;margin-top:4px;">MEDIDOR DE RIESGO</div>
+          <div style="font-size:12px;font-weight:600;color:{{ k.riskColor }};">{{ k.riskLabel }}</div>
+          <div style="position:relative;height:6px;border-radius:3px;background:linear-gradient(90deg,#BFE3C7 0%,#F6DC8F 50%,#F0A69E 100%);">
+            <div style="position:absolute;top:-3px;left:{{ k.riskPos }};width:3px;height:12px;border-radius:2px;background:#1C1C1C;transform:translateX(-50%);"></div>
+          </div>
+          <div style="font-size:11px;line-height:1.45;color:#555555;">{{ k.riskText }}</div>
+          <div style="font-size:9px;font-weight:600;letter-spacing:.16em;color:#9A9A9A;margin-top:6px;">MOTOR DE RESPUESTAS</div>
+          <div style="display:flex;justify-content:space-between;font-size:9.5px;color:#9A9A9A;border-bottom:1px solid #EFEFEF;padding-bottom:4px;"><span>Pregunta</span><span>Resultado</span></div>
+          <sc-for list="{{ k.answers }}" as="a" hint-placeholder-count="4">
+            <div style="display:flex;justify-content:space-between;gap:10px;font-size:11px;padding:3px 0;border-bottom:1px solid #F4F4F4;">
+              <span style="color:#555555;">{{ a.q }}</span><span style="font-weight:600;text-align:right;">{{ a.r }}</span>
+            </div>
+          </sc-for>
+        </section>
+      </sc-for>
+    </div>
+    <div style="font-size:10.5px;color:#888888;margin-top:14px;">Ejemplo ilustrativo de Momentum configurado sobre la operación de Ecopetrol. Las cifras son de referencia, no datos reales.</div>
+  </main>
+
+  <sc-if value="{{ panel }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closePanel }}" style="position:absolute;inset:48px 0 0 0;background:rgba(20,20,20,.12);z-index:5;"></div>
+    <aside style="position:absolute;top:48px;right:0;bottom:0;width:440px;max-width:100%;background:#FFFFFF;border-left:1px solid #E6E6E6;box-shadow:-12px 0 32px rgba(0,0,0,.08);z-index:6;display:flex;flex-direction:column;">
+      <div style="display:flex;align-items:center;gap:12px;padding:16px 18px 12px;border-bottom:1px solid #EFEFEF;">
+        <span style="width:30px;height:34px;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:{{ pn.ring }};display:flex;align-items:center;justify-content:center;flex:none;"><span style="width:24px;height:27px;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:#FFFFFF;"></span></span>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:9.5px;font-weight:600;letter-spacing:.18em;color:#888888;">{{ pn.eyebrow }}</div>
+          <div style="font-size:16px;font-weight:600;line-height:1.25;">{{ pn.name }}</div>
+        </div>
+        <button onClick="{{ closePanel }}" title="Cerrar" style="width:30px;height:30px;border:0;background:#F3F3F3;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;"><img src="https://unpkg.com/lucide-static@0.460.0/icons/x.svg" style="width:15px;height:15px;"></button>
+      </div>
+      <div style="display:flex;gap:2px;padding:0 12px;border-bottom:1px solid #EFEFEF;">
+        <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4">
+          <button onClick="{{ t.go }}" style="background:none;border:0;border-bottom:2px solid {{ t.bd }};padding:10px 10px 9px;font-size:12px;font-weight:{{ t.fw }};color:{{ t.c }};cursor:pointer;display:flex;align-items:center;gap:6px;">{{ t.label }}</button>
+        </sc-for>
+      </div>
+      <div style="flex:1;overflow:auto;padding:16px 18px 18px;display:flex;flex-direction:column;gap:16px;">
+        <sc-if value="{{ tabAct }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-direction:column;gap:4px;">
+            <div style="display:flex;align-items:baseline;gap:6px;"><span style="font-size:36px;font-weight:600;letter-spacing:-.02em;">{{ pn.big }}</span><span style="font-size:12px;color:#888888;">{{ pn.bigUnit }}</span><span style="font-size:10px;font-weight:600;letter-spacing:.12em;color:{{ pn.color }};margin-left:6px;">{{ pn.label }}</span></div>
+            <div style="font-size:11.5px;color:#6D6D6D;">{{ pn.meta }}</div>
+          </div>
+          <sc-if value="{{ pn.hasWhy }}" hint-placeholder-val="{{ true }}">
+            <div style="background:#FAFAFA;border:1px solid #EFEFEF;border-radius:8px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;">
+              <div style="font-size:9.5px;font-weight:600;letter-spacing:.18em;color:#888888;">POR QUÉ ESTE ESTADO</div>
+              <p style="margin:0;font-size:12.5px;line-height:1.55;"><b>{{ pn.whyLead }}</b> {{ pn.whyRest }}</p>
+              <sc-for list="{{ pn.bullets }}" as="b" hint-placeholder-count="4">
+                <div style="display:flex;gap:8px;font-size:12px;line-height:1.45;"><span style="flex:none;width:7px;height:7px;border-radius:50%;margin-top:5px;background:{{ b.c }};"></span><span style="flex:1;min-width:0;display:block;line-height:1.45;"><b style="font-weight:600;">{{ b.name }}</b> · {{ b.text }}</span></div>
+              </sc-for>
+            </div>
+          </sc-if>
+          <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;">
+            <div style="border:1px solid #EFEFEF;border-radius:8px;padding:10px;"><div style="font-size:9px;font-weight:600;letter-spacing:.14em;color:#9A9A9A;">PROMEDIO</div><div style="font-size:15px;font-weight:600;margin-top:2px;">{{ pn.avg }}</div></div>
+            <div style="border:1px solid #EFEFEF;border-radius:8px;padding:10px;"><div style="font-size:9px;font-weight:600;letter-spacing:.14em;color:#9A9A9A;">MÁXIMO</div><div style="font-size:15px;font-weight:600;margin-top:2px;">{{ pn.high }}</div></div>
+            <div style="border:1px solid #EFEFEF;border-radius:8px;padding:10px;"><div style="font-size:9px;font-weight:600;letter-spacing:.14em;color:#9A9A9A;">MÍNIMO</div><div style="font-size:15px;font-weight:600;margin-top:2px;">{{ pn.low }}</div></div>
+          </div>
+          <div style="border:1px solid #EFEFEF;border-radius:8px;padding:10px 10px 6px;">
+            <svg viewBox="0 0 600 84" preserveAspectRatio="none" style="width:100%;height:84px;display:block;"><polyline points="{{ pn.points }}" fill="none" stroke="{{ pn.stroke }}" stroke-width="1.5" vector-effect="non-scaling-stroke"></polyline></svg>
+            <div style="display:flex;justify-content:space-between;font-size:10.5px;color:#888888;margin-top:4px;"><span>{{ pn.trend }}</span><span>{{ range }}</span></div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ tabTp }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:9.5px;font-weight:600;letter-spacing:.18em;color:#888888;">TOUCHPOINTS</span><span style="width:22px;height:22px;border:1px solid #E3E3E3;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;color:#888888;">+</span></div>
+          <div style="display:grid;grid-template-columns:minmax(0,1fr) 74px 54px 40px 36px;gap:8px;font-size:9px;font-weight:600;letter-spacing:.12em;color:#9A9A9A;border-bottom:1px solid #EFEFEF;padding-bottom:6px;"><span>NOMBRE</span><span>ADN</span><span>PESO</span><span>QUERY</span><span>ESTADO</span></div>
+          <sc-for list="{{ pn.tps }}" as="tp" hint-placeholder-count="4">
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) 74px 54px 40px 36px;gap:8px;align-items:center;font-size:11.5px;padding:6px 0;border-bottom:1px solid #F4F4F4;">
+              <span style="line-height:1.35;">{{ tp.name }}</span>
+              <span style="display:flex;justify-content:space-between;border:1px solid #E6E6E6;border-radius:5px;padding:2px 6px;font-size:10.5px;"><span>{{ tp.dna }}</span><span style="color:#AAAAAA;">⌄</span></span>
+              <span style="display:flex;justify-content:space-between;border:1px solid #E6E6E6;border-radius:5px;padding:2px 6px;font-size:10.5px;"><span>{{ tp.weight }}</span><span style="color:#AAAAAA;">⌄</span></span>
+              <span style="font-size:10.5px;color:#6D6D6D;">‹› {{ tp.q }}</span>
+              <span style="display:flex;justify-content:center;"><span style="width:9px;height:9px;border-radius:50%;background:{{ tp.c }};"></span></span>
+            </div>
+          </sc-for>
+        </sc-if>
+        <sc-if value="{{ tabAn }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;align-items:baseline;gap:8px;"><span style="font-size:28px;font-weight:600;">{{ pn.anCount }}</span><span style="font-size:9.5px;font-weight:600;letter-spacing:.18em;color:#888888;">ANOMALÍAS</span></div>
+          <sc-if value="{{ pn.noAn }}" hint-placeholder-val="{{ false }}"><div style="font-size:12px;color:#888888;">Ninguna detectada.</div></sc-if>
+          <sc-for list="{{ pn.an }}" as="an" hint-placeholder-count="2">
+            <div style="display:flex;gap:10px;align-items:flex-start;border:1px solid #EFEFEF;border-radius:8px;padding:10px 12px;">
+              <span style="flex:none;width:8px;height:8px;border-radius:50%;margin-top:5px;background:{{ an.c }};"></span>
+              <div style="flex:1;font-size:12px;line-height:1.5;">{{ an.text }}</div>
+              <span style="font-size:10.5px;color:#888888;">{{ an.time }}</span>
+            </div>
+          </sc-for>
+        </sc-if>
+        <sc-if value="{{ tabBee }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:10.5px;color:#888888;"><span style="font-weight:600;letter-spacing:.16em;">CONVERSANDO</span> · {{ pn.name }}</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <sc-for list="{{ stageChat }}" as="m" hint-placeholder-count="1">
+              <div style="align-self:{{ m.align }};max-width:86%;background:{{ m.bg }};color:{{ m.fg }};border:1px solid {{ m.bd }};border-radius:12px;padding:9px 12px;font-size:12px;line-height:1.5;">{{ m.text }}</div>
+            </sc-for>
+            <sc-if value="{{ stageTyping }}" hint-placeholder-val="{{ false }}"><div style="align-self:flex-start;background:#F6F6F6;border:1px solid #E8E8E8;border-radius:12px;padding:9px 12px;font-size:12px;">{{ dots }}</div></sc-if>
+          </div>
+        </sc-if>
+      </div>
+      <sc-if value="{{ tabBee }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;gap:8px;padding:12px 14px;border-top:1px solid #EFEFEF;">
+          <input value="{{ stageDraft }}" onChange="{{ onStageDraft }}" onKeyDown="{{ onStageKey }}" placeholder="{{ askPh }}" style="flex:1;height:34px;border:1px solid #E3E3E3;border-radius:17px;padding:0 14px;font:inherit;font-size:12px;outline:none;">
+          <button onClick="{{ sendStage }}" style="height:34px;padding:0 14px;border:0;border-radius:17px;background:#1C1C1C;color:#FFFFFF;font-size:12px;font-weight:600;cursor:pointer;">Enviar</button>
+        </div>
+      </sc-if>
+    </aside>
+  </sc-if>
+
+  <sc-if value="{{ modalOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeModal }}" style="position:absolute;inset:0;background:rgba(20,20,20,.28);z-index:10;display:flex;align-items:flex-start;justify-content:center;padding:40px 16px;overflow:auto;">
+      <div onClick="{{ stop }}" style="width:660px;max-width:100%;background:#FFFFFF;border-radius:14px;box-shadow:0 24px 64px rgba(0,0,0,.22);display:flex;flex-direction:column;overflow:hidden;">
+        <sc-if value="{{ isIntel }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid #EFEFEF;">
+            <span style="width:34px;height:34px;border-radius:9px;background:{{ md.icBg }};display:flex;align-items:center;justify-content:center;flex:none;"><img src="{{ md.icon }}" style="width:17px;height:17px;"></span>
+            <div style="flex:1;min-width:0;">
+              <div style="display:flex;align-items:center;gap:8px;font-size:15px;font-weight:600;">{{ md.title }}<span style="width:4px;height:4px;border-radius:50%;background:#CFCFCF;"></span><span style="font-size:11px;font-weight:500;color:#888888;white-space:nowrap;">{{ range }} · 10:58</span></div>
+              <div style="font-size:11.5px;color:#6D6D6D;margin-top:2px;">{{ md.sub }}</div>
+            </div>
+            <button onClick="{{ closeModal }}" title="Cerrar" style="width:30px;height:30px;border:0;background:#F3F3F3;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;"><img src="https://unpkg.com/lucide-static@0.460.0/icons/x.svg" style="width:15px;height:15px;"></button>
+          </div>
+          <div style="padding:16px 18px 20px;display:flex;flex-direction:column;gap:18px;">
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div style="font-size:9.5px;font-weight:600;letter-spacing:.18em;color:#888888;">RESUMEN</div>
+              <div style="display:flex;gap:22px;flex-wrap:wrap;">
+                <sc-for list="{{ md.sum }}" as="x" hint-placeholder-count="3">
+                  <span style="display:flex;align-items:baseline;gap:6px;font-size:11.5px;color:#6D6D6D;"><b style="font-size:20px;font-weight:600;color:{{ x.c }};">{{ x.v }}</b>{{ x.k }}</span>
+                </sc-for>
+              </div>
+              <div style="font-size:12px;line-height:1.55;color:#555555;">{{ md.desc }}</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div style="font-size:9.5px;font-weight:600;letter-spacing:.18em;color:#888888;">SALUD DE LOS RESULTADOS</div>
+              <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;">
+                <sc-for list="{{ health }}" as="r" hint-placeholder-count="3">
+                  <div style="border:1px solid #EFEFEF;border-radius:8px;padding:9px 11px;"><div style="font-size:10.5px;font-weight:600;color:{{ r.color }};">{{ r.label }}</div><div style="font-size:11.5px;margin-top:2px;">{{ r.name }}</div></div>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              <div style="font-size:9.5px;font-weight:600;letter-spacing:.18em;color:#888888;">MÁS URGENTE</div>
+              <sc-for list="{{ md.rows }}" as="u" hint-placeholder-count="4">
+                <div onClick="{{ u.open }}" style="display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,.7fr) minmax(0,1.4fr) minmax(0,.9fr);gap:10px;align-items:center;border:1px solid #EFEFEF;border-radius:8px;padding:9px 11px;font-size:11.5px;cursor:pointer;" style-hover="background:#FAFAFA">
+                  <div style="display:flex;align-items:center;gap:8px;min-width:0;"><sc-if value="{{ u.hasSev }}" hint-placeholder-val="{{ true }}"><span style="flex:none;font-size:8.5px;font-weight:700;letter-spacing:.08em;color:#FFFFFF;background:{{ u.sevC }};border-radius:4px;padding:2px 5px;">{{ u.sev }}</span></sc-if><span style="font-weight:600;">{{ u.name }}</span></div>
+                  <span style="color:{{ u.c1C }};font-weight:600;">{{ u.c1 }}</span>
+                  <span style="color:#555555;">{{ u.c2 }}</span>
+                  <span style="color:#888888;text-align:right;">{{ u.c3 }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <sc-if value="{{ md.hasCh }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <div style="font-size:9.5px;font-weight:600;letter-spacing:.18em;color:#888888;">TIEMPO A CONFIRMACIÓN POR CANAL</div>
+                <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;">
+                  <sc-for list="{{ md.ch }}" as="c" hint-placeholder-count="4">
+                    <div style="border:1px solid #EFEFEF;border-radius:8px;padding:9px 11px;"><div style="font-size:11px;color:#6D6D6D;">{{ c.ch }}</div><div style="font-size:15px;font-weight:600;color:{{ c.c }};">{{ c.t }}</div></div>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-if>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div style="font-size:9.5px;font-weight:600;letter-spacing:.18em;color:#888888;">RECONOCIMIENTO DE PATRONES</div>
+              <sc-for list="{{ md.pat }}" as="p" hint-placeholder-count="3">
+                <div style="display:grid;grid-template-columns:48px minmax(0,1fr);gap:12px;align-items:baseline;font-size:12px;line-height:1.5;"><span style="font-size:15px;font-weight:600;">{{ p.k }}</span><span style="color:#555555;">{{ p.v }}</span></div>
+              </sc-for>
+            </div>
+            <div style="background:#FBF7EA;border:1px solid #F1E6BF;border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;">
+              <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;"><span style="font-size:9.5px;font-weight:600;letter-spacing:.18em;color:#8A7630;">ANÁLISIS DE CAUSA RAÍZ</span><span style="font-size:10.5px;color:#8A7630;">{{ md.conf }}</span></div>
+              <p style="margin:0;font-size:12.5px;line-height:1.6;"><b>{{ md.lead }}</b> {{ md.rest }}</p>
+              <sc-if value="{{ md.pending }}" hint-placeholder-val="{{ true }}">
+                <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                  <button onClick="{{ md.b1 }}" style="height:32px;padding:0 14px;border:0;border-radius:16px;background:#1C1C1C;color:#FFFFFF;font-size:12px;font-weight:600;cursor:pointer;">{{ md.b1l }}</button>
+                  <button onClick="{{ md.b2 }}" style="height:32px;padding:0 14px;border:1px solid #D9D9D9;border-radius:16px;background:#FFFFFF;font-size:12px;font-weight:600;cursor:pointer;">{{ md.b2l }}</button>
+                </div>
+              </sc-if>
+              <sc-if value="{{ md.isDone }}" hint-placeholder-val="{{ false }}">
+                <div style="font-size:12px;font-weight:600;color:#4E9E62;">✓ {{ md.done }}</div>
+              </sc-if>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ isBee }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid #EFEFEF;">
+            <span style="width:34px;height:34px;border-radius:9px;background:#FBF3D6;display:flex;align-items:center;justify-content:center;flex:none;font-size:16px;">
+              <span style="position:relative;width:18px;height:14px;display:block;"><span style="position:absolute;left:2px;top:3px;width:14px;height:10px;border-radius:50%;border:1.6px solid #1C1C1C;box-sizing:border-box;background:repeating-linear-gradient(90deg,#F2C23A 0 3px,#1C1C1C 3px 4.5px);"></span></span>
+            </span>
+            <div style="flex:1;min-width:0;"><div style="font-size:15px;font-weight:600;">BOBee Intelligence</div><div style="font-size:11.5px;color:#6D6D6D;">Analizando el negocio · {{ alertCount }} alertas · {{ anomalyTotal }} anomalías</div></div>
+            <button onClick="{{ closeModal }}" title="Cerrar" style="width:30px;height:30px;border:0;background:#F3F3F3;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;"><img src="https://unpkg.com/lucide-static@0.460.0/icons/x.svg" style="width:15px;height:15px;"></button>
+          </div>
+          <div style="display:flex;gap:6px;padding:12px 18px 0;">
+            <sc-for list="{{ mtabs }}" as="t" hint-placeholder-count="3">
+              <button onClick="{{ t.go }}" style="height:30px;padding:0 14px;border-radius:15px;border:1px solid {{ t.bd }};background:{{ t.bg }};color:{{ t.c }};font-size:12px;font-weight:600;cursor:pointer;">{{ t.label }}</button>
+            </sc-for>
+          </div>
+          <div style="padding:14px 18px;min-height:150px;">
+            <sc-if value="{{ generating }}" hint-placeholder-val="{{ false }}"><div style="font-size:12px;color:#888888;">{{ dots }} Generando…</div></sc-if>
+            <sc-if value="{{ generated }}" hint-placeholder-val="{{ true }}">
+              <p style="margin:0 0 12px;font-size:13px;line-height:1.6;">{{ insight.lead }}</p>
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <sc-for list="{{ insight.items }}" as="it" hint-placeholder-count="3">
+                  <div style="display:grid;grid-template-columns:52px minmax(0,1fr);gap:10px;font-size:12px;line-height:1.5;border-top:1px solid #F1F1F1;padding-top:8px;"><span style="font-weight:700;">{{ it.k }}</span><span style="color:#444444;">{{ it.v }}</span></div>
+                </sc-for>
+              </div>
+            </sc-if>
+          </div>
+          <div style="font-size:9.5px;font-weight:600;letter-spacing:.18em;color:#888888;padding:4px 18px 8px;border-top:1px solid #EFEFEF;padding-top:12px;">CHAT CON BOBEE</div>
+          <div style="display:flex;flex-direction:column;gap:8px;padding:0 18px;max-height:180px;overflow:auto;">
+            <sc-for list="{{ globalChat }}" as="m" hint-placeholder-count="1">
+              <div style="align-self:{{ m.align }};max-width:86%;background:{{ m.bg }};color:{{ m.fg }};border:1px solid {{ m.bd }};border-radius:12px;padding:9px 12px;font-size:12px;line-height:1.5;">{{ m.text }}</div>
+            </sc-for>
+            <sc-if value="{{ globalTyping }}" hint-placeholder-val="{{ false }}"><div style="align-self:flex-start;background:#F6F6F6;border:1px solid #E8E8E8;border-radius:12px;padding:9px 12px;font-size:12px;">{{ dots }}</div></sc-if>
+          </div>
+          <div style="display:flex;gap:8px;padding:12px 18px 16px;">
+            <input value="{{ globalDraft }}" onChange="{{ onGlobalDraft }}" onKeyDown="{{ onGlobalKey }}" placeholder="Pregunte a BOBee sobre toda la operación…" style="flex:1;height:34px;border:1px solid #E3E3E3;border-radius:17px;padding:0 14px;font:inherit;font-size:12px;outline:none;">
+            <button onClick="{{ sendGlobal }}" style="height:34px;padding:0 14px;border:0;border-radius:17px;background:#1C1C1C;color:#FFFFFF;font-size:12px;font-weight:600;cursor:pointer;">Enviar</button>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1240,&quot;height&quot;:900},&quot;caso&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:0,&quot;min&quot;:0,&quot;max&quot;:1,&quot;tsType&quot;:&quot;number&quot;},&quot;paso&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:0,&quot;min&quot;:-1,&quot;max&quot;:4,&quot;tsType&quot;:&quot;number&quot;},&quot;abejas&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;onUser&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;() =&gt; void&quot;}}">
+const MOM_ICON = n => `url(https://unpkg.com/lucide-static@0.460.0/icons/${n}.svg)`;
+const MOM_TPC = { ok: '#79C78B', warn: '#F0A23B', bad: '#E98C83' };
+const MOM_TPT = { ok: 'saludable', warn: 'degradado', bad: 'en rojo' };
+const momStatus = s => s >= 75 ? { label: 'SALUDABLE', color: '#5FB474' } : s >= 60 ? { label: 'DEGRADADO', color: '#E0921F' } : { label: 'EN RIESGO', color: '#D9776E' };
+const momRng = seed => () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+const momSeries = (seed, base, amp, n = 28, drift = 0) => { const r = momRng(seed); let v = base; return Array.from({ length: n }, () => { v += (r() - .5) * amp + drift; return v; }); };
+const momPts = (arr, w, h) => { const mn = Math.min(...arr) - 4, mx = Math.max(...arr) + 4; return arr.map((v, i) => `${(i / (arr.length - 1) * w).toFixed(1)},${(h - (v - mn) / (mx - mn) * h).toFixed(1)}`).join(' '); };
+const momBubble = (role, text) => role === 'u' ? { text, align: 'flex-end', bg: '#111111', fg: '#FFFFFF', bd: '#111111' } : { text, align: 'flex-start', bg: '#F6F6F6', fg: '#1C1C1C', bd: '#E8E8E8' };
+
+const MOM_CASES = [
+  { seg: 'Downstream · Comercialización', title: 'EL JOURNEY · DESPACHO DE COMBUSTIBLES EXTREMO A EXTREMO', crit: 's3',
+    stages: [
+      { id: 's0', n: '01', kind: 'PEDIDO', name: 'Pedido del mayorista', icon: 'shopping-cart', score: 92, tps: [['Pedidos recibidos por minuto', 'Digital', 'ALTO', 'ok', 3], ['Errores de integración B2B', 'Digital', 'MED', 'ok', 1], ['Pedidos por correo o teléfono', 'Analógico', 'BAJO', 'warn', 1], ['Consultas de mayoristas', 'Natural', 'BAJO', 'ok', 1]], an: [] },
+      { id: 's1', n: '02', kind: 'CUPO', name: 'Validación de cupo y crédito', icon: 'badge-check', score: 86, tps: [['Validación automática de cupo', 'Digital', 'ALTO', 'ok', 2], ['Latencia del ERP comercial', 'Digital', 'MED', 'ok', 1], ['Mayoristas con cupo al límite', 'Digital', 'MED', 'warn', 2], ['Garantías vencidas', 'Analógico', 'BAJO', 'ok', 1]], an: [['3 mayoristas con cupo al límite pasan a revisión manual', '08:52', 'warn']] },
+      { id: 's2', n: '03', kind: 'PROGRAMACIÓN', name: 'Programación en planta', icon: 'calendar-clock', score: 68, tps: [['Turnos de cargue asignados', 'Digital', 'ALTO', 'warn', 2], ['Reprogramaciones de turnos', 'Digital', 'MED', 'warn', 2], ['Disponibilidad de carrotanques', 'Analógico', 'MED', 'ok', 1]], an: [['38 turnos de la tarde reprogramados en Planta Bogotá', '10:05', 'warn']] },
+      { id: 's3', n: '04', kind: 'CARGUE', name: 'Cargue de carrotanques', icon: 'fuel', score: 49, tps: [['Tiempo en isla de cargue', 'Digital', 'ALTO', 'bad', 3], ['Medidor de flujo · isla 3', 'Digital', 'ALTO', 'bad', 2], ['Cola en patio', 'Analógico', 'MED', 'warn', 2], ['Recalibraciones por cargue', 'Digital', 'BAJO', 'warn', 1], ['Novedades HSE en patio', 'Analógico', 'BAJO', 'ok', 1]], an: [['Lecturas intermitentes del medidor de flujo de la isla 3 en Planta Bogotá', '06:40', 'bad'], ['Cola de 22 carrotanques en patio', '09:15', 'warn'], ['Tiempo en isla 64% por encima de la meta (74 min frente a 45)', '10:30', 'bad']] },
+      { id: 's4', n: '05', kind: 'REGISTRO', name: 'Guía y registro SICOM', icon: 'file-check', score: 90, tps: [['Guías emitidas', 'Digital', 'ALTO', 'ok', 2], ['Rechazos del sistema regulatorio', 'Digital', 'MED', 'ok', 1], ['Latencia del servicio SICOM', 'Digital', 'BAJO', 'ok', 1]], an: [] },
+      { id: 's5', n: '06', kind: 'ENTREGA', name: 'Entrega en estación', icon: 'truck', score: 66, tps: [['Entregas a tiempo', 'Digital', 'ALTO', 'warn', 2], ['Estaciones en riesgo de desabastecimiento', 'Digital', 'ALTO', 'warn', 2], ['Novedades del transportador', 'Analógico', 'MED', 'ok', 1]], an: [['41 estaciones del centro del país con entrega retrasada', '10:48', 'warn']] },
+      { id: 's6', n: '07', kind: 'CLIENTE', name: 'Mayorista y canales', icon: 'headset', score: 70, tps: [['Llamadas de mayoristas por retrasos', 'Natural', 'ALTO', 'warn', 2], ['PQRS comerciales', 'Natural', 'MED', 'ok', 1], ['Sentimiento en canales B2B', 'Natural', 'MED', 'warn', 1]], an: [['Mayoristas llamando 3 o más veces por el estado del despacho', '10:50', 'warn']] }],
+    kbrs: [
+      { title: 'VOLUMEN DESPACHADO HOY', value: '168', unit: 'mil bl', delta: '↓ 3,8%', bad: true, seed: 11, drift: -.04, risk: 62, riskText: 'Planta Bogotá concentra el 81% del faltante del día', answers: [['Planta con más retraso', 'Bogotá · 74 min en isla'], ['Producto más afectado', 'Diésel · −5,1%'], ['Mayorista con más pendientes', 'Mayorista A · 46'], ['Franja con más cola', '08:00 – 11:00']], avg: '172', high: '181', low: '164', trend: '↘ Tendencia a la baja 3,8%', tps: ['s3', 's2'] },
+      { title: 'TIEMPO EN ISLA DE CARGUE', value: '74', unit: 'min · p95', delta: '↑ 29 MIN', bad: true, seed: 23, drift: .05, risk: 78, riskText: 'La recalibración del medidor aporta 29 min por cargue; la meta es 45 min', answers: [['Isla más lenta', 'Isla 3 · Planta Bogotá'], ['Carrotanques en cola', '22'], ['Causa principal', 'Medidor de flujo intermitente'], ['Islas con capacidad libre', '1 y 2 · 61% de uso']], avg: '58 min', high: '81 min', low: '39 min', trend: '↗ Tendencia al alza 64%', tps: ['s3'] },
+      { title: 'PEDIDOS ENTREGADOS A TIEMPO', value: '86', unit: '%', delta: '↓ 9 PTS', bad: true, seed: 37, drift: -.03, risk: 55, riskText: '41 estaciones con riesgo de desabastecimiento antes de las 18:00', answers: [['Región más afectada', 'Centro · Cundinamarca'], ['Estaciones en riesgo', '41'], ['Ingreso en riesgo hoy', 'COP 4.200 M'], ['Recuperación estimada', '13:30 si se redirige']], avg: '91%', high: '96%', low: '84%', trend: '↘ Tendencia a la baja 9 pts', tps: ['s5', 's6'] }],
+    alerts: { crit: 2, warn: 4, rec: 3, resp: 6, desc: 'Abiertas en este momento sobre el journey de despacho. Bajan a medida que las condiciones se recuperan. Las respuestas incluyen órdenes de mantenimiento, avisos a mayoristas y escalamientos ya ejecutados hoy.',
+      rows: [['CRÍTICA', 'Tiempo en isla de cargue', '+64%', '04 · Cargue · 74 min · umbral 45', 'hace 4 h 18 min', 's3'], ['CRÍTICA', 'Medidor de flujo · isla 3', '+1450%', '04 · Cargue · lecturas nulas 31%', 'hace 4 h 18 min', 's3'], ['ADVERTENCIA', 'Turnos reprogramados', '+280%', '03 · Programación · 38 · umbral 10', 'hace 53 min', 's2'], ['ADVERTENCIA', 'Entregas a tiempo', '−9 pts', '06 · Entrega · 86% · umbral 95%', 'hace 10 min', 's5']],
+      pat: [['0,91', 'La cola en patio se mueve junto con las lecturas nulas del medidor de la isla 3.'], ['2/3', 'El medidor de la isla 3 falló dos veces este mes después de lluvias fuertes en la Sabana.'], ['41', 'Estaciones del centro del país dependen hoy de Planta Bogotá.']],
+      conf: 'Confianza alta · 4 fuentes', lead: 'Causa probable: medidor de flujo de la isla 3 de Planta Bogotá con lecturas intermitentes desde las 06:40.', rest: 'Cada cargue espera una recalibración y tarda 29 minutos más. No es un problema de demanda: las islas 1 y 2 operan al 61% de su capacidad.', b1: 'Redirigir a islas 1 y 2', b2: 'Ver evidencia en etapa 04' },
+    alarms: { conf: 14, trig: 3, resp: 2, desc: 'Alarmas del journey de despacho que avisan a personas fuera de Momentum: jefatura de planta, mantenimiento de instrumentación, gerencia comercial y transportadores. Las disparadas se cierran cuando el destinatario confirma y la condición se recupera.',
+      rows: [['ALTA', 'Cola en patio sobre 15 carrotanques', '10:12', 'Jefe de Planta Bogotá', 'Confirmada · Teléfono', 's3'], ['ALTA', 'Tiempo en isla sobre 60 min', '09:40', 'Instrumentación', 'Sin confirmar · SMS', 's3'], ['MEDIA', 'Estaciones en riesgo de desabastecimiento', '10:50', 'Gerencia comercial', 'Confirmada · Correo', 's5']],
+      ch: [['Teléfono', '4 min'], ['WhatsApp', '6 min'], ['Correo', '38 min'], ['SMS', 'Sin respuesta', 1]],
+      pat: [['78 min', 'Sin confirmación de instrumentación desde que salió la alarma.'], ['1', 'Canal configurado para el técnico de turno: solo SMS.'], ['3/3', 'Las alarmas confirmadas por teléfono se cerraron en menos de 10 minutos esta semana.']],
+      conf: 'Confianza media · 3 fuentes', lead: 'El retraso está en la cadena de escalamiento con instrumentación, no en la detección.', rest: 'La alarma salió 3 minutos después de cruzar el umbral, pero el técnico de turno solo tiene SMS configurado.', b1: 'Escalar a llamada con instrumentación', b2: 'Agregar WhatsApp al contacto' },
+    actions: { conf: 22, exec: 9, resp: 31, desc: 'Acciones que Momentum ejecuta sobre sistemas de Ecopetrol y de terceros: programación de planta, órdenes de mantenimiento, notificaciones a mayoristas e integraciones con transportadores. Las de alto impacto, como reasignar islas de cargue, piden aprobación.',
+      rows: [['', 'Reasignar turnos a islas 1 y 2', '10:58', 'Programación de planta', 'Pendiente de aprobación', 's3'], ['', 'Orden de mantenimiento · medidor isla 3', '10:41', 'Sistema de mantenimiento', 'Ejecutada', 's3'], ['', 'Avisar retraso a mayoristas afectados', '10:52', 'Portal B2B · WhatsApp', 'Ejecutada', 's6'], ['', 'Priorizar estaciones con inventario < 1 día', '10:55', 'Programación', 'En curso', 's5']],
+      pat: [['9', 'Acciones ejecutadas hoy sin intervención humana.'], ['1', 'Acción de alto impacto en espera de aprobación.'], ['13:30', 'Hora estimada de recuperación del programa si se aprueba ahora.']],
+      conf: 'Confianza alta · control de cambios', lead: 'La reasignación no se ejecutó sola porque cambia la programación de planta y requiere aprobación del jefe de planta.', rest: 'Con la tendencia actual, 41 estaciones quedan sin producto antes de las 18:00. Aprobarla ahora recupera el programa del día hacia las 13:30.', b1: 'Aprobar reasignación ahora', b2: 'Enviar al jefe de planta', done: 'Reasignación ejecutada. Los turnos de la tarde vuelven al programa.' },
+    insight: {
+      exp: { lead: 'El journey de despacho está degradado. El foco es Cargue de carrotanques: desde las 06:40 el medidor de flujo de la isla 3 falla y el tiempo en isla p95 subió a 74 min.', items: [['04', 'Cargue en riesgo por el medidor de la isla 3 y la cola en patio.'], ['03', '38 turnos reprogramados en Planta Bogotá.'], ['06', '41 estaciones con entrega retrasada.']] },
+      rec: { lead: 'Tres acciones, en orden de impacto sobre los pedidos entregados a tiempo:', items: [['1', 'Redirigir los 22 carrotanques en cola a las islas 1 y 2.'], ['2', 'Escalar por llamada con instrumentación el mantenimiento del medidor de la isla 3.'], ['3', 'Avisar a los mayoristas afectados la nueva hora de cargue.']] },
+      pred: { lead: 'Si la isla 3 sigue fallando, a las 14:00 la cola superará 30 carrotanques y 41 estaciones quedarán sin producto antes de las 18:00.', items: [['14:00', 'La cola supera la capacidad del patio.'], ['18:00', 'Estaciones del centro sin diésel.'], ['Cierre', 'Guías SICOM y facturación estables.']] } },
+    bee: 'El mayor riesgo está en Cargue de carrotanques (etapa 04). Redirigir la cola a las islas 1 y 2 es la acción de mayor impacto; después, el mantenimiento del medidor de la isla 3. ¿Abro el detalle de la etapa?' },
+  { seg: 'Midstream · Cenit', title: 'EL JOURNEY · TRANSPORTE DE CRUDO POR OLEODUCTO', crit: 's3',
+    stages: [
+      { id: 's0', n: '01', kind: 'NOMINACIÓN', name: 'Nominación del remitente', icon: 'clipboard-list', score: 94, tps: [['Nominaciones antes del corte', 'Digital', 'ALTO', 'ok', 2], ['Ajustes de nominación', 'Analógico', 'MED', 'ok', 1], ['Consultas de remitentes', 'Natural', 'BAJO', 'ok', 1]], an: [] },
+      { id: 's1', n: '02', kind: 'PROGRAMACIÓN', name: 'Programación de bombeo', icon: 'calendar-range', score: 78, tps: [['Programa publicado a tiempo', 'Digital', 'ALTO', 'ok', 1], ['Cambios al programa', 'Digital', 'MED', 'warn', 2], ['Capacidad disponible por tramo', 'Digital', 'MED', 'ok', 1]], an: [['Programa ajustado dos veces por la caída de caudal', '09:10', 'warn']] },
+      { id: 's2', n: '03', kind: 'RECIBO', name: 'Recibo en estación de origen', icon: 'factory', score: 86, tps: [['Recibo frente a programa', 'Digital', 'ALTO', 'ok', 2], ['Calidad del crudo (BSW)', 'Digital', 'MED', 'ok', 1], ['Telemetría de medición', 'Digital', 'MED', 'ok', 1]], an: [] },
+      { id: 's3', n: '04', kind: 'BOMBEO', name: 'Bombeo y transporte por tramo', icon: 'gauge', score: 51, tps: [['Presión de descarga · Vasconia', 'Digital', 'ALTO', 'bad', 3], ['Bombas en servicio', 'Digital', 'ALTO', 'bad', 2], ['Caudal tramo Vasconia–Coveñas', 'Digital', 'ALTO', 'warn', 2], ['Telemetría RTU de línea', 'Digital', 'MED', 'warn', 2], ['Reportes de comunidad en derecho de vía', 'Natural', 'BAJO', 'ok', 1]], an: [['Caída de 9% en la presión de descarga de la estación Vasconia', '04:20', 'bad'], ['Bomba B-2 en modo degradado', '05:05', 'bad'], ['Caudal 11% por debajo del programa', '08:40', 'warn']] },
+      { id: 's4', n: '05', kind: 'TERMINAL', name: 'Entrega en terminal Coveñas', icon: 'ship', score: 66, tps: [['Inventario para cargue', 'Digital', 'ALTO', 'warn', 2], ['Ventana de buque', 'Analógico', 'ALTO', 'warn', 1], ['Calidad en tanque', 'Digital', 'MED', 'ok', 1]], an: [['Inventario de cargue 9 h detrás del programa', '09:30', 'warn']] },
+      { id: 's5', n: '06', kind: 'BALANCE', name: 'Balance volumétrico', icon: 'scale', score: 70, tps: [['Diferencia volumétrica por tramo', 'Digital', 'ALTO', 'warn', 2], ['Conciliación con remitentes', 'Analógico', 'MED', 'ok', 1]], an: [['Diferencia de 0,42% en el tramo afectado (tolerancia 0,3%)', '10:10', 'warn']] },
+      { id: 's6', n: '07', kind: 'REMITENTE', name: 'Remitentes y canales', icon: 'headset', score: 74, tps: [['Consultas por estado del despacho', 'Natural', 'ALTO', 'warn', 2], ['Reclamos por balance', 'Natural', 'MED', 'ok', 1]], an: [['Dos remitentes preguntan por la ventana de exportación', '10:35', 'warn']] }],
+    kbrs: [
+      { title: 'BARRILES TRANSPORTADOS HOY', value: '742', unit: 'mil bl', delta: '↓ 1,9%', bad: true, seed: 12, drift: -.03, risk: 52, riskText: 'El tramo Vasconia–Coveñas explica el 88% del faltante', answers: [['Tramo con menor caudal', 'Vasconia–Coveñas · −11%'], ['Estación crítica', 'Vasconia · 2 de 3 bombas'], ['Remitente más expuesto', 'Remitente B'], ['Recuperación estimada', '6 h con bomba B-3']], avg: '751', high: '760', low: '738', trend: '↘ Tendencia a la baja 1,9%', tps: ['s3', 's2'] },
+      { title: 'CUMPLIMIENTO DEL PROGRAMA', value: '91', unit: '%', delta: '↓ 6 PTS', bad: true, seed: 24, drift: -.05, risk: 70, riskText: 'Una bomba en modo degradado desde las 05:05', answers: [['Ajustes al programa', '2 hoy'], ['Etapa que más resta', '04 · Bombeo'], ['Bombas disponibles', '2 de 3'], ['Respaldo disponible', 'Bomba B-3']], avg: '94%', high: '98%', low: '90%', trend: '↘ Tendencia a la baja 6 pts', tps: ['s3', 's1'] },
+      { title: 'INGRESO POR TRANSPORTE EN RIESGO', value: '1,8', unit: 'M USD', delta: '↑ 1,8 M', bad: true, seed: 38, drift: .06, risk: 64, riskText: 'Depende de la ventana de cargue del buque de mañana', answers: [['Buque programado', 'Mañana 06:00'], ['Inventario para cargue', '84%'], ['Horas de atraso', '9 h'], ['Diferencia volumétrica', '0,42%']], avg: '0,9 M', high: '1,8 M', low: '0', trend: '↗ Tendencia al alza', tps: ['s4', 's5'] }],
+    alerts: { crit: 2, warn: 5, rec: 2, resp: 5, desc: 'Abiertas en este momento sobre el journey de transporte. Bajan a medida que las condiciones se recuperan. Las respuestas incluyen órdenes de mantenimiento, avisos a remitentes y escalamientos ya ejecutados hoy.',
+      rows: [['CRÍTICA', 'Presión de descarga · Vasconia', '−9%', '04 · Bombeo · umbral −3%', 'hace 6 h 38 min', 's3'], ['CRÍTICA', 'Bombas en servicio', '−33%', '04 · Bombeo · 2 de 3', 'hace 5 h 53 min', 's3'], ['ADVERTENCIA', 'Inventario para cargue', '−11 pts', '05 · Terminal · 84% · umbral 95%', 'hace 1 h 28 min', 's4'], ['ADVERTENCIA', 'Diferencia volumétrica', '+40%', '06 · Balance · 0,42% · umbral 0,3%', 'hace 48 min', 's5']],
+      pat: [['0,94', 'El caudal hacia Coveñas cae junto con la presión de descarga en Vasconia.'], ['3/4', 'La bomba B-2 entró en modo degradado en tres de los últimos cuatro picos de temperatura.'], ['0', 'Indicios de fuga: la presión aguas abajo es consistente con el menor caudal.']],
+      conf: 'Confianza alta · 4 fuentes', lead: 'Causa probable: la bomba B-2 de la estación Vasconia entró en modo degradado a las 05:05.', rest: 'Las otras dos bombas compensan solo en parte y el caudal hacia Coveñas cae 11%. No hay indicios de fuga.', b1: 'Arrancar bomba B-3', b2: 'Ver evidencia en etapa 04' },
+    alarms: { conf: 18, trig: 3, resp: 2, desc: 'Alarmas del journey de transporte que avisan a personas fuera de Momentum: centro de control, mantenimiento de equipos rotativos, terminal Coveñas y remitentes.',
+      rows: [['ALTA', 'Presión de descarga bajo umbral', '04:23', 'Centro de control', 'Confirmada · Radio', 's3'], ['ALTA', 'Bomba B-2 en modo degradado', '05:07', 'Mantenimiento rotativos', 'Confirmada · Teléfono', 's3'], ['MEDIA', 'Inventario de cargue bajo programa', '09:32', 'Terminal Coveñas', 'Sin confirmar · Correo', 's4']],
+      ch: [['Radio', '1 min'], ['Teléfono', '3 min'], ['WhatsApp', '5 min'], ['Correo', '52 min', 1]],
+      pat: [['86 min', 'Sin confirmación del terminal Coveñas.'], ['0', 'Avisos al armador sobre el posible atraso.'], ['2/2', 'Alarmas operativas confirmadas en menos de 5 minutos.']],
+      conf: 'Confianza media · 3 fuentes', lead: 'La alarma de inventario llegó al terminal Coveñas solo por correo.', rest: 'El terminal no ha confirmado en 86 minutos y el armador aún no conoce el posible atraso.', b1: 'Escalar a llamada con el terminal', b2: 'Notificar al armador' },
+    actions: { conf: 26, exec: 7, resp: 24, desc: 'Acciones que Momentum ejecuta sobre sistemas de Cenit y de terceros: programa de bombeo, órdenes de mantenimiento, portal de remitentes e integraciones con terminales. Las de alto impacto, como arrancar equipos o cambiar el programa, piden aprobación.',
+      rows: [['', 'Arrancar bomba de respaldo B-3', '10:58', 'Centro de control', 'Pendiente de aprobación', 's3'], ['', 'Ajustar programa de bombeo 12 h', '10:58', 'Planeación', 'Pendiente de aprobación', 's1'], ['', 'Orden de mantenimiento · bomba B-2', '05:20', 'Sistema de mantenimiento', 'Ejecutada', 's3'], ['', 'Aviso a remitentes del ajuste', '09:15', 'Portal de remitentes', 'Ejecutada', 's6']],
+      pat: [['7', 'Acciones ejecutadas hoy sin intervención humana.'], ['2', 'Acciones de alto impacto en espera de aprobación.'], ['6 h', 'Tiempo estimado de recuperación del caudal con la bomba B-3.']],
+      conf: 'Confianza alta · control de cambios', lead: 'El arranque de la bomba B-3 no se ejecutó solo porque cambia el programa de bombeo y requiere aprobación del centro de control.', rest: 'Aprobarlo ahora recupera el caudal en unas 6 horas y protege la ventana de cargue del buque de mañana.', b1: 'Aprobar arranque ahora', b2: 'Enviar al centro de control', done: 'Arranque aprobado. Bomba B-3 en arranque y terminal notificado.' },
+    insight: {
+      exp: { lead: 'El journey de transporte está degradado. El foco es Bombeo y transporte por tramo: la bomba B-2 de Vasconia opera en modo degradado y el caudal hacia Coveñas cayó 11%.', items: [['04', 'Bombeo en riesgo por la presión de descarga en Vasconia.'], ['05', 'El inventario de cargue en Coveñas va 9 h detrás del programa.'], ['06', 'La diferencia volumétrica supera la tolerancia en el tramo afectado.']] },
+      rec: { lead: 'Tres acciones, en orden de impacto sobre el cumplimiento del programa:', items: [['1', 'Arrancar la bomba de respaldo B-3 y ajustar el programa de 12 h.'], ['2', 'Escalar por llamada con el terminal Coveñas y avisar al armador.'], ['3', 'Conciliar la diferencia volumétrica con los remitentes del tramo.']] },
+      pred: { lead: 'Sin la bomba B-3, el inventario de Coveñas llega al mínimo de cargue 9 horas tarde y el buque de mañana pierde su ventana.', items: [['16:00', 'El tanque de recibo queda bajo el programa del día.'], ['06:00', 'Ventana de cargue del buque en riesgo.'], ['Cierre', 'Nominación y recibo estables.']] } },
+    bee: 'El mayor riesgo está en Bombeo y transporte por tramo (etapa 04). Arrancar la bomba B-3 es la acción de mayor impacto; después, avisar al terminal Coveñas por llamada. ¿Abro el detalle de la etapa?' }];
+
+class Component extends DCLogic {
+  state = { sel: 's3', mode: 'stage', kidx: 0, panel: false, tab: 'act', modal: null, mtab: 'exp', generating: false, range: 'Ahora', chats: {}, drafts: {}, typing: {}, gdraft: '', gchat: [], gtyping: false, done: {} };
+  componentDidMount() { this.applyStep(); this._d = setInterval(() => { if (this.state.generating || this.state.gtyping || Object.values(this.state.typing).some(Boolean)) this.forceUpdate(); }, 300); }
+  componentDidUpdate(p) { if (p.paso !== this.props.paso || p.caso !== this.props.caso) this.applyStep(p.caso !== this.props.caso); }
+  componentWillUnmount() { clearInterval(this._d); clearTimeout(this._g); }
+  C() { return MOM_CASES[this.props.caso ?? 0] || MOM_CASES[0]; }
+  applyStep(reset) {
+    const p = this.props.paso ?? 0, c = this.C();
+    if (reset) this.setState({ chats: {}, gchat: [], done: {} });
+    if (p === 0) this.setState({ panel: false, modal: null });
+    if (p === 1) this.setState({ panel: true, mode: 'stage', sel: c.crit, tab: 'act', modal: null });
+    if (p === 2) this.setState({ panel: false, modal: 'alerts' });
+    if (p === 3) this.setState({ panel: false, modal: 'actions' });
+    if (p === 4) { this.setState({ panel: false }); this.openBee(); }
+  }
+  user = () => { if ((this.props.paso ?? 0) >= 0 && this.props.onUser) this.props.onUser(); };
+  openBee = () => { this.setState({ modal: 'bee' }); this.gen('exp'); };
+  gen = (mtab) => { clearTimeout(this._g); this.setState({ mtab, generating: true }); this._g = setTimeout(() => this.setState({ generating: false }), 900); };
+  reply(st) {
+    const w = [...st.tps].sort((a, b) => ({ bad: 0, warn: 1, ok: 2 }[a[3]] - { bad: 0, warn: 1, ok: 2 }[b[3]]))[0];
+    const a = st.an[0];
+    return `En ${st.name}, lo que más pesa en el estado es ${w[0]} (${MOM_TPT[w[3]]}).` + (a ? ` Última anomalía: ${a[0].charAt(0).toLowerCase() + a[0].slice(1)}, a las ${a[1]}.` : ' No hay anomalías abiertas.') + ' Puedo listar los activos y clientes afectados.';
+  }
+  sendStage(st) {
+    const id = st.id, text = (this.state.drafts[id] || '').trim(); if (!text) return;
+    this.setState(s => ({ chats: { ...s.chats, [id]: [...(s.chats[id] || []), ['u', text]] }, drafts: { ...s.drafts, [id]: '' }, typing: { ...s.typing, [id]: true } }));
+    setTimeout(() => this.setState(s => ({ chats: { ...s.chats, [id]: [...(s.chats[id] || []), ['b', this.reply(st)]] }, typing: { ...s.typing, [id]: false } })), 1100);
+  }
+  sendGlobal() {
+    const text = this.state.gdraft.trim(); if (!text) return;
+    this.setState(s => ({ gchat: [...s.gchat, ['u', text]], gdraft: '', gtyping: true }));
+    setTimeout(() => this.setState(s => ({ gtyping: false, gchat: [...s.gchat, ['b', this.C().bee]] })), 1200);
+  }
+  renderVals() {
+    const st = this.state, c = this.C(), u = this.user;
+    const bees = this.props.abejas ?? true;
+    const rs = { 'Ahora': 0, 'Última hora': 5, 'Hoy': 9, 'Últimos 7 días': 17 }[st.range] || 0;
+    const stages = c.stages.map(s => ({ ...s, tps: s.tps.map(t => ({ name: t[0], dna: t[1], weight: t[2], st: t[3], q: t[4] })) }));
+    const open = id => () => { u(); this.setState({ sel: id, panel: true, mode: 'stage', modal: null }); };
+    const bee = (i, w, h) => bees ? React.createElement('span', { key: 'bee', style: { position: 'absolute', left: 0, top: 0, width: 12, height: 10, offsetPath: `path('M${w / 2} 0 L${w} ${h * .25} L${w} ${h * .75} L${w / 2} ${h} L0 ${h * .75} L0 ${h * .25} Z')`, offsetRotate: '0deg', animation: `momBeeFly ${16 + i * 2.3}s linear ${-i * 3.7}s infinite`, pointerEvents: 'none', zIndex: 2 } },
+      React.createElement('span', { style: { position: 'absolute', left: 3, top: -3, width: 7, height: 6, borderRadius: '50%', background: 'rgba(255,255,255,.95)', border: '1px solid #c9c9c9', animation: 'momBeeWing .18s linear infinite', transformOrigin: 'bottom' } }),
+      React.createElement('span', { style: { position: 'absolute', left: 0, top: 2, width: 12, height: 8, borderRadius: '50%', background: 'repeating-linear-gradient(90deg,#F2C23A 0 3px,#2a2a2a 3px 4.5px)', boxShadow: '0 1px 2px rgba(0,0,0,.25)' } })) : null;
+    const hex = (s, i, w, h) => {
+      const on = st.panel && st.mode === 'stage' && st.sel === s.id;
+      const worst = s.tps.some(t => t.st === 'bad') ? 'bad' : s.score < 75 ? 'warn' : null;
+      return { active: true, title: `${s.n} · ${s.name} — ${s.score}/100`, open: open(s.id), icon: MOM_ICON(s.icon), ring: `conic-gradient(from 20deg, #F2CE5C 0 ${s.score}%, #9b9b9b 0)`,
+        scale: on ? 'scale(1.07)' : 'scale(1)', filter: on ? 'drop-shadow(0 6px 14px rgba(0,0,0,.18))' : 'none', flag: !!worst, flagColor: MOM_TPC[worst] || 'transparent', bee: bee(i, w, h) };
+    };
+    const E = { empty: true };
+    const row1 = [E, E, ...stages.slice(0, 6).map((s, i) => hex(s, i, 106, 122)), E, E];
+    const row2 = [E, E, E, E, hex(stages[6], 6, 80, 92), E, E, E, E];
+    const jScore = Math.round(stages.reduce((a, s) => a + s.score, 0) / stages.length), jst = momStatus(jScore);
+    const anomalyTotal = stages.reduce((a, s) => a + s.an.length, 0);
+    const alertCount = c.alerts.crit + c.alerts.warn;
+    const riskOf = r => r >= 70 ? { l: 'Alto', c: '#D9776E' } : r >= 50 ? { l: 'Elevado', c: '#E0921F' } : { l: 'Bajo', c: '#5FB474' };
+    const kbrs = c.kbrs.map((k, i) => {
+      const arr = momSeries(k.seed + rs, 20, 3, 40, k.drift * 10); const on = st.panel && st.mode === 'kbr' && st.kidx === i;
+      return { ...k, points: momPts(arr, 600, 40), bigPoints: momPts(arr, 600, 84), riskLabel: riskOf(k.risk).l, riskColor: riskOf(k.risk).c, riskPos: k.risk + '%', deltaColor: k.bad ? '#C9665D' : '#4E9E62', bg: on ? '#FBF7EA' : '#FFFFFF',
+        answers: k.answers.map(a => ({ q: a[0], r: a[1] })), open: () => { u(); this.setState({ mode: 'kbr', kidx: i, panel: true, tab: 'act', modal: null }); } };
+    });
+    const health = c.kbrs.map(k => ({ name: k.title.charAt(0) + k.title.slice(1).toLowerCase(), label: k.risk >= 70 ? 'en alerta' : k.risk >= 50 ? 'vigilancia' : 'estable', color: k.risk >= 70 ? '#C9665D' : k.risk >= 50 ? '#D08A1C' : '#4E9E62' }));
+
+    // panel
+    const s = stages.find(x => x.id === st.sel) || stages[0];
+    let pn;
+    if (st.mode === 'stage') {
+      const sst = momStatus(s.score); const reds = s.tps.filter(t => t.st === 'bad').length, degr = s.tps.filter(t => t.st === 'warn').length;
+      const worstTp = s.tps.find(t => t.st === 'bad') || s.tps.find(t => t.st === 'warn');
+      const whyRest = sst.label === 'SALUDABLE' ? (worstTp ? `La etapa se sostiene; solo ${worstTp.name} muestra degradación y no compromete el resultado.` : 'Todas las fuentes leen dentro de rango. No se requiere acción.')
+        : sst.label === 'DEGRADADO' ? `La etapa se sostiene, pero ${worstTp.name}${degr + reds > 1 ? ' y otros touchpoints' : ''} están degradados. Conviene vigilarla antes de que afecte el resultado.`
+        : `${worstTp.name} está en rojo y ${degr} touchpoint${degr === 1 ? '' : 's'} más ${degr === 1 ? 'está degradado' : 'están degradados'}. Es la etapa que hoy más frena el journey.`;
+      const arr = momSeries(s.score * 7 + rs, s.score, 5, 32);
+      pn = { eyebrow: `ETAPA ${s.n} · ${s.kind}`, name: s.name, ring: `conic-gradient(from 20deg, #F2CE5C 0 ${s.score}%, #9b9b9b 0)`, big: s.score, bigUnit: '/100', label: sst.label, color: sst.color,
+        meta: `${s.tps.reduce((a, t) => a + t.q, 0)} fuentes · ${s.tps.length} touchpoints · ${s.an.length} anomalías`, hasWhy: true, whyLead: `La salud está ${sst.label.toLowerCase()} (${s.score}/100).`, whyRest,
+        bullets: s.tps.filter(t => t.st !== 'ok').map(t => ({ name: t.name, text: `${MOM_TPT[t.st]}, peso ${t.weight === 'MED' ? 'medio' : t.weight.toLowerCase()}`, c: MOM_TPC[t.st] })),
+        avg: Math.round(arr.reduce((a, b) => a + b, 0) / arr.length), high: Math.round(Math.max(...arr)), low: Math.round(Math.min(...arr)), points: momPts(arr, 600, 84), stroke: '#333333', trend: 'Salud de la etapa',
+        tps: s.tps.map(t => ({ ...t, c: MOM_TPC[t.st] })), an: s.an.map(a => ({ text: a[0], time: a[1], c: MOM_TPC[a[2]] })) };
+    } else {
+      const k = kbrs[st.kidx]; const src = stages.filter(x => k.tps.includes(x.id));
+      pn = { eyebrow: 'RESULTADO CLAVE DEL NEGOCIO', name: k.title.charAt(0) + k.title.slice(1).toLowerCase(), ring: '#F2CE5C', big: k.value, bigUnit: k.unit, label: k.riskLabel.toUpperCase(), color: k.riskColor, meta: k.riskText, hasWhy: false, whyLead: '', whyRest: '', bullets: [],
+        avg: k.avg, high: k.high, low: k.low, points: k.bigPoints, stroke: '#E6968E', trend: k.trend,
+        tps: src.flatMap(x => x.tps).map(t => ({ ...t, c: MOM_TPC[t.st] })), an: src.flatMap(x => x.an).map(a => ({ text: a[0], time: a[1], c: MOM_TPC[a[2]] })) };
+    }
+    pn.anCount = pn.an.length; pn.noAn = pn.an.length === 0;
+    const tabs = [['act', 'Actividad'], ['tp', 'Touchpoints'], ['an', 'Anomalías'], ['bee', 'BOBee']].map(([k, l]) => ({ label: l, bd: st.tab === k ? '#1C1C1C' : 'transparent', fw: st.tab === k ? 600 : 500, c: st.tab === k ? '#1C1C1C' : '#888888', go: () => { u(); this.setState({ tab: k }); } }));
+    const dots = ['•', '• •', '• • •'][Math.floor(Date.now() / 300) % 3];
+    const chatKey = st.mode === 'stage' ? s.id : 'k' + st.kidx;
+    const stageChat = [['b', st.mode === 'stage' ? `Hola. Estoy leyendo ${s.name}. Pregúnteme qué la frena o qué hacer primero.` : 'Pregúnteme qué explica este resultado.'], ...(st.chats[chatKey] || [])].map(([r, t]) => momBubble(r, t));
+
+    // modal
+    const sevC = v => v === 'CRÍTICA' || v === 'ALTA' ? '#D9776E' : v === 'ADVERTENCIA' || v === 'MEDIA' ? '#E0921F' : '#9A9A9A';
+    const goStage = id => () => { u(); this.setState({ modal: null, panel: true, mode: 'stage', sel: id, tab: 'act' }); };
+    const mk = (key, title, sub, icon, icBg, d, sum) => {
+      const isDone = !!st.done[key];
+      return { title, sub, icon: `https://unpkg.com/lucide-static@0.460.0/icons/${icon}.svg`, icBg, desc: d.desc, sum, conf: d.conf, lead: d.lead, rest: d.rest, b1l: d.b1, b2l: d.b2,
+        rows: d.rows.map(r => ({ hasSev: !!r[0], sev: r[0], sevC: sevC(r[0]), name: r[1], c1: r[2], c1C: key === 'actions' ? '#888888' : sevC(r[0]), c2: r[3], c3: r[4], open: goStage(r[5]) })),
+        hasCh: !!d.ch, ch: (d.ch || []).map(x => ({ ch: x[0], t: x[1], c: x[2] ? '#C9665D' : '#1C1C1C' })), pat: d.pat.map(p => ({ k: p[0], v: p[1] })),
+        pending: !isDone, isDone, done: d.done || 'Acción registrada. El destinatario fue notificado.',
+        b1: () => { u(); this.setState({ done: { ...st.done, [key]: true } }); }, b2: () => { u(); if (key === 'alerts') goStage(c.crit)(); else this.setState({ done: { ...st.done, [key]: true } }); } };
+    };
+    let md = null;
+    if (st.modal === 'alerts') md = mk('alerts', 'Alert Intelligence', 'Condiciones de umbral · qué cruzó, por cuánto y durante cuánto tiempo', 'triangle-alert', '#FCE9E7', c.alerts, [{ v: c.alerts.crit, k: 'Críticas', c: '#C9665D' }, { v: c.alerts.warn, k: 'Advertencias', c: '#D08A1C' }, { v: c.alerts.rec, k: 'Recuperadas', c: '#4E9E62' }, { v: c.alerts.resp, k: 'Respuestas', c: '#1C1C1C' }]);
+    if (st.modal === 'alarms') md = mk('alarms', 'Alarm Intelligence', 'Condiciones de difusión · a quién se avisó y por qué canal', 'bell-ring', '#FBF0DF', c.alarms, [{ v: c.alarms.conf, k: 'Configuradas', c: '#1C1C1C' }, { v: c.alarms.trig, k: 'Disparadas', c: '#C9665D' }, { v: c.alarms.resp, k: 'Respuestas', c: '#1C1C1C' }]);
+    if (st.modal === 'actions') md = mk('actions', 'Action Intelligence', 'Respuestas programáticas · webhooks y llamadas API al cruzar un umbral', 'zap', '#FBF3D6', c.actions, [{ v: c.actions.conf, k: 'Configuradas', c: '#1C1C1C' }, { v: c.actions.exec, k: 'Ejecutadas', c: '#4E9E62' }, { v: c.actions.resp, k: 'Respuestas', c: '#1C1C1C' }]);
+    const mtabs = [['exp', 'Explicación'], ['rec', 'Recomendación'], ['pred', 'Predicción']].map(([k, l]) => ({ label: l, bg: st.mtab === k ? '#1C1C1C' : '#FFFFFF', c: st.mtab === k ? '#FFFFFF' : '#1C1C1C', bd: st.mtab === k ? '#1C1C1C' : '#E3E3E3', go: () => { u(); this.gen(k); } }));
+    const ins = c.insight[st.mtab];
+    const ranges = ['Ahora', 'Última hora', 'Hoy', 'Últimos 7 días'];
+    const openM = m => () => { u(); this.setState({ modal: m, panel: false }); };
+    return {
+      seg: c.seg, journeyTitle: c.title, journeyScore: jScore, journeyLabel: jst.label, journeyColor: jst.color, range: st.range,
+      cycleRange: () => this.setState({ range: ranges[(ranges.indexOf(st.range) + 1) % ranges.length] }),
+      row1, row2, legend: stages.map(x => ({ n: x.n, name: x.name, color: momStatus(x.score).color, open: open(x.id) })), kbrs, health,
+      alertCount, alarmCount: c.alarms.trig, anomalyTotal,
+      openAlerts: openM('alerts'), openAlarms: openM('alarms'), openActions: openM('actions'), openBobee: () => { u(); this.setState({ panel: false }); this.openBee(); },
+      panel: st.panel, closePanel: () => { u(); this.setState({ panel: false }); }, pn, tabs,
+      tabAct: st.tab === 'act', tabTp: st.tab === 'tp', tabAn: st.tab === 'an', tabBee: st.tab === 'bee',
+      stageChat, stageTyping: !!st.typing[chatKey], dots, stageDraft: st.drafts[chatKey] || '',
+      onStageDraft: e => this.setState({ drafts: { ...st.drafts, [chatKey]: e.target.value } }),
+      onStageKey: e => { if (e.key === 'Enter') this.sendStage(st.mode === 'stage' ? s : { id: chatKey, name: pn.name, tps: c.stages.find(x => c.kbrs[st.kidx].tps.includes(x.id)).tps, an: [] }); },
+      sendStage: () => this.sendStage(st.mode === 'stage' ? s : { id: chatKey, name: pn.name, tps: c.stages.find(x => c.kbrs[st.kidx].tps.includes(x.id)).tps, an: [] }),
+      askPh: 'Pregunte sobre ' + pn.name.toLowerCase() + '…',
+      modalOpen: !!st.modal, isIntel: !!md, isBee: st.modal === 'bee', md: md || { sum: [], rows: [], ch: [], pat: [] }, closeModal: () => { u(); this.setState({ modal: null }); }, stop: e => e.stopPropagation(),
+      mtabs, generating: st.generating, generated: !st.generating, insight: { lead: ins.lead, items: ins.items.map(i => ({ k: i[0], v: i[1] })) },
+      globalChat: st.gchat.map(([r, t]) => momBubble(r, t)), globalTyping: st.gtyping, globalDraft: st.gdraft,
+      onGlobalDraft: e => this.setState({ gdraft: e.target.value }), onGlobalKey: e => { if (e.key === 'Enter') this.sendGlobal(); }, sendGlobal: () => this.sendGlobal()
+    };
+  }
+}
+</script>
+</body>
+</html>

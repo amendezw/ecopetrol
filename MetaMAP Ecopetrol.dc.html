@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/wigi-design-system-ef477c14-3c6e-4d00-bd78-9401c685bc3b/colors_and_type.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<link rel="stylesheet" href="vendor/leaflet.css">
+<script src="_ds/wigi-design-system-ef477c14-3c6e-4d00-bd78-9401c685bc3b/_ds_bundle.js"></script>
+<script src="vendor/leaflet.js"></script>
+<script src="vendor/colombia-geo.js"></script>
+<style>
+.mm-map .leaflet-container{background:#EEF0F2;font-family:'Inter',system-ui,sans-serif}
+.mm-dl{font-size:9.5px;font-weight:600;letter-spacing:.12em;color:#A3A9B0;white-space:nowrap;transform:translate(-50%,-50%);text-transform:uppercase;pointer-events:none}
+.mm-tt{background:#16181D;color:#fff;border:0;border-radius:6px;font-size:11.5px;line-height:1.45;padding:7px 10px;box-shadow:0 6px 18px rgba(0,0,0,.2)}
+.mm-tt:before{display:none}
+</style>
+</helmet>
+<div style="position:relative;height:760px;background:#FFFFFF;color:#16181D;font-family:'Inter',system-ui,sans-serif;display:grid;grid-template-rows:50px minmax(0,1fr);overflow:hidden;">
+  <header style="display:flex;align-items:center;gap:14px;padding:0 20px 0 16px;border-bottom:1px solid #E6E8EB;background:#FFFFFF;z-index:30;">
+    <i class="ti ti-menu-2" style="font-size:20px;"></i>
+    <img src="assets/ecopetrol-logo.png" alt="Ecopetrol" style="height:28px;width:auto;display:block;flex:none;">
+    <span style="width:30px;height:30px;border-radius:8px;background:#F0F1F3;display:flex;align-items:center;justify-content:center;"><span style="width:13px;height:13px;border:1.5px solid #6B7179;border-radius:3px;"></span></span>
+    <span style="height:30px;width:112px;border:1px solid #D9DCE0;border-radius:16px;display:flex;align-items:center;justify-content:space-between;padding:0 12px 0 14px;font-size:13px;font-weight:500;">Ahora <span style="font-size:9px;color:#8A9099;">▾</span></span>
+    <div style="display:flex;gap:10px;margin-left:28px;">
+      <sc-for list="{{ hdr }}" as="h" hint-placeholder-count="4">
+        <button onClick="{{ h.open }}" title="{{ h.t }}" style="position:relative;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:8px;background:none;border:0;cursor:pointer;" style-hover="background:#F2F3F5"><i class="ti {{ h.ic }}" style="font-size:19px;"></i><span style="position:absolute;top:-2px;right:-3px;min-width:16px;height:16px;padding:0 4px;border-radius:9px;background:#D33A3A;color:#FFFFFF;font-size:9.5px;font-weight:700;display:flex;align-items:center;justify-content:center;border:1.5px solid #FFFFFF;">{{ h.b }}</span></button>
+      </sc-for>
+    </div>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:8px;font-weight:700;font-size:13px;">
+      <svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 1.5l9.1 5.25v10.5L12 22.5l-9.1-5.25V6.75z" fill="#1B3F93"></path><text x="12" y="16" text-anchor="middle" font-size="10" font-weight="700" fill="#FFFFFF">B</text></svg>MetaMAP<small style="white-space:nowrap;font-weight:500;color:#8A9099;font-size:11.5px;padding-left:8px;border-left:1px solid #E0E2E6;">Ecopetrol · {{ seg }}</small>
+    </div>
+  </header>
+  <div style="display:grid;grid-template-columns:64px 340px minmax(0,1fr);min-height:0;position:relative;">
+    <nav style="border-right:1px solid #E6E8EB;display:flex;flex-direction:column;align-items:center;padding-top:24px;gap:22px;background:#FFFFFF;z-index:20;">
+      <sc-for list="{{ rail }}" as="r" hint-placeholder-count="5">
+        <button onClick="{{ r.go }}" style="position:relative;width:42px;height:42px;display:flex;align-items:center;justify-content:center;color:{{ r.c }};border-radius:10px;background:none;border:0;cursor:pointer;" style-hover="background:#F4F5F7"><i class="ti {{ r.ic }}" style="font-size:23px;"></i><span style="position:absolute;right:-11px;top:6px;bottom:6px;width:2px;border-radius:2px;background:{{ r.bar }};"></span></button>
+      </sc-for>
+    </nav>
+
+    <aside style="background:{{ panelBg }};border-right:1px solid #E3E5E8;display:flex;flex-direction:column;min-height:0;z-index:20;">
+      <sc-if value="{{ isList }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;align-items:center;gap:8px;padding:14px 12px 10px 14px;">
+          <div style="white-space:nowrap;font-size:18px;font-weight:700;display:flex;align-items:center;gap:6px;">{{ assetCount }} <i class="ti ti-map-pin" style="font-size:15px;"></i><span style="font-size:12px;font-weight:500;color:#555B63;">{{ assetLabel }}</span></div>
+          <div style="margin-left:auto;display:flex;gap:4px;">
+            <sc-for list="{{ cnts }}" as="k" hint-placeholder-count="4"><span style="display:flex;align-items:center;gap:5px;height:24px;padding:0 8px;border:1px solid #DCDFE3;border-radius:13px;background:#FFFFFF;font-size:11px;font-weight:600;"><span style="width:8px;height:8px;border-radius:50%;background:{{ k.c }};border:{{ k.bd }};"></span>{{ k.v }}</span></sc-for>
+          </div>
+        </div>
+        <div style="flex:1;overflow-y:auto;padding:2px 10px 8px;display:flex;flex-direction:column;gap:8px;">
+          <sc-for list="{{ cards }}" as="p" hint-placeholder-count="6">
+            <div onClick="{{ p.open }}" style="background:{{ p.bg }};border:1px solid {{ p.bd }};border-left:3px solid {{ p.lc }};box-shadow:{{ p.sh }};border-radius:8px;padding:11px 12px 9px;cursor:pointer;" style-hover="border-color:#B9BEC5">
+              <div style="display:flex;gap:9px;align-items:flex-start;">
+                <span style="width:14px;height:14px;border:1.5px solid #9BA1A9;border-radius:3px;margin-top:2px;flex:none;background:#FFFFFF;"></span>
+                <div style="min-width:0;flex:1;"><div style="font-size:13.5px;font-weight:600;line-height:1.2;">{{ p.name }}</div><div style="font-size:10px;color:#9AA0A8;text-transform:uppercase;letter-spacing:.03em;margin-top:2px;">{{ p.type }} · {{ p.reg }}</div></div>
+                <div style="text-align:right;line-height:1;"><b style="font-size:13.5px;">{{ p.hl }}</b><i style="display:block;font-style:normal;font-size:8.5px;color:#9AA0A8;letter-spacing:.08em;margin-top:2px;">SALUD</i></div>
+              </div>
+              <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:9px 0 7px;font-size:11.5px;color:#30343A;">
+                <sc-for list="{{ p.mets }}" as="m" hint-placeholder-count="5"><span title="{{ m.t }}" style="display:flex;align-items:center;gap:4px;color:{{ m.c }};"><i class="ti {{ m.ic }}" style="font-size:13px;color:{{ m.ic2 }};"></i>{{ m.v }}</span></sc-for>
+              </div>
+              <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px;">
+                <sc-for list="{{ p.tags }}" as="t" hint-placeholder-count="2"><span style="display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:600;padding:2px 7px;border-radius:9px;line-height:1.35;background:{{ t.bg }};color:{{ t.c }};border:{{ t.bd }};">{{ t.l }}</span></sc-for>
+              </div>
+              <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:#9AA0A8;"><b style="color:#16181D;">{{ p.today }}</b><span style="white-space:nowrap;">{{ p.todayL }}</span><div style="flex:1;height:3px;background:#E3E5E8;border-radius:2px;position:relative;margin:0 4px;"><div style="position:absolute;left:0;top:0;bottom:0;width:{{ p.prog }};background:#00A3E0;border-radius:2px;"></div><div style="position:absolute;top:-5px;left:{{ p.proj }};width:2px;height:13px;background:#16181D;"></div></div>{{ p.progL }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isInc }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;align-items:center;gap:6px;padding:14px 16px 12px;flex-wrap:wrap;">
+          <span style="font-size:10px;font-weight:600;letter-spacing:.14em;color:#8A9099;text-transform:uppercase;margin-right:6px;">Incidentes</span>
+          <sc-for list="{{ cats }}" as="c" hint-placeholder-count="3"><button onClick="{{ c.toggle }}" style="display:inline-flex;align-items:center;gap:5px;height:26px;padding:0 10px;border:1.5px solid {{ c.bd }};color:{{ c.c }};border-radius:14px;font-size:11.5px;font-weight:600;background:#FFFFFF;cursor:pointer;"><i class="ti {{ c.ic }}" style="font-size:12px;"></i>{{ c.l }}</button></sc-for>
+        </div>
+        <div style="font-size:10.5px;color:#9AA0A8;padding:0 16px 12px;border-bottom:1px solid #E6E8EB;line-height:1.4;">Activos dentro de la zona de los incidentes elegidos. Haga clic en una entrada del registro para enfocarla en el mapa.</div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;padding:12px 16px 8px;"><span style="font-size:10px;font-weight:600;letter-spacing:.14em;color:#8A9099;text-transform:uppercase;">Registro</span><span style="font-size:10.5px;color:#8A9099;">{{ incSummary }}</span></div>
+        <div style="flex:1;overflow-y:auto;padding:0 10px 10px;display:flex;flex-direction:column;gap:2px;">
+          <sc-for list="{{ incs }}" as="e" hint-placeholder-count="5">
+            <div onClick="{{ e.pick }}" style="display:flex;gap:12px;padding:10px 10px 12px;border-radius:8px;cursor:pointer;border:1px {{ e.bdStyle }} {{ e.bd }};background:{{ e.bg }};opacity:{{ e.op }};" style-hover="background:#F6F7F8">
+              <div style="width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex:none;background:{{ e.icBg }};color:{{ e.icC }};"><i class="ti {{ e.ic }}" style="font-size:16px;"></i></div>
+              <div style="flex:1;min-width:0;">
+                <div style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;flex-wrap:wrap;"><sc-if value="{{ e.hasSev }}" hint-placeholder-val="{{ true }}"><span style="min-width:16px;height:16px;border-radius:3px;font-size:9.5px;font-weight:700;display:flex;align-items:center;justify-content:center;background:{{ e.sevBg }};color:{{ e.sevC }};border:1px solid {{ e.sevBd }};">{{ e.sev }}</span></sc-if>{{ e.title }}</div>
+                <div style="font-size:11.5px;color:#4F555D;margin-top:3px;">{{ e.loc }}</div>
+                <div style="font-size:10.5px;color:#9AA0A8;margin-top:2px;"><b style="color:{{ e.stC }};font-weight:600;">{{ e.st }}</b> · {{ e.meta }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+    </aside>
+
+    <main class="mm-map" style="position:relative;min-width:0;isolation:isolate;">
+      <div ref="{{ mapRef }}" style="position:absolute;inset:0;background:#EEF0F2;"></div>
+      <div style="position:absolute;top:14px;left:50%;transform:translateX(-50%);display:flex;gap:5px;padding:4px;border:2px solid #1B3F93;border-radius:24px;background:#FFFFFF;z-index:500;">
+        <sc-for list="{{ layers }}" as="l" hint-placeholder-count="4"><button onClick="{{ l.toggle }}" style="display:flex;align-items:center;gap:5px;height:28px;padding:0 10px;border:1px solid #D4D7DB;border-radius:15px;font-size:11.5px;font-weight:600;background:#FFFFFF;opacity:{{ l.op }};cursor:pointer;white-space:nowrap;"><i class="ti {{ l.ic }}" style="font-size:13px;"></i>{{ l.l }}</button></sc-for>
+      </div>
+      <div style="position:absolute;right:12px;top:14px;display:flex;flex-direction:column;border:1px solid #D6D9DD;border-radius:3px;background:#FFFFFF;z-index:500;box-shadow:0 1px 3px rgba(0,0,0,.08);">
+        <button onClick="{{ zin }}" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:none;border:0;border-bottom:1px solid #D6D9DD;cursor:pointer;"><i class="ti ti-plus" style="font-size:15px;"></i></button>
+        <button onClick="{{ zout }}" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:none;border:0;cursor:pointer;"><i class="ti ti-minus" style="font-size:15px;"></i></button>
+      </div>
+      <div style="position:absolute;left:12px;bottom:12px;z-index:500;background:rgba(255,255,255,.92);border:1px solid #E3E5E8;border-radius:8px;padding:8px 10px;display:flex;flex-direction:column;gap:5px;font-size:10.5px;color:#4F555D;">
+        <span style="display:flex;align-items:center;gap:6px;"><span style="width:9px;height:9px;border-radius:50%;background:#D33A3A;"></span>Crítico</span>
+        <span style="display:flex;align-items:center;gap:6px;"><span style="width:9px;height:9px;border-radius:50%;background:#EBA7A7;"></span>Regular</span>
+        <span style="display:flex;align-items:center;gap:6px;"><span style="width:9px;height:9px;border-radius:50%;background:#FFFFFF;border:1.5px solid #6B7179;"></span>Bueno</span>
+        <span style="display:flex;align-items:center;gap:6px;"><span style="width:9px;height:9px;border-radius:50%;background:#8F959E;"></span>Sin datos</span>
+      </div>
+    </main>
+
+    <sc-if value="{{ detailOpen }}" hint-placeholder-val="{{ false }}">
+      <div onClick="{{ closeDetail }}" style="position:absolute;inset:0 0 0 404px;background:rgba(22,24,29,.12);z-index:600;"></div>
+      <section style="position:absolute;top:0;right:0;bottom:0;width:420px;max-width:100%;background:#FFFFFF;border-left:1px solid #E3E5E8;box-shadow:-12px 0 32px rgba(0,0,0,.1);z-index:610;display:flex;flex-direction:column;">
+        <div style="padding:14px 16px 0;border-bottom:1px solid #E6E8EB;">
+          <div style="display:flex;align-items:center;gap:8px;"><h3 style="margin:0;font-size:16px;font-weight:700;flex:1;min-width:0;line-height:1.25;">{{ d.name }}</h3><span style="font-size:10.5px;color:#8A9099;border:1px solid #DCDFE3;border-radius:10px;padding:1px 8px;">Ahora</span><span style="font-size:11px;font-weight:600;color:{{ d.stC }};background:{{ d.stBg }};border-radius:10px;padding:2px 9px;">{{ d.stL }}</span><button onClick="{{ closeDetail }}" style="background:none;border:0;cursor:pointer;padding:0;"><i class="ti ti-x" style="font-size:17px;"></i></button></div>
+          <div style="font-size:11px;color:#8A9099;margin-top:4px;">Accionables · {{ d.city }}</div>
+          <div style="display:flex;gap:2px;margin-top:8px;">
+            <sc-for list="{{ dtabs }}" as="t" hint-placeholder-count="8"><span style="width:36px;height:34px;display:flex;align-items:center;justify-content:center;color:{{ t.c }};border-bottom:2px solid {{ t.bd }};"><i class="ti {{ t.ic }}" style="font-size:17px;"></i></span></sc-for>
+          </div>
+        </div>
+        <div style="flex:1;overflow:auto;padding:14px 16px 18px;display:flex;flex-direction:column;gap:12px;">
+          <div style="font-size:11px;color:#8A9099;">{{ d.meta }}</div>
+          <div style="display:flex;justify-content:space-between;font-size:12.5px;border-bottom:1px solid #EEF0F2;padding-bottom:8px;">Operación <b style="color:{{ d.opC }};">{{ d.op }}</b></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <sc-for list="{{ d.kpis }}" as="k" hint-placeholder-count="4">
+              <div style="border:1px solid #E6E8EB;border-radius:8px;padding:10px 11px;"><div style="font-size:10.5px;color:#8A9099;">{{ k.l }}</div><div style="font-size:{{ k.fs }};font-weight:700;margin-top:2px;line-height:1.25;">{{ k.v }}</div><div style="font-size:10.5px;color:#8A9099;margin-top:2px;">{{ k.s }}</div></div>
+            </sc-for>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:10px;font-weight:600;letter-spacing:.14em;color:#16181D;text-transform:uppercase;">Estado operacional</span><b style="display:flex;align-items:center;gap:6px;">{{ d.hl }}<i class="ti ti-chevron-down" style="font-size:14px;"></i></b></div>
+          <sc-if value="{{ d.hasPen }}" hint-placeholder-val="{{ false }}"><div style="font-size:11.5px;line-height:1.5;color:#B83434;background:#FDF0F0;border-radius:6px;padding:8px 10px;">{{ d.penNote }}</div></sc-if>
+          <sc-for list="{{ d.bars }}" as="b" hint-placeholder-count="6">
+            <div style="display:grid;grid-template-columns:130px minmax(0,1fr) 40px;gap:10px;align-items:center;font-size:12px;"><div>{{ b.n }}<i style="display:block;font-style:normal;font-size:9.5px;color:#9AA0A8;">peso {{ b.w }}%</i></div><div style="height:5px;background:#E9EBEE;border-radius:3px;overflow:hidden;"><div style="height:100%;width:{{ b.p }};background:{{ b.c }};"></div></div><div style="text-align:right;font-weight:600;">{{ b.v }}%</div></div>
+          </sc-for>
+          <div style="display:flex;flex-direction:column;border-top:1px solid #EEF0F2;">
+            <sc-for list="{{ d.rows }}" as="r" hint-placeholder-count="6"><div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid #EEF0F2;font-size:12.5px;">{{ r.a }}<b style="display:flex;align-items:center;gap:4px;">{{ r.b }}<i class="ti ti-chevron-right" style="font-size:14px;color:#9AA0A8;"></i></b></div></sc-for>
+          </div>
+          <sc-if value="{{ d.hasAct }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#F0F9FD;border:1px solid #BFE6F6;border-radius:8px;padding:12px;display:flex;flex-direction:column;gap:8px;">
+              <span style="font-size:10px;font-weight:600;letter-spacing:.14em;color:#1B3F93;text-transform:uppercase;">Acción recomendada</span>
+              <span style="font-size:13px;font-weight:600;line-height:1.4;">{{ d.act }}</span>
+              <sc-if value="{{ d.pending }}" hint-placeholder-val="{{ true }}"><button onClick="{{ d.approve }}" style="align-self:flex-start;height:30px;padding:0 14px;border-radius:15px;border:0;background:#1B3F93;color:#FFFFFF;font-size:12px;font-weight:600;cursor:pointer;">Aprobar y ejecutar</button></sc-if>
+              <sc-if value="{{ d.isDone }}" hint-placeholder-val="{{ false }}"><span style="font-size:12px;font-weight:600;color:#2E8B57;">✓ {{ d.done }}</span></sc-if>
+            </div>
+          </sc-if>
+        </div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ modalOpen }}" hint-placeholder-val="{{ false }}">
+      <div onClick="{{ closeModal }}" style="position:absolute;inset:0;background:rgba(22,24,29,.3);z-index:700;display:flex;align-items:flex-start;justify-content:center;padding:28px 16px;overflow:auto;">
+        <div onClick="{{ stop }}" style="width:640px;max-width:100%;background:#FFFFFF;border-radius:12px;box-shadow:0 24px 64px rgba(0,0,0,.22);overflow:hidden;">
+          <div style="display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid #E6E8EB;">
+            <span style="width:34px;height:34px;border-radius:8px;background:{{ md.icBg }};color:{{ md.icC }};display:flex;align-items:center;justify-content:center;"><i class="ti {{ md.ic }}" style="font-size:18px;"></i></span>
+            <div style="flex:1;min-width:0;"><div style="font-size:15px;font-weight:700;">{{ md.t }}</div><div style="font-size:11.5px;color:#8A9099;">{{ md.s }}</div></div>
+            <button onClick="{{ closeModal }}" style="background:none;border:0;cursor:pointer;padding:0;"><i class="ti ti-x" style="font-size:18px;"></i></button>
+          </div>
+          <div style="padding:16px 18px 20px;display:flex;flex-direction:column;gap:16px;">
+            <div style="display:flex;gap:22px;flex-wrap:wrap;">
+              <sc-for list="{{ md.sum }}" as="x" hint-placeholder-count="4"><span style="display:flex;align-items:baseline;gap:6px;font-size:11.5px;color:#6B7179;"><b style="font-size:20px;color:{{ x.c }};">{{ x.v }}</b>{{ x.k }}</span></sc-for>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              <span style="font-size:10px;font-weight:600;letter-spacing:.14em;color:#8A9099;text-transform:uppercase;">Más urgente</span>
+              <sc-for list="{{ md.rows }}" as="r" hint-placeholder-count="4">
+                <div onClick="{{ r.open }}" style="display:grid;grid-template-columns:auto minmax(0,1.4fr) minmax(0,1.2fr) auto;gap:10px;align-items:center;border:1px solid #E6E8EB;border-radius:8px;padding:9px 11px;font-size:12px;cursor:pointer;" style-hover="background:#F6F7F8"><span style="font-size:9px;font-weight:700;letter-spacing:.06em;color:#FFFFFF;background:{{ r.c }};border-radius:4px;padding:2px 6px;">{{ r.sev }}</span><span style="font-weight:600;">{{ r.n }}</span><span style="color:#4F555D;">{{ r.loc }}</span><span style="color:#8A9099;white-space:nowrap;">{{ r.time }}</span></div>
+              </sc-for>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <span style="font-size:10px;font-weight:600;letter-spacing:.14em;color:#8A9099;text-transform:uppercase;">Reconocimiento de patrones</span>
+              <sc-for list="{{ md.pat }}" as="p" hint-placeholder-count="3"><div style="display:grid;grid-template-columns:52px minmax(0,1fr);gap:10px;font-size:12px;line-height:1.5;"><b style="font-size:14px;">{{ p.k }}</b><span style="color:#4F555D;">{{ p.v }}</span></div></sc-for>
+            </div>
+            <div style="background:#F3F7FD;border:1px solid #BCD2F1;border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:10px;">
+              <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;"><span style="font-size:10px;font-weight:600;letter-spacing:.14em;color:#1B3F93;text-transform:uppercase;">Análisis de causa raíz</span><span style="font-size:10.5px;color:#1B3F93;">{{ md.conf }}</span></div>
+              <p style="margin:0;font-size:12.5px;line-height:1.6;"><b>{{ md.lead }}</b> {{ md.rest }}</p>
+              <sc-if value="{{ md.pending }}" hint-placeholder-val="{{ true }}">
+                <div style="display:flex;gap:8px;flex-wrap:wrap;"><button onClick="{{ md.b1 }}" style="height:32px;padding:0 14px;border:0;border-radius:16px;background:#1B3F93;color:#FFFFFF;font-size:12px;font-weight:600;cursor:pointer;">{{ md.b1l }}</button><button onClick="{{ md.b2 }}" style="height:32px;padding:0 14px;border:1px solid #D4D7DB;border-radius:16px;background:#FFFFFF;font-size:12px;font-weight:600;cursor:pointer;">{{ md.b2l }}</button></div>
+              </sc-if>
+              <sc-if value="{{ md.isDone }}" hint-placeholder-val="{{ false }}"><span style="font-size:12px;font-weight:600;color:#2E8B57;">✓ {{ md.done }}</span></sc-if>
+            </div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1240,&quot;height&quot;:760},&quot;caso&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:0,&quot;min&quot;:0,&quot;max&quot;:1,&quot;tsType&quot;:&quot;number&quot;},&quot;paso&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:0,&quot;min&quot;:-1,&quot;max&quot;:4,&quot;tsType&quot;:&quot;number&quot;},&quot;onUser&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;() =&gt; void&quot;}}">
+const MM_ST = { crit: { c: '#D33A3A', lc: '#D23F3F', l: 'Crítico', bg: '#FDEAEA', tc: '#B83434' }, deg: { c: '#EBA7A7', lc: '#EBA7A7', l: 'Regular', bg: '#FDF2F2', tc: '#C04A4A' }, ok: { c: '#FFFFFF', lc: '#C9CCD2', l: 'Bueno', bg: '#EEF0F2', tc: '#4F555D' }, nd: { c: '#8F959E', lc: '#8F959E', l: 'Sin datos', bg: '#EEF0F2', tc: '#4F555D' } };
+const mmSt = h => h == null ? 'nd' : h < 50 ? 'crit' : h < 75 ? 'deg' : 'ok';
+const MM_TAG = { R: ['#C63A3A', '#FFFFFF', 'none'], r: ['#FDEAEA', '#B83434', 'none'], g: ['#EEF0F2', '#4F555D', 'none'], zr: ['#FFFFFF', '#CC3333', '1px dashed #DF8F8F'], zb: ['#EEF4FD', '#2F6FCA', '1px dashed #7AA2DE'] };
+const MM_CASES = [
+  { seg: 'Midstream · Cenit', crit: 'vasconia', label: 'activos', view: [6.4, -74.2], zoom: 6,
+    bars: ['Telemetría', 'Presión y caudal', 'Bombas', 'Integridad de línea', 'Seguridad física', 'Entorno'], w: [20, 25, 20, 15, 10, 10],
+    mIcons: [['ti-user', 'Personal en turno'], ['ti-wifi', 'Telemetría'], ['ti-gauge', 'Presión'], ['ti-alert-circle', 'Alarmas abiertas'], ['ti-droplet', 'Caudal (mil bl/d)'], ['ti-message-circle', 'Reportes de comunidad']],
+    todayL: 'mil bl hoy', progL: 'Programa',
+    assets: [
+      { id: 'vasconia', name: 'Estación Vasconia', type: 'Estación de bombeo', reg: 'Magdalena Medio', city: 'Puerto Boyacá, Boyacá', lat: 5.98, lng: -74.47, health: 34, m: ['9/11', '100%', '−9%', 3, 412, 0], bad: [0, 0, 1, 1, 1, 0], tags: [['Bomba B-2 degradada', 'R'], ['Lluvias fuertes', 'zb']], today: 268, prog: .52, proj: .62, code: 'EST-BOY-014', op: 'Operando con 2 de 3 bombas', opC: '#C33', kpis: [['Caudal frente a programa', '89%', '−11% hacia Coveñas'], ['Bombas en servicio', '2/3', 'B-3 en respaldo'], ['Presión de descarga', '−9%', 'desde 04:20'], ['Problema principal', 'Bomba B-2 en modo degradado', 'Jefe de estación: R. Cárdenas', 1]], bv: [100, 52, 66, 90, 100, 70], pen: 'Resultado ponderado 74% — retenido en rango crítico por incidente activo en la estación (−40).', rows: [['Incidentes', '1 activo'], ['Alarmas abiertas', 3], ['Órdenes de mantenimiento', 2], ['Reportes de comunidad', 0], ['Clima', 'Lluvia · 27 °C'], ['Personal en turno', '9 de 11']], act: 'Arrancar la bomba de respaldo B-3 y notificar al terminal Coveñas el nuevo horario de recibo.', done: 'Bomba B-3 en arranque. Terminal notificado a las 11:02.' },
+      { id: 'covenas', name: 'Terminal Coveñas', type: 'Terminal de exportación', reg: 'Caribe', city: 'Coveñas, Sucre', lat: 9.41, lng: -75.69, health: 61, m: ['22/24', '100%', 'Normal', 1, 380, 0], bad: [0, 0, 0, 1, 0, 0], tags: [['Inventario bajo programa', 'r']], today: 302, prog: .48, proj: .6, code: 'TER-SUC-001', op: 'Operando', opC: '#16181D', kpis: [['Inventario para cargue', '84%', 'meta 95%'], ['Próximo buque', 'Mañana 06:00', 'ventana en riesgo'], ['Recibo por línea', '−11%', 'desde Vasconia'], ['Problema principal', 'Recibo bajo programa', 'Coordinador: L. Martínez', 1]], bv: [100, 70, 100, 92, 100, 88], pen: '', rows: [['Incidentes', '1 en monitoreo'], ['Alarmas abiertas', 1], ['Buques en cola', 1], ['Reportes de comunidad', 0], ['Clima', 'Despejado · 31 °C'], ['Personal en turno', '22 de 24']], act: 'Proponer al armador una ventana de cargue alternativa.', done: 'Propuesta enviada al armador.' },
+      { id: 'canolimon', name: 'Estación Caño Limón', type: 'Estación de bombeo', reg: 'Orinoquía', city: 'Arauca, Arauca', lat: 7.03, lng: -71.13, health: 68, m: ['12/12', '100%', 'Normal', 1, 61, 1], bad: [0, 0, 0, 0, 0, 1], tags: [['Reporte comunidad', 'zr']], today: 58, prog: .55, proj: .55, code: 'EST-ARA-003', op: 'Operando', opC: '#16181D', kpis: [['Caudal frente a programa', '99%', 'normal'], ['Bombas en servicio', '3/3', ''], ['Reportes de comunidad', '1', 'sin confirmar'], ['Problema principal', 'Reporte de olor a crudo en vereda', 'Gestor social: A. Rincón', 1]], bv: [100, 98, 100, 80, 70, 40], pen: '', rows: [['Incidentes', '1 sin confirmar'], ['Alarmas abiertas', 0], ['Órdenes de mantenimiento', 0], ['Reportes de comunidad', 1], ['Clima', 'Nublado · 29 °C'], ['Personal en turno', '12 de 12']], act: 'Enviar cuadrilla de integridad y gestor social a verificar el reporte.', done: 'Cuadrilla despachada. Llegada estimada 13:40.' },
+      { id: 'ayacucho', name: 'Estación Ayacucho', type: 'Estación de bombeo', reg: 'Cesar', city: 'La Gloria, Cesar', lat: 8.55, lng: -73.57, health: null, m: ['6/6', '62%', '—', 1, '—', 0], bad: [0, 1, 0, 1, 0, 0], tags: [['RTU sin reporte', 'zb']], today: 0, prog: 0, proj: .55, code: 'EST-CES-007', op: 'Operando sin telemetría completa', opC: '#C33', kpis: [['Telemetría', '62%', '2 RTU sin reporte'], ['Tiempo sin datos', '40 min', ''], ['Enlace de respaldo', 'Disponible', 'satelital'], ['Problema principal', 'Telemetría intermitente', 'Supervisor: J. Pabón', 1]], bv: [62, 0, 100, 100, 100, 100], pen: 'Sin datos suficientes para calcular el estado operacional.', rows: [['Incidentes', '1 activo'], ['Alarmas abiertas', 2], ['Órdenes de mantenimiento', 1], ['Reportes de comunidad', 0], ['Clima', 'Lluvia · 30 °C'], ['Personal en turno', '6 de 6']], act: 'Activar el enlace satelital de respaldo y despachar técnico de comunicaciones.', done: 'Enlace satelital activo. Telemetría recuperada al 100%.' },
+      { id: 'cusiana', name: 'Estación Cusiana', type: 'Estación de bombeo', reg: 'Orinoquía', city: 'Tauramena, Casanare', lat: 5.02, lng: -72.75, health: 94, m: ['14/14', '100%', 'Normal', 0, 455, 0], bad: [0, 0, 0, 0, 0, 0], tags: [['Mantenimiento completado', 'g']], today: 451, prog: .58, proj: .58, code: 'EST-CAS-001', op: 'Operando', opC: '#16181D', kpis: [['Caudal frente a programa', '100%', ''], ['Bombas en servicio', '3/3', ''], ['Presión de descarga', 'Normal', ''], ['Problema principal', 'Ninguno', 'Jefe de estación: M. Ortiz', 1]], bv: [100, 100, 100, 95, 100, 90], pen: '', rows: [['Incidentes', '0'], ['Alarmas abiertas', 0], ['Órdenes de mantenimiento', 0], ['Reportes de comunidad', 0], ['Clima', 'Despejado · 26 °C'], ['Personal en turno', '14 de 14']] },
+      { id: 'apiay', name: 'Estación Apiay', type: 'Estación de recibo', reg: 'Orinoquía', city: 'Villavicencio, Meta', lat: 4.08, lng: -73.40, health: 88, m: ['10/10', '100%', 'Normal', 0, 210, 0], bad: [0, 0, 0, 0, 0, 0], tags: [], today: 205, prog: .56, proj: .57, code: 'EST-MET-002', op: 'Operando', opC: '#16181D', kpis: [['Recibo frente a programa', '99%', ''], ['Bombas en servicio', '3/3', ''], ['Calidad BSW', '0,4%', ''], ['Problema principal', 'Ninguno', 'Jefe de estación: P. Gómez', 1]], bv: [100, 96, 100, 90, 85, 80], pen: '', rows: [['Incidentes', '0'], ['Alarmas abiertas', 0], ['Órdenes de mantenimiento', 1], ['Reportes de comunidad', 0], ['Clima', 'Nublado · 28 °C'], ['Personal en turno', '10 de 10']] },
+      { id: 'barranca', name: 'Refinería Barrancabermeja', type: 'Refinería', reg: 'Magdalena Medio', city: 'Barrancabermeja, Santander', lat: 7.07, lng: -73.85, health: 91, m: ['—', '100%', 'Normal', 0, 228, 0], bad: [0, 0, 0, 0, 0, 0], tags: [], today: 229, prog: .57, proj: .57, code: 'REF-SAN-001', op: 'Operando', opC: '#16181D', kpis: [['Recibo de crudo', '100%', ''], ['Inventario', '4,2 días', ''], ['Carga a unidades', '98%', ''], ['Problema principal', 'Ninguno', '', 1]], bv: [100, 100, 100, 92, 90, 85], pen: '', rows: [['Incidentes', '0'], ['Alarmas abiertas', 0], ['Órdenes de mantenimiento', 3], ['Reportes de comunidad', 0], ['Clima', 'Despejado · 33 °C'], ['Personal en turno', 'Normal']] },
+      { id: 'cartagena', name: 'Refinería Cartagena', type: 'Refinería', reg: 'Caribe', city: 'Cartagena, Bolívar', lat: 10.33, lng: -75.51, health: 90, m: ['—', '100%', 'Normal', 0, 198, 0], bad: [0, 0, 0, 0, 0, 0], tags: [], today: 196, prog: .56, proj: .57, code: 'REF-BOL-001', op: 'Operando', opC: '#16181D', kpis: [['Recibo de crudo', '100%', ''], ['Inventario', '3,9 días', ''], ['Carga a unidades', '97%', ''], ['Problema principal', 'Ninguno', '', 1]], bv: [100, 100, 100, 90, 90, 85], pen: '', rows: [['Incidentes', '0'], ['Alarmas abiertas', 0], ['Órdenes de mantenimiento', 2], ['Reportes de comunidad', 0], ['Clima', 'Despejado · 32 °C'], ['Personal en turno', 'Normal']] },
+      { id: 'orito', name: 'Estación Orito', type: 'Estación de bombeo', reg: 'Sur', city: 'Orito, Putumayo', lat: 0.67, lng: -76.87, health: 86, m: ['8/8', '100%', 'Normal', 0, 32, 0], bad: [0, 0, 0, 0, 0, 0], tags: [], today: 31, prog: .55, proj: .56, code: 'EST-PUT-001', op: 'Operando', opC: '#16181D', kpis: [['Caudal frente a programa', '98%', ''], ['Bombas en servicio', '2/2', ''], ['Presión de descarga', 'Normal', ''], ['Problema principal', 'Ninguno', '', 1]], bv: [100, 96, 100, 85, 80, 80], pen: '', rows: [['Incidentes', '0'], ['Alarmas abiertas', 0], ['Órdenes de mantenimiento', 0], ['Reportes de comunidad', 0], ['Clima', 'Lluvia · 25 °C'], ['Personal en turno', '8 de 8']] },
+      { id: 'tumaco', name: 'Terminal Tumaco', type: 'Terminal', reg: 'Sur', city: 'Tumaco, Nariño', lat: 1.80, lng: -78.76, health: 83, m: ['11/12', '100%', 'Normal', 0, 30, 0], bad: [0, 0, 0, 0, 0, 0], tags: [], today: 29, prog: .54, proj: .56, code: 'TER-NAR-001', op: 'Operando', opC: '#16181D', kpis: [['Inventario', 'Normal', ''], ['Buques en cola', '0', ''], ['Recibo por línea', '97%', ''], ['Problema principal', 'Ninguno', '', 1]], bv: [100, 92, 100, 85, 70, 85], pen: '', rows: [['Incidentes', '0'], ['Alarmas abiertas', 0], ['Órdenes de mantenimiento', 0], ['Reportes de comunidad', 0], ['Clima', 'Nublado · 27 °C'], ['Personal en turno', '11 de 12']] }],
+    lines: [
+      { st: 'ok', pts: [[4.08, -73.40], [4.7, -72.95], [5.02, -72.75]] },
+      { st: 'ok', pts: [[5.02, -72.75], [5.1, -73.45], [5.98, -74.47]] },
+      { st: 'crit', pts: [[5.98, -74.47], [7.0, -75.0], [7.98, -75.2], [9.41, -75.69]] },
+      { st: 'ok', pts: [[5.98, -74.47], [7.07, -73.85]] },
+      { st: 'deg', pts: [[7.03, -71.13], [7.4, -72.4], [8.55, -73.57], [9.0, -74.6], [9.41, -75.69]] },
+      { st: 'ok', pts: [[9.41, -75.69], [10.33, -75.51]] },
+      { st: 'ok', pts: [[0.67, -76.87], [1.2, -77.6], [1.80, -78.76]] }],
+    clusters: [],
+    inc: [
+      { sev: 3, title: 'Caída de presión de descarga', loc: 'Estación Vasconia · Puerto Boyacá', st: 'Activo', meta: 'desde 04:20 · bomba B-2 degradada', cat: 'Operación', ic: 'ti-activity', lat: 5.98, lng: -74.47, r: 18000, to: 'vasconia' },
+      { sev: 2, title: 'RTU sin reporte', loc: 'Estación Ayacucho · Cesar', st: 'Activo', meta: '2 RTU · 40 min sin datos', cat: 'Operación', ic: 'ti-wifi-off', lat: 8.55, lng: -73.57, r: 12000, to: 'ayacucho' },
+      { sev: 2, title: 'Inventario de cargue bajo programa', loc: 'Terminal Coveñas · Sucre', st: 'Monitoreo', meta: '9 h detrás · buque mañana 06:00', cat: 'Operación', ic: 'ti-ship', lat: 9.41, lng: -75.69, r: 10000, to: 'covenas' },
+      { unc: 1, title: 'Reporte de comunidad: olor a crudo', loc: 'Vereda cercana a Caño Limón · Arauca', st: 'Sin confirmar', meta: 'WhatsApp comunidades', cat: 'Entorno', ic: 'ti-message-circle', lat: 7.15, lng: -71.35, r: 9000, to: 'canolimon' },
+      { sev: 1, title: 'Lluvias fuertes en el Magdalena Medio', loc: 'Corredor Vasconia – Barrancabermeja', st: 'Monitoreo', meta: 'alerta naranja', cat: 'Entorno', ic: 'ti-cloud-rain', lat: 6.5, lng: -74.1, r: 40000 },
+      { res: 1, title: 'Mantenimiento de válvula completado', loc: 'Estación Cusiana', st: 'Resuelto', meta: '08:10', cat: 'Integridad', ic: 'ti-tool', lat: 5.02, lng: -72.75, to: 'cusiana' }],
+    alert: { sum: [[1, 'Críticas', '#D33A3A'], [3, 'Advertencias', '#E07070'], [12, 'Recuperadas', '#2E8B57'], [6, 'Respuestas', '#16181D']], rows: [['CRÍTICA', '#D33A3A', 'Presión de descarga −9%', 'Estación Vasconia', 'hace 6 h', 'vasconia'], ['ALTA', '#E07070', 'Telemetría al 62%', 'Estación Ayacucho', 'hace 40 min', 'ayacucho'], ['ALTA', '#E07070', 'Inventario de cargue 84%', 'Terminal Coveñas', 'hace 1 h', 'covenas'], ['MEDIA', '#A3A9B0', 'Reporte de comunidad sin confirmar', 'Caño Limón', 'hace 22 min', 'canolimon']],
+      pat: [['0,94', 'El caudal hacia Coveñas cae junto con la presión de descarga en Vasconia.'], ['2/3', 'Las fallas de telemetría en Ayacucho coinciden con lluvias en el Cesar.'], ['0', 'Indicios de fuga en el tramo afectado.']],
+      conf: 'Confianza alta · 4 fuentes', lead: 'El tramo Vasconia–Coveñas concentra el riesgo de la red.', rest: 'La bomba B-2 de Vasconia opera en modo degradado desde las 05:05 y el inventario de Coveñas va 9 horas detrás. Las demás estaciones operan dentro de rango.', b1: 'Abrir Estación Vasconia', b2: 'Ver incidentes' },
+    action: { sum: [[24, 'Configuradas', '#16181D'], [8, 'Ejecutadas', '#2E8B57'], [2, 'Pendientes', '#D33A3A']], rows: [['PENDIENTE', '#D33A3A', 'Arrancar bomba de respaldo B-3', 'Estación Vasconia', '10:58', 'vasconia'], ['PENDIENTE', '#D33A3A', 'Activar enlace satelital', 'Estación Ayacucho', '10:40', 'ayacucho'], ['EJECUTADA', '#2E8B57', 'Orden de mantenimiento bomba B-2', 'Estación Vasconia', '05:20', 'vasconia'], ['EJECUTADA', '#2E8B57', 'Aviso a remitentes del ajuste', 'Portal de remitentes', '09:15', 'covenas']],
+      pat: [['8', 'Acciones ejecutadas hoy sin intervención humana.'], ['2', 'Acciones de alto impacto en espera de aprobación.'], ['6 h', 'Recuperación estimada del caudal con la bomba B-3.']],
+      conf: 'Confianza alta · control de cambios', lead: 'El arranque de la bomba B-3 espera aprobación del centro de control porque cambia el programa de bombeo.', rest: 'Aprobarlo ahora recupera el caudal hacia Coveñas en unas 6 horas y protege la ventana de cargue del buque de mañana.', b1: 'Aprobar arranque de B-3', b2: 'Enviar al centro de control', done: 'Arranque aprobado. Bomba B-3 en servicio a las 11:20.' } },
+  { seg: 'Downstream · Abastecimiento', crit: 'bogota', label: 'plantas', view: [6.0, -74.6], zoom: 6,
+    bars: ['Medición', 'Islas de cargue', 'Inventario', 'Programación', 'Seguridad HSE', 'Entorno'], w: [20, 25, 20, 15, 10, 10],
+    mIcons: [['ti-user', 'Personal en turno'], ['ti-gas-station', 'Islas en servicio'], ['ti-clock', 'Tiempo en isla (min)'], ['ti-truck', 'Carrotanques en cola'], ['ti-building-store', 'Estaciones atendidas'], ['ti-message-circle', 'Menciones en redes']],
+    todayL: 'carrotanques hoy', progL: 'Programa',
+    assets: [
+      { id: 'bogota', name: 'Planta Bogotá', type: 'Planta de abastecimiento', reg: 'Centro', city: 'Bogotá D.C.', lat: 4.63, lng: -74.12, health: 31, m: ['18/21', '3/4', 74, 22, 412, 6], bad: [0, 1, 1, 1, 0, 1], tags: [['Medidor isla 3', 'R'], ['Cierre vial', 'zr']], today: 184, prog: .41, proj: .55, code: 'PLA-BOG-001', op: 'Operando con 3 de 4 islas', opC: '#C33', kpis: [['Despacho frente a programa', '78%', '−22% en la mañana'], ['Islas en servicio', '3/4', 'isla 3 intermitente'], ['Tiempo en isla', '74 min', 'meta 45 min'], ['Problema principal', 'Medidor de flujo de la isla 3', 'Jefe de planta: C. Moreno', 1]], bv: [40, 48, 70, 52, 100, 60], pen: 'Resultado ponderado 58% — retenido en rango crítico por incidente activo (−27).', rows: [['Incidentes', '2 activos'], ['Estaciones en riesgo', 41], ['Órdenes de mantenimiento', 1], ['Menciones en redes', 6], ['Clima', 'Lluvia · 14 °C'], ['Personal en turno', '18 de 21']], act: 'Redirigir los 22 carrotanques en cola a las islas 1 y 2 y abrir mantenimiento del medidor de la isla 3.', done: 'Turnos reasignados. Orden OM-48211 abierta.' },
+      { id: 'yumbo', name: 'Planta Yumbo', type: 'Planta de abastecimiento', reg: 'Occidente', city: 'Yumbo, Valle del Cauca', lat: 3.58, lng: -76.49, health: 63, m: ['14/14', '4/4', 41, 3, 241, 0], bad: [0, 0, 0, 0, 0, 0], tags: [['Diésel bajo meta', 'r']], today: 121, prog: .5, proj: .55, code: 'PLA-VAL-001', op: 'Operando', opC: '#16181D', kpis: [['Cobertura de diésel', '2,1 días', 'meta 3 días'], ['Islas en servicio', '4/4', ''], ['Tiempo en isla', '41 min', ''], ['Problema principal', 'Despacho por poliducto retrasado', 'Jefe de planta: S. Valencia', 1]], bv: [100, 96, 40, 70, 100, 90], pen: '', rows: [['Incidentes', '1 activo'], ['Estaciones en riesgo', 0], ['Órdenes de mantenimiento', 0], ['Menciones en redes', 0], ['Clima', 'Despejado · 27 °C'], ['Personal en turno', '14 de 14']], act: 'Adelantar el despacho por poliducto programado para el jueves.', done: 'Despacho adelantado a mañana 04:00.' },
+      { id: 'medellin', name: 'Planta Medellín', type: 'Planta de abastecimiento', reg: 'Antioquia', city: 'Girardota, Antioquia', lat: 6.38, lng: -75.45, health: 89, m: ['16/16', '4/4', 38, 2, 286, 0], bad: [0, 0, 0, 0, 0, 0], tags: [['Recalibración completada', 'g']], today: 152, prog: .56, proj: .55, code: 'PLA-ANT-001', op: 'Operando', opC: '#16181D', kpis: [['Despacho frente a programa', '101%', ''], ['Islas en servicio', '4/4', ''], ['Tiempo en isla', '38 min', ''], ['Problema principal', 'Ninguno', '', 1]], bv: [100, 98, 90, 95, 100, 80], pen: '', rows: [['Incidentes', '0'], ['Estaciones en riesgo', 0], ['Órdenes de mantenimiento', 0], ['Menciones en redes', 0], ['Clima', 'Nublado · 22 °C'], ['Personal en turno', '16 de 16']] },
+      { id: 'bucaramanga', name: 'Planta Bucaramanga', type: 'Planta de abastecimiento', reg: 'Oriente', city: 'Girón, Santander', lat: 7.08, lng: -73.16, health: 92, m: ['12/12', '3/3', 36, 1, 163, 0], bad: [0, 0, 0, 0, 0, 0], tags: [], today: 98, prog: .57, proj: .55, code: 'PLA-SAN-001', op: 'Operando', opC: '#16181D', kpis: [['Despacho frente a programa', '100%', ''], ['Islas en servicio', '3/3', ''], ['Tiempo en isla', '36 min', ''], ['Problema principal', 'Ninguno', '', 1]], bv: [100, 100, 95, 92, 100, 85], pen: '', rows: [['Incidentes', '0'], ['Estaciones en riesgo', 0], ['Órdenes de mantenimiento', 0], ['Menciones en redes', 0], ['Clima', 'Despejado · 25 °C'], ['Personal en turno', '12 de 12']] },
+      { id: 'barranquilla', name: 'Planta Barranquilla', type: 'Planta de abastecimiento', reg: 'Caribe', city: 'Barranquilla, Atlántico', lat: 10.95, lng: -74.80, health: 87, m: ['13/13', '3/3', 44, 2, 198, 0], bad: [0, 0, 0, 0, 0, 0], tags: [], today: 110, prog: .55, proj: .55, code: 'PLA-ATL-001', op: 'Operando', opC: '#16181D', kpis: [['Despacho frente a programa', '98%', ''], ['Islas en servicio', '3/3', ''], ['Tiempo en isla', '44 min', ''], ['Problema principal', 'Ninguno', '', 1]], bv: [100, 92, 90, 90, 100, 80], pen: '', rows: [['Incidentes', '0'], ['Estaciones en riesgo', 0], ['Órdenes de mantenimiento', 1], ['Menciones en redes', 0], ['Clima', 'Despejado · 32 °C'], ['Personal en turno', '13 de 13']] },
+      { id: 'neiva', name: 'Planta Neiva', type: 'Planta de abastecimiento', reg: 'Sur', city: 'Neiva, Huila', lat: 2.93, lng: -75.28, health: 85, m: ['8/8', '2/2', 40, 1, 92, 0], bad: [0, 0, 0, 0, 0, 0], tags: [], today: 54, prog: .54, proj: .55, code: 'PLA-HUI-001', op: 'Operando', opC: '#16181D', kpis: [['Despacho frente a programa', '97%', ''], ['Islas en servicio', '2/2', ''], ['Tiempo en isla', '40 min', ''], ['Problema principal', 'Ninguno', '', 1]], bv: [100, 92, 88, 85, 100, 75], pen: '', rows: [['Incidentes', '0'], ['Estaciones en riesgo', 0], ['Órdenes de mantenimiento', 0], ['Menciones en redes', 0], ['Clima', 'Despejado · 31 °C'], ['Personal en turno', '8 de 8']] },
+      { id: 'barranca', name: 'Refinería Barrancabermeja', type: 'Refinería', reg: 'Magdalena Medio', city: 'Barrancabermeja, Santander', lat: 7.07, lng: -73.85, health: 91, m: ['—', '—', '—', 0, '—', 0], bad: [0, 0, 0, 0, 0, 0], tags: [], today: 0, prog: .57, proj: .57, code: 'REF-SAN-001', op: 'Operando', opC: '#16181D', kpis: [['Despacho por poliducto', '100%', ''], ['Inventario de productos', '5,1 días', ''], ['Carga a unidades', '98%', ''], ['Problema principal', 'Ninguno', '', 1]], bv: [100, 100, 100, 92, 90, 85], pen: '', rows: [['Incidentes', '0'], ['Alarmas abiertas', 0], ['Órdenes de mantenimiento', 3], ['Menciones en redes', 0], ['Clima', 'Despejado · 33 °C'], ['Personal en turno', 'Normal']] },
+      { id: 'cartagena', name: 'Refinería Cartagena', type: 'Refinería', reg: 'Caribe', city: 'Cartagena, Bolívar', lat: 10.33, lng: -75.51, health: 90, m: ['—', '—', '—', 0, '—', 0], bad: [0, 0, 0, 0, 0, 0], tags: [], today: 0, prog: .56, proj: .57, code: 'REF-BOL-001', op: 'Operando', opC: '#16181D', kpis: [['Despacho', '100%', ''], ['Inventario de productos', '4,6 días', ''], ['Carga a unidades', '97%', ''], ['Problema principal', 'Ninguno', '', 1]], bv: [100, 100, 100, 90, 90, 85], pen: '', rows: [['Incidentes', '0'], ['Alarmas abiertas', 0], ['Órdenes de mantenimiento', 2], ['Menciones en redes', 0], ['Clima', 'Despejado · 32 °C'], ['Personal en turno', 'Normal']] }],
+    lines: [
+      { st: 'ok', pts: [[7.07, -73.85], [7.08, -73.16]] },
+      { st: 'ok', pts: [[7.07, -73.85], [6.38, -75.45]] },
+      { st: 'ok', pts: [[7.07, -73.85], [5.45, -74.66], [4.63, -74.12]] },
+      { st: 'ok', pts: [[4.63, -74.12], [2.93, -75.28]] },
+      { st: 'deg', pts: [[6.38, -75.45], [4.75, -75.92], [3.58, -76.49]] },
+      { st: 'ok', pts: [[10.33, -75.51], [10.95, -74.80]] },
+      { st: 'ok', pts: [[10.33, -75.51], [8.8, -74.6], [7.07, -73.85]] }],
+    clusters: [['Bogotá', 4.71, -74.07, 412, 41], ['Medellín', 6.25, -75.57, 286, 0], ['Cali', 3.44, -76.52, 241, 3], ['Barranquilla', 10.97, -74.80, 198, 0], ['Bucaramanga', 7.12, -73.12, 163, 0], ['Villavicencio', 4.14, -73.63, 104, 9], ['Neiva', 2.93, -75.28, 92, 0], ['Ibagué', 4.44, -75.23, 88, 0], ['Tunja', 5.53, -73.36, 71, 4]],
+    inc: [
+      { sev: 3, title: 'Medidor de flujo intermitente · isla 3', loc: 'Planta Bogotá · Puente Aranda', st: 'Activo', meta: 'desde 06:40 · 22 carrotanques en cola', cat: 'Operación', ic: 'ti-gauge', lat: 4.63, lng: -74.12, r: 9000, to: 'bogota' },
+      { sev: 2, title: 'Cobertura de diésel bajo meta', loc: 'Planta Yumbo · Valle del Cauca', st: 'Activo', meta: '2,1 días · meta 3', cat: 'Operación', ic: 'ti-droplet', lat: 3.58, lng: -76.49, r: 9000, to: 'yumbo' },
+      { sev: 2, title: 'Cierre vial Bogotá – Villavicencio', loc: 'Vía al Llano · km 58', st: 'Activo', meta: 'paso restringido · carrotanques desviados', cat: 'Entorno', ic: 'ti-mountain', lat: 4.33, lng: -73.85, r: 14000 },
+      { unc: 1, title: 'Reporte en redes: estación sin ACPM', loc: 'Soacha · Cundinamarca', st: 'Sin confirmar', meta: 'Redes sociales', cat: 'Entorno', ic: 'ti-message-circle', lat: 4.58, lng: -74.22, r: 5000, to: 'bogota' },
+      { res: 1, title: 'Recalibración de medidores completada', loc: 'Planta Medellín', st: 'Resuelto', meta: '07:55', cat: 'Integridad', ic: 'ti-tool', lat: 6.38, lng: -75.45, to: 'medellin' }],
+    alert: { sum: [[1, 'Críticas', '#D33A3A'], [3, 'Advertencias', '#E07070'], [9, 'Recuperadas', '#2E8B57'], [5, 'Respuestas', '#16181D']], rows: [['CRÍTICA', '#D33A3A', 'Tiempo en isla 74 min', 'Planta Bogotá', 'hace 4 h', 'bogota'], ['ALTA', '#E07070', 'Diésel a 2,1 días', 'Planta Yumbo', 'hace 2 h', 'yumbo'], ['ALTA', '#E07070', '41 estaciones en riesgo', 'Centro del país', 'hace 10 min', 'bogota'], ['MEDIA', '#A3A9B0', 'Cierre vial Vía al Llano', 'Cundinamarca', 'hace 1 h', 'bogota']],
+      pat: [['0,91', 'La cola en patio se mueve junto con las lecturas nulas del medidor de la isla 3.'], ['41', 'Estaciones del centro del país dependen hoy de Planta Bogotá.'], ['9', 'Estaciones del Meta con entrega afectada por el cierre vial.']],
+      conf: 'Confianza alta · 4 fuentes', lead: 'Planta Bogotá concentra el riesgo de abastecimiento del día.', rest: 'El medidor de la isla 3 falla desde las 06:40 y el cierre de la Vía al Llano retrasa la entrega en el Meta. Las demás plantas operan dentro de rango.', b1: 'Abrir Planta Bogotá', b2: 'Ver incidentes' },
+    action: { sum: [[22, 'Configuradas', '#16181D'], [9, 'Ejecutadas', '#2E8B57'], [2, 'Pendientes', '#D33A3A']], rows: [['PENDIENTE', '#D33A3A', 'Reasignar turnos a islas 1 y 2', 'Planta Bogotá', '10:58', 'bogota'], ['PENDIENTE', '#D33A3A', 'Adelantar despacho por poliducto', 'Planta Yumbo', '10:31', 'yumbo'], ['EJECUTADA', '#2E8B57', 'Orden de mantenimiento medidor isla 3', 'Planta Bogotá', '10:41', 'bogota'], ['EJECUTADA', '#2E8B57', 'Aviso de retraso a mayoristas', 'Portal B2B', '10:52', 'bogota']],
+      pat: [['9', 'Acciones ejecutadas hoy sin intervención humana.'], ['2', 'Acciones de alto impacto en espera de aprobación.'], ['13:30', 'Recuperación estimada del programa si se aprueba ahora.']],
+      conf: 'Confianza alta · control de cambios', lead: 'La reasignación de islas espera aprobación del jefe de planta porque cambia la programación.', rest: 'Con la tendencia actual, 41 estaciones quedan sin producto antes de las 18:00. Aprobarla ahora recupera el programa hacia las 13:30.', b1: 'Aprobar reasignación', b2: 'Enviar al jefe de planta', done: 'Reasignación ejecutada. Los turnos vuelven al programa.' } }];
+
+class Component extends DCLogic {
+  state = { panel: 'list', sel: null, incSel: null, catOff: {}, layerOff: {}, modal: null, done: {} };
+  mapRef = React.createRef();
+  componentDidMount() { this.tryInit(); }
+  componentWillUnmount() { clearTimeout(this._t); if (this.map) this.map.remove(); }
+  componentDidUpdate(p, ps) {
+    if (p.caso !== this.props.caso) { this.setState({ sel: null, incSel: null, done: {}, modal: null, panel: 'list' }); if (this.map) { const c = this.C(); this.map.setView(c.view, c.zoom); } }
+    if (p.paso !== this.props.paso || p.caso !== this.props.caso) this.applyStep();
+    this.draw();
+  }
+  C() { return MM_CASES[this.props.caso ?? 0] || MM_CASES[0]; }
+  tryInit() {
+    if (!window.L || !window.GEO || !this.mapRef.current) { this._t = setTimeout(() => this.tryInit(), 120); return; }
+    const L = window.L, c = this.C();
+    const map = this.map = L.map(this.mapRef.current, { zoomControl: false, attributionControl: true, minZoom: 5, maxZoom: 12, zoomSnap: .5, scrollWheelZoom: false }).setView(c.view, c.zoom);
+    map.attributionControl.setPrefix(false); map.attributionControl.addAttribution('Límites: Natural Earth · DANE · Activos y cifras ilustrativos');
+    L.geoJSON(window.GEO.nb, { interactive: false, style: f => f.properties.n === 'Colombia' ? { stroke: false, fill: false } : { color: '#D9DCE0', weight: .8, fillColor: '#F6F7F8', fillOpacity: 1 } }).addTo(map);
+    L.geoJSON(window.GEO.dep, { interactive: false, style: { color: '#CFD3D8', weight: .9, fillColor: '#FFFFFF', fillOpacity: 1 } }).addTo(map);
+    [['Venezuela', 7.2, -68.8], ['Ecuador', -1.2, -78.4], ['Panamá', 8.3, -80.2], ['Brasil', -1.5, -68.0], ['Mar Caribe', 12.2, -76.4]].forEach(([n, a, b]) => L.marker([a, b], { interactive: false, icon: L.divIcon({ className: '', html: '<div class="mm-dl">' + n + '</div>', iconSize: [0, 0] }) }).addTo(map));
+    this.zones = L.layerGroup().addTo(map); this.lines = L.layerGroup().addTo(map); this.dyn = L.layerGroup().addTo(map);
+    map.invalidateSize(); this.draw();
+    setTimeout(() => { map.invalidateSize(); this.applyStep(); }, 80);
+  }
+  applyStep() {
+    const p = this.props.paso ?? 0, c = this.C();
+    const ci = c.inc.findIndex(e => e.to === c.crit);
+    const crit = c.assets.find(a => a.id === c.crit);
+    if (p === 0) { this.setState({ panel: 'list', sel: null, incSel: null, modal: null }); this.map && this.map.flyTo(c.view, c.zoom, { duration: .8 }); }
+    if (p === 1) { this.setState({ panel: 'list', sel: c.crit, modal: null }); this.map && this.map.flyTo([crit.lat, crit.lng - 0.9], 7.5, { duration: .8 }); }
+    if (p === 2) { this.setState({ panel: 'inc', sel: null, incSel: ci, modal: null }); this.map && this.map.flyTo([crit.lat, crit.lng], 8, { duration: .8 }); }
+    if (p === 3) this.setState({ modal: 'alert', sel: null });
+    if (p === 4) this.setState({ modal: 'action', sel: null });
+  }
+  user = () => { if ((this.props.paso ?? 0) >= 0 && this.props.onUser) this.props.onUser(); };
+  openAsset = (id, fly) => { this.user(); const a = this.C().assets.find(x => x.id === id); this.setState({ sel: id, modal: null }); if (fly && this.map && a) this.map.flyTo([a.lat, a.lng - 0.9], Math.max(this.map.getZoom(), 7), { duration: .7 }); };
+  draw() { try { this._draw(); } catch (e) { console.log('mm draw err', e && e.message, e && e.stack && e.stack.split('\n').slice(0, 4).join(' | ')); } }
+  _draw() {
+    if (!this.map) return;
+    if (this.map._animatingZoom || this.map._flyToFrame || !this.map._loaded) { if (!this._pend) { this._pend = true; this.map.once('zoomend moveend', () => { this._pend = false; this.draw(); }); } return; }
+    const L = window.L, c = this.C(), s = this.state;
+    this.zones.clearLayers(); this.lines.clearLayers(); this.dyn.clearLayers();
+    const lc = { ok: '#9AA0A8', deg: '#E07070', crit: '#D33A3A' };
+    if (!s.layerOff.lines) c.lines.forEach(l => L.polyline(l.pts, { color: lc[l.st], weight: l.st === 'ok' ? 2.5 : 3.5, dashArray: l.st === 'crit' ? '8 6' : null, opacity: .95, interactive: false }).addTo(this.lines));
+    if (!s.layerOff.inc) c.inc.filter(e => !e.res && e.r && !s.catOff[e.cat]).forEach((e, i) => {
+      const on = s.incSel === c.inc.indexOf(e);
+      L.circle([e.lat, e.lng], { radius: e.r, color: e.unc ? '#5F8FD6' : '#D65555', weight: on ? 2 : 1.2, dashArray: e.unc ? '5 5' : null, fillColor: e.unc ? '#5F8FD6' : '#D65555', fillOpacity: on ? .16 : .07, interactive: false }).addTo(this.zones);
+    });
+    if (!s.layerOff.clusters) c.clusters.forEach(([n, a, b, cnt, al]) => {
+      const sz = 22 + String(cnt).length * 5;
+      L.marker([a, b], { icon: L.divIcon({ className: '', html: `<div style="position:relative;width:${sz}px;height:${sz}px;border-radius:50%;background:rgba(27,63,147,.10);border:1.5px solid #1B3F93;color:#1B3F93;font:600 10.5px Inter,sans-serif;display:flex;align-items:center;justify-content:center;">${cnt}${al ? `<span style="position:absolute;top:-6px;right:-8px;min-width:16px;height:16px;border-radius:8px;background:#D33A3A;color:#fff;font-size:9px;display:flex;align-items:center;justify-content:center;padding:0 3px;border:1.5px solid #fff;">${al}</span>` : ''}</div>`, iconSize: [sz, sz], iconAnchor: [sz / 2, sz / 2] }) })
+        .bindTooltip(`<b>${n}</b><br>${cnt} estaciones de servicio abastecidas${al ? ` · ${al} en riesgo` : ''}`, { className: 'mm-tt', direction: 'top', offset: [0, -sz / 2] }).addTo(this.dyn);
+    });
+    c.assets.forEach(a => {
+      const k = mmSt(a.health), st = MM_ST[k], on = s.sel === a.id, sz = on ? 20 : k === 'ok' ? 13 : 16;
+      const ring = on ? '0 0 0 3px #fff,0 0 0 5px #00A3E0' : k === 'crit' ? '0 0 0 6px rgba(211,58,58,.2)' : '0 1px 3px rgba(0,0,0,.25)';
+      const html = `<div style="position:relative;width:${sz}px;height:${sz}px;"><div style="width:${sz}px;height:${sz}px;border-radius:50%;background:${st.c};border:${k === 'ok' ? '2px solid #4F555D' : '2px solid #fff'};box-shadow:${ring};box-sizing:border-box;"></div><div style="position:absolute;left:${sz + 5}px;top:50%;transform:translateY(-50%);white-space:nowrap;font:${on ? 700 : 600} 11px Inter,sans-serif;color:#30343A;text-shadow:0 0 3px #fff,0 0 3px #fff,0 0 3px #fff;">${a.name}</div></div>`;
+      L.marker([a.lat, a.lng], { zIndexOffset: on ? 1000 : k === 'crit' ? 500 : 0, icon: L.divIcon({ className: '', html, iconSize: [sz, sz], iconAnchor: [sz / 2, sz / 2] }) })
+        .bindTooltip(`<b>${a.name}</b><br>${a.type} · ${a.reg}<br>Estado operacional: ${a.health == null ? '—' : a.health + '%'} (${st.l})`, { className: 'mm-tt', direction: 'bottom', offset: [0, 12] })
+        .on('click', () => this.openAsset(a.id, false)).addTo(this.dyn);
+    });
+  }
+  renderVals() {
+    const s = this.state, c = this.C(), u = this.user;
+    const sorted = [...c.assets].sort((a, b) => (a.health ?? 45) - (b.health ?? 45));
+    const cnt = k => c.assets.filter(a => mmSt(a.health) === k).length;
+    const cards = sorted.map(a => {
+      const k = mmSt(a.health), st = MM_ST[k], on = s.sel === a.id;
+      return { name: a.name, type: a.type, reg: a.reg, hl: a.health == null ? '—' : a.health + '%', lc: on ? '#00A3E0' : st.lc, bd: on ? '#4CC0EA' : '#DCDFE3', bg: on ? '#F0F9FD' : '#FFFFFF', sh: on ? '0 0 0 2px #D4EFFA' : 'none',
+        mets: c.mIcons.map(([ic, t], i) => ({ ic, t, v: a.m[i], c: a.bad[i] ? '#CC3333' : '#30343A', ic2: a.bad[i] ? '#CC3333' : '#8D939C' })),
+        tags: a.tags.map(([l, k2]) => ({ l, bg: MM_TAG[k2][0], c: MM_TAG[k2][1], bd: MM_TAG[k2][2] })),
+        today: a.today.toLocaleString('es-CO'), todayL: c.todayL, prog: a.prog * 100 + '%', proj: a.proj * 100 + '%', progL: c.progL, open: () => this.openAsset(a.id, true) };
+    });
+    const cats = [['Operación', 'ti-settings'], ['Integridad', 'ti-shield-check'], ['Entorno', 'ti-mountain']].map(([l, ic]) => ({ l, ic, bd: s.catOff[l] ? '#D4D7DB' : '#1B3F93', c: s.catOff[l] ? '#9AA0A8' : '#1B3F93', toggle: () => { u(); this.setState({ catOff: { ...s.catOff, [l]: !s.catOff[l] } }); } }));
+    const incs = c.inc.filter(e => !s.catOff[e.cat]).map(e => {
+      const k = c.inc.indexOf(e), on = s.incSel === k;
+      return { title: e.title, loc: e.loc, st: e.st, meta: e.meta, ic: e.ic, hasSev: !!e.sev, sev: e.sev, sevBg: e.sev === 3 ? '#D33A3A' : '#FFFFFF', sevC: e.sev === 3 ? '#FFFFFF' : e.sev === 2 ? '#B83434' : '#4F555D', sevBd: e.sev === 3 ? '#D33A3A' : e.sev === 2 ? '#D9A0A0' : '#B9BEC5',
+        icBg: e.unc ? '#FFFFFF' : e.sev >= 2 ? '#FDE7E7' : e.res ? '#F0F1F3' : '#E8F0FC', icC: e.unc ? '#CC3333' : e.sev >= 2 ? '#C73B3B' : e.res ? '#30343A' : '#2F6FCA',
+        bdStyle: e.unc ? 'dashed' : 'solid', bd: on ? '#BCD2F1' : e.unc ? '#DF8F8F' : 'transparent', bg: on ? '#F3F7FD' : e.unc ? '#FFF7F7' : 'transparent', op: e.res ? .5 : 1, stC: e.res ? '#9AA0A8' : '#CC3333',
+        pick: () => { u(); this.setState({ incSel: on ? null : k }); if (!on && this.map) this.map.flyTo([e.lat, e.lng], e.r > 20000 ? 7.5 : 8.5, { duration: .8 }); if (!on && e.to) setTimeout(() => this.setState({ sel: e.to }), 850); } };
+    });
+    const a = c.assets.find(x => x.id === s.sel);
+    let d = { kpis: [], bars: [], rows: [] };
+    if (a) {
+      const k = mmSt(a.health), st = MM_ST[k], isDone = !!s.done['a:' + a.id];
+      d = { name: a.name, city: a.city, stL: st.l, stC: st.tc, stBg: st.bg, meta: `${a.type} · ${a.reg} · ${a.code}`, op: a.op, opC: a.opC, hl: a.health == null ? '—' : a.health + '%',
+        kpis: a.kpis.map(x => ({ l: x[0], v: x[1], s: x[2], fs: x[3] ? '13px' : '20px' })), hasPen: !!a.pen, penNote: a.pen,
+        bars: c.bars.map((n, i) => ({ n, w: c.w[i], v: a.bv[i], p: a.bv[i] + '%', c: a.bv[i] < 50 ? '#D33A3A' : a.bv[i] < 75 ? '#E07070' : '#00A3E0' })),
+        rows: a.rows.map(r => ({ a: r[0], b: r[1] })), hasAct: !!a.act, act: a.act, pending: !isDone, isDone, done: a.done,
+        approve: () => { u(); this.setState({ done: { ...s.done, ['a:' + a.id]: true } }); } };
+    }
+    let md = { sum: [], rows: [], pat: [] };
+    if (s.modal) {
+      const m = c[s.modal], isDone = !!s.done['m:' + s.modal], isA = s.modal === 'alert';
+      md = { t: isA ? 'Inteligencia de alertas' : 'Inteligencia de acciones', s: isA ? 'Reglas incumplidas por activo — patrones y análisis de causa raíz' : 'Respuestas automáticas y acciones que esperan aprobación', ic: isA ? 'ti-alert-triangle' : 'ti-bolt', icBg: isA ? '#FDE7E7' : '#E8F0FC', icC: isA ? '#C73B3B' : '#1B3F93',
+        sum: m.sum.map(x => ({ v: x[0], k: x[1], c: x[2] })), rows: m.rows.map(r => ({ sev: r[0], c: r[1], n: r[2], loc: r[3], time: r[4], open: () => { this.openAsset(r[5], true); } })),
+        pat: m.pat.map(p => ({ k: p[0], v: p[1] })), conf: m.conf, lead: m.lead, rest: m.rest, b1l: m.b1, b2l: m.b2, pending: isA || !isDone, isDone: !isA && isDone, done: m.done,
+        b1: () => { u(); if (isA) this.openAsset(c.crit, true); else this.setState({ done: { ...s.done, ['m:action']: true, ['a:' + c.crit]: true } }); },
+        b2: () => { u(); if (isA) this.setState({ modal: null, panel: 'inc' }); else this.setState({ done: { ...s.done, ['m:action']: true } }); } };
+    }
+    const railItems = [['ti-eye', 'list'], ['ti-map-pin', 'list'], ['ti-building', 'inc'], ['ti-clipboard-check', 'x'], ['ti-activity', 'y']];
+    return {
+      seg: c.seg, mapRef: this.mapRef,
+      hdr: [['ti-alert-triangle', 'Alertas', c.alert.sum[0][0] + c.alert.sum[1][0], 'alert'], ['ti-bell', 'Alarmas', 3, 'alert'], ['ti-alert-octagon', 'Anomalías', 2, 'alert'], ['ti-bolt', 'Acciones', c.action.sum[2][0], 'action']].map(([ic, t, b, m]) => ({ ic, t, b, open: () => { u(); this.setState({ modal: m }); } })),
+      rail: railItems.map(([ic, k], i) => { const on = (s.panel === 'inc' && k === 'inc') || (s.panel === 'list' && i === 0); return { ic, c: on ? '#1B3F93' : '#8D939C', bar: on ? '#00A3E0' : 'transparent', go: () => { if (k === 'list' || k === 'inc') { u(); this.setState({ panel: k }); } } }; }),
+      panelBg: s.panel === 'inc' ? '#FFFFFF' : '#F6F7F8', isList: s.panel === 'list', isInc: s.panel === 'inc',
+      assetCount: c.assets.length, assetLabel: c.label, cnts: [{ c: '#C93A3A', bd: 'none', v: cnt('crit') }, { c: '#E89A9A', bd: 'none', v: cnt('deg') }, { c: '#FFFFFF', bd: '1.5px solid #6B7179', v: cnt('ok') }, { c: '#8F959E', bd: 'none', v: cnt('nd') }],
+      cards, cats, incs, incSummary: `${c.inc.filter(e => !e.res && !e.unc).length} activos · ${c.inc.filter(e => e.unc).length} sin confirmar · ${c.inc.filter(e => e.res).length} resuelto`,
+      layers: [['lines', c === MM_CASES[0] ? 'Oleoductos' : 'Poliductos', 'ti-route'], ['inc', 'Incidentes', 'ti-alert-triangle'], ...(c.clusters.length ? [['clusters', 'Estaciones de servicio', 'ti-gas-station']] : [])].map(([k, l, ic]) => ({ l, ic, op: s.layerOff[k] ? .35 : 1, toggle: () => this.setState({ layerOff: { ...s.layerOff, [k]: !s.layerOff[k] } }) })),
+      zin: () => this.map && this.map.zoomIn(), zout: () => this.map && this.map.zoomOut(),
+      detailOpen: !!a, d, closeDetail: () => { u(); this.setState({ sel: null }); },
+      dtabs: ['ti-activity', 'ti-message-circle', 'ti-box', 'ti-clipboard-check', 'ti-alert-triangle', 'ti-bell', 'ti-shield-exclamation', 'ti-bolt'].map((ic, i) => ({ ic, c: i === 0 ? '#1B3F93' : '#8D939C', bd: i === 0 ? '#1B3F93' : 'transparent' })),
+      modalOpen: !!s.modal, md, closeModal: () => { u(); this.setState({ modal: null }); }, stop: e => e.stopPropagation()
+    };
+  }
+}
+</script>
+</body>
+</html>

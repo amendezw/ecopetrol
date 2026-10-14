@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/wigi-design-system-ef477c14-3c6e-4d00-bd78-9401c685bc3b/colors_and_type.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<script src="_ds/wigi-design-system-ef477c14-3c6e-4d00-bd78-9401c685bc3b/_ds_bundle.js"></script>
+</helmet>
+<div style="position:relative;background:#FFFFFF;color:#141414;font-family:'Inter',system-ui,sans-serif;min-height:880px;display:flex;flex-direction:column;overflow:hidden;">
+  <header style="height:50px;display:flex;align-items:center;gap:22px;padding:0 20px;border-bottom:1px solid #E6E7EA;flex:none;">
+    <i class="ti ti-menu-2" style="font-size:22px;"></i>
+    <img src="assets/ecopetrol-logo.png" alt="Ecopetrol" style="height:28px;width:auto;display:block;flex:none;">
+    <button onClick="{{ cycleRange }}" style="border:1px solid #DCDEE2;border-radius:16px;padding:5px 12px 5px 14px;font-size:13px;background:#FFFFFF;cursor:pointer;display:flex;align-items:center;gap:14px;">{{ range }}<i class="ti ti-chevron-down" style="font-size:12px;color:#888888;"></i></button>
+    <div style="display:flex;gap:26px;margin-left:24px;">
+      <sc-for list="{{ headerIcons }}" as="h" hint-placeholder-count="4">
+        <button onClick="{{ h.open }}" title="{{ h.label }}" style="position:relative;cursor:pointer;display:flex;background:none;border:0;padding:0;">
+          <i class="ti {{ h.icon }}" style="font-size:21px;"></i>
+          <span style="position:absolute;top:-8px;right:-10px;min-width:16px;height:16px;padding:0 4px;border-radius:8px;background:#C4363C;color:#FFFFFF;font-size:9px;font-weight:600;display:flex;align-items:center;justify-content:center;border:1.5px solid #FFFFFF;">{{ h.count }}</span>
+        </button>
+      </sc-for>
+    </div>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:10px;font-weight:600;font-size:13px;">
+      <span style="font-size:11px;font-weight:500;color:#8B929C;white-space:nowrap;">Ecopetrol · {{ seg }}</span>
+      <span style="width:22px;height:22px;border-radius:50%;background:#141414;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">B</span>BOb
+    </div>
+  </header>
+
+  <div style="flex:1;display:grid;grid-template-columns:minmax(0,1fr) 380px;">
+    <main style="padding:20px 22px 24px 18px;display:flex;flex-direction:column;min-width:0;">
+      <div style="font-size:10px;font-weight:600;letter-spacing:.24em;color:#8B929C;margin:4px 0 10px;">INTERACCIONES · {{ caseName }}</div>
+      <div style="display:grid;grid-template-columns:150px minmax(0,1fr) 172px;border:1px solid #E3E5E8;border-radius:6px;min-height:124px;">
+        <div onClick="{{ openSessions }}" style="padding:16px 18px;border-right:1px solid #E3E5E8;cursor:pointer;" style-hover="background:#FAFAFA">
+          <div style="display:flex;align-items:center;gap:9px;font-weight:600;font-size:13px;"><span style="width:2px;height:14px;background:#141414;"></span>Sesiones</div>
+          <div style="font-size:44px;font-weight:600;color:#C4363C;letter-spacing:-.03em;line-height:1.15;margin-top:4px;">{{ totalFmt }}</div>
+        </div>
+        <div style="padding:16px 18px;display:flex;flex-direction:column;min-width:0;">
+          <div style="display:flex;align-items:center;gap:9px;font-weight:600;font-size:13px;"><span style="width:2px;height:14px;background:#141414;"></span>Canales</div>
+          <div style="flex:1;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));margin-top:6px;align-items:center;">
+            <sc-for list="{{ channels }}" as="c" hint-placeholder-count="5">
+              <div style="display:flex;flex-direction:column;align-items:center;gap:4px;border-right:{{ c.divider }};">
+                <button onClick="{{ c.open }}" title="{{ c.name }}" style="display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:2px 10px;border-radius:4px;background:none;border:0;" style-hover="background:#F5F6F7">
+                  <i class="ti {{ c.icon }}" style="font-size:21px;color:{{ c.iconColor }};"></i>
+                  <span style="font-size:19px;font-weight:600;">{{ c.count }}</span>
+                </button>
+                <button onClick="{{ c.toggle }}" title="Incluir en el análisis" style="width:12px;height:12px;border-radius:2px;border:1.5px solid #141414;background:{{ c.boxBg }};display:flex;align-items:center;justify-content:center;cursor:pointer;color:#FFFFFF;padding:0;"><i class="ti ti-check" style="font-size:9px;"></i></button>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div onClick="{{ openAvg }}" style="padding:16px 18px;border-left:1px solid #E3E5E8;cursor:pointer;" style-hover="background:#FAFAFA">
+          <div style="display:flex;align-items:center;gap:9px;font-weight:600;font-size:13px;"><span style="width:2px;height:14px;background:#141414;"></span>Tiempo prom.</div>
+          <div style="display:flex;align-items:baseline;gap:6px;margin-top:10px;"><span style="font-size:36px;font-weight:600;line-height:1;color:{{ avgColor }};">{{ avgMin }}</span><span style="font-size:18px;color:#8B929C;">min</span><i class="ti {{ avgArrow }}" style="font-size:16px;color:{{ avgArrowColor }};"></i></div>
+          <div style="font-size:10.5px;color:#8B929C;margin-top:8px;">Meta de atención: 4 min</div>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;margin:20px 0 10px;">
+        <div style="font-size:10px;font-weight:600;letter-spacing:.24em;color:#8B929C;">CALIDAD Y EXPERIENCIA</div>
+        <button onClick="{{ openNps }}" title="Ver NPS ponderado" style="background:#C7E2F3;color:#141414;font-size:11.5px;font-weight:600;padding:5px 12px;border-radius:3px;border:0;cursor:pointer;" style-hover="background:#B3D6EE">NPS: {{ nps }}</button>
+      </div>
+      <div onClick="{{ openMood }}" style="border:1px solid #E3E5E8;border-radius:6px;padding:16px 0 0;cursor:pointer;display:flex;flex-direction:column;" style-hover="border-color:#CFD2D7">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:0 18px;">
+          <div style="display:flex;align-items:center;gap:9px;font-weight:600;font-size:13px;"><span style="width:2px;height:14px;background:#141414;"></span>Ánimo y sentimiento</div>
+          <div style="display:flex;gap:14px;font-size:9px;font-weight:600;letter-spacing:.08em;color:#9AA1AA;"><span style="display:flex;align-items:center;gap:4px;"><span style="width:6px;height:6px;border-radius:50%;background:#BCDCF1;"></span>ORGA</span><span style="display:flex;align-items:center;gap:4px;"><span style="width:6px;height:6px;border:1.5px solid #BCDCF1;"></span>MECA</span></div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));height:300px;margin-top:4px;">
+          <sc-for list="{{ moods }}" as="m" hint-placeholder-count="5">
+            <div style="position:relative;border-right:{{ m.divider }};display:flex;flex-direction:column;justify-content:flex-end;align-items:center;padding-bottom:8px;">
+              <div style="display:flex;align-items:flex-end;gap:14px;height:250px;">
+                <div style="display:flex;flex-direction:column;align-items:center;height:{{ m.orgaH }};transition:height .6s ease;"><span style="width:10px;height:10px;border-radius:50%;background:#BCDCF1;flex:none;"></span><span style="flex:1;width:1.5px;background:#C9D7E2;"></span></div>
+                <div style="display:flex;flex-direction:column;align-items:center;height:{{ m.mecaH }};transition:height .6s ease;"><span style="width:9px;height:9px;border:1.5px solid #BCDCF1;flex:none;background:#FFFFFF;"></span><span style="flex:1;width:1.5px;background:#C9D7E2;"></span></div>
+              </div>
+              <div style="font-size:13px;margin-top:6px;"><b style="font-weight:600;">{{ m.pct }}%</b> <span style="color:#8B929C;">{{ m.label }}</span></div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="margin-top:20px;border:1px solid #E3E5E8;border-radius:6px;display:grid;grid-template-columns:1fr 1fr;">
+        <div onClick="{{ openThemes }}" style="padding:16px 18px 18px;border-right:1px solid #E3E5E8;cursor:pointer;" style-hover="background:#FAFAFA">
+          <div style="display:flex;align-items:center;gap:9px;font-weight:600;font-size:13px;margin-bottom:10px;"><span style="width:2px;height:14px;background:#141414;"></span>Temas</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;grid-auto-flow:column;grid-template-rows:repeat(4,auto);row-gap:12px;column-gap:16px;">
+            <sc-for list="{{ themes }}" as="t" hint-placeholder-count="8">
+              <div style="display:flex;align-items:center;gap:8px;font-size:11.5px;"><span style="color:#A3A9B1;width:12px;">{{ t.n }}.</span><span style="font-weight:{{ t.weight }};">{{ t.text }}</span><i class="ti {{ t.arrow }}" style="font-size:11px;color:{{ t.arrowColor }};"></i></div>
+            </sc-for>
+          </div>
+        </div>
+        <div onClick="{{ openActions }}" style="padding:16px 18px 18px;cursor:pointer;" style-hover="background:#FAFAFA">
+          <div style="display:flex;align-items:center;gap:9px;font-weight:600;font-size:13px;margin-bottom:10px;"><span style="width:2px;height:14px;background:#141414;"></span>Acciones</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;grid-auto-flow:column;grid-template-rows:repeat(4,auto);row-gap:12px;column-gap:16px;">
+            <sc-for list="{{ actions }}" as="t" hint-placeholder-count="8">
+              <div style="display:flex;align-items:center;gap:8px;font-size:11.5px;"><span style="color:#A3A9B1;width:12px;">{{ t.n }}.</span><span style="font-weight:{{ t.weight }};">{{ t.text }}</span><i class="ti {{ t.arrow }}" style="font-size:11px;color:{{ t.arrowColor }};"></i></div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+      <div style="font-size:10.5px;color:#8B929C;margin-top:12px;">Ejemplo ilustrativo de BOb configurado sobre canales de Ecopetrol. Las cifras son de referencia, no datos reales.</div>
+    </main>
+
+    <aside style="border-left:1px solid #E6E7EA;padding:20px 16px 24px 18px;display:flex;flex-direction:column;gap:24px;">
+      <div>
+        <div style="font-size:10px;font-weight:600;letter-spacing:.24em;color:#8B929C;margin:4px 0 16px;">RENDIMIENTO</div>
+        <div style="position:relative;border:1px solid #E3E5E8;border-radius:6px;">
+          <div style="position:absolute;top:-10px;bottom:-10px;right:62px;width:52px;border:2px solid #BCDCF1;border-radius:8px;pointer-events:none;"></div>
+          <div style="display:flex;align-items:center;height:52px;padding:0 8px 0 12px;border-bottom:1px solid #ECEEF0;">
+            <div style="flex:1;display:flex;align-items:center;gap:9px;font-weight:600;font-size:13px;"><span style="width:2px;height:14px;background:#141414;"></span>Estadísticas</div>
+            <div style="width:44px;"></div>
+            <div title="{{ colA }}" style="width:58px;text-align:center;"><i class="ti ti-user-circle" style="font-size:19px;"></i></div>
+            <div title="Agentes IA · BOb" style="width:58px;text-align:center;"><i class="ti ti-cpu" style="font-size:19px;"></i></div>
+            <div title="{{ colC }}" style="width:58px;text-align:center;"><i class="ti {{ colCIcon }}" style="font-size:19px;"></i></div>
+          </div>
+          <sc-for list="{{ statTop }}" as="r" hint-placeholder-count="3">
+            <div style="display:flex;align-items:center;height:40px;padding:0 8px 0 12px;border-bottom:1px solid #ECEEF0;font-size:12px;">
+              <div style="flex:1;display:flex;align-items:center;gap:6px;font-weight:{{ r.w }};"><sc-if value="{{ r.dot }}" hint-placeholder-val="{{ false }}"><span style="width:6px;height:6px;border-radius:50%;background:#2DA44E;"></span></sc-if>{{ r.label }}</div>
+              <div style="width:44px;"></div>
+              <div style="width:58px;text-align:center;color:{{ r.aColor }};">{{ r.a }}</div>
+              <button onClick="{{ r.bOpen }}" style="width:58px;text-align:center;background:none;border:0;font:inherit;font-size:12px;cursor:pointer;text-decoration:{{ r.bDeco }};padding:0;">{{ r.b }}</button>
+              <div style="width:58px;text-align:center;color:#A3A9B1;">{{ r.c }}</div>
+            </div>
+          </sc-for>
+          <sc-for list="{{ statRows }}" as="r" hint-placeholder-count="5">
+            <div style="display:flex;align-items:center;height:40px;padding:0 8px 0 12px;border-bottom:{{ r.border }};font-size:12px;">
+              <div style="flex:1;display:flex;align-items:center;gap:8px;"><i class="ti {{ r.icon }}" style="font-size:15px;color:#8B929C;"></i>{{ r.label }}</div>
+              <div style="width:44px;text-align:right;font-weight:600;">{{ r.total }}</div>
+              <div style="width:58px;text-align:center;color:{{ r.aColor }};font-weight:{{ r.aW }};">{{ r.a }}</div>
+              <div style="width:58px;text-align:center;">{{ r.b }}</div>
+              <div style="width:58px;text-align:center;color:#A3A9B1;">{{ r.c }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="border:1px solid #E3E5E8;border-radius:6px;padding:14px 14px 6px;">
+        <div style="display:flex;gap:18px;font-size:12.5px;margin-bottom:8px;">
+          <button onClick="{{ showFaq }}" style="background:none;border:0;padding:0;cursor:pointer;font-weight:{{ faqW }};color:{{ faqC }};">Preguntas frecuentes</button>
+          <button onClick="{{ showWords }}" style="background:none;border:0;padding:0;cursor:pointer;font-weight:{{ wordsW }};color:{{ wordsC }};">Palabras populares</button>
+        </div>
+        <sc-for list="{{ faqList }}" as="q" hint-placeholder-count="4">
+          <div style="display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:{{ q.border }};font-size:12px;"><span>{{ q.text }} <i class="ti {{ q.arrow }}" style="font-size:11px;color:{{ q.arrowColor }};"></i></span><span style="font-weight:600;">{{ q.count }}</span></div>
+        </sc-for>
+      </div>
+    </aside>
+  </div>
+
+  <sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeDrawer }}" style="position:absolute;inset:50px 0 0 0;background:rgba(20,20,20,.14);z-index:5;"></div>
+    <div style="position:absolute;top:50px;right:0;bottom:0;width:470px;max-width:100%;background:#FFFFFF;border-left:1px solid #E6E7EA;box-shadow:-12px 0 32px rgba(0,0,0,.08);z-index:6;display:flex;flex-direction:column;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding:16px 18px 10px;">
+        <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;"><div style="display:flex;align-items:baseline;gap:10px;"><span style="font-size:17px;font-weight:600;line-height:1.25;">{{ dr.title }}</span><span style="font-size:11px;color:#8B929C;white-space:nowrap;">{{ range }}</span></div><div style="font-size:9.5px;font-weight:600;letter-spacing:.2em;color:#8B929C;margin-top:3px;">{{ dr.sub }}</div></div>
+        <div style="display:flex;align-items:center;gap:12px;"><span style="font-size:22px;font-weight:600;">{{ dr.value }}</span><button onClick="{{ closeDrawer }}" style="background:none;border:0;cursor:pointer;padding:0;"><i class="ti ti-x" style="font-size:18px;"></i></button></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px;padding:0 18px;border-bottom:1px solid #ECEEF0;">
+        <sc-for list="{{ tabs }}" as="tb" hint-placeholder-count="6">
+          <button onClick="{{ tb.select }}" title="{{ tb.label }}" style="position:relative;background:none;border:0;border-bottom:{{ tb.border }};padding:9px 2px;cursor:pointer;display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;">
+            <sc-if value="{{ tb.isText }}" hint-placeholder-val="{{ true }}">{{ tb.label }}</sc-if>
+            <i class="ti {{ tb.icon }}" style="font-size:16px;"></i>
+            <sc-if value="{{ tb.hasBadge }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:2px;right:-10px;min-width:14px;height:14px;border-radius:7px;background:#C4363C;color:#FFFFFF;font-size:8.5px;display:flex;align-items:center;justify-content:center;padding:0 3px;">{{ tb.badge }}</span></sc-if>
+          </button>
+        </sc-for>
+      </div>
+      <div style="flex:1;overflow:auto;padding:16px 18px 20px;display:flex;flex-direction:column;gap:12px;font-size:12.5px;line-height:1.55;">
+        <sc-if value="{{ show.sessions }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:9.5px;font-weight:600;letter-spacing:.2em;color:#8B929C;">CONTEO DE SESIONES EN VIVO</div>
+          <div style="display:flex;align-items:baseline;gap:10px;"><span style="font-size:34px;font-weight:600;color:#C4363C;">{{ totalFmt }}</span><span style="font-size:11.5px;color:#8B929C;">↑ 4% últimos 30 min</span></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div style="border:1px solid #ECEEF0;border-radius:6px;padding:10px 12px;"><div style="font-size:9px;font-weight:600;letter-spacing:.16em;color:#8B929C;">PICO HOY</div><div style="font-size:20px;font-weight:600;">{{ peak }}</div><div style="font-size:11px;color:#8B929C;">{{ peakNote }}</div></div>
+            <div style="border:1px solid #ECEEF0;border-radius:6px;padding:10px 12px;"><div style="font-size:9px;font-weight:600;letter-spacing:.16em;color:#8B929C;">PROMEDIO 7 DÍAS</div><div style="font-size:20px;font-weight:600;">{{ avg7 }}</div><div style="font-size:11px;color:#8B929C;">Línea base de referencia</div></div>
+          </div>
+          <div style="font-size:9.5px;font-weight:600;letter-spacing:.2em;color:#8B929C;margin-top:6px;">DISTRIBUCIÓN POR CANAL</div>
+          <sc-for list="{{ breakdown }}" as="b" hint-placeholder-count="7">
+            <div style="display:grid;grid-template-columns:minmax(0,170px) minmax(0,1fr) 44px;gap:10px;align-items:center;font-size:12px;"><span>{{ b.name }}</span><span style="height:6px;background:#EEF0F2;border-radius:3px;overflow:hidden;display:block;"><span style="display:block;height:100%;width:{{ b.w }};background:#141414;"></span></span><span style="text-align:right;font-weight:600;">{{ b.count }}</span></div>
+          </sc-for>
+          <div style="font-size:9.5px;font-weight:600;letter-spacing:.2em;color:#8B929C;margin-top:6px;">PATRÓN DETECTADO</div>
+          <div style="background:#F7F8F9;border-radius:6px;padding:12px;">{{ sessionsPattern }}</div>
+        </sc-if>
+        <sc-if value="{{ show.avg }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:9.5px;font-weight:600;letter-spacing:.2em;color:#8B929C;">TIEMPO DE ATENCIÓN POR CANAL</div>
+          <sc-for list="{{ avgRows }}" as="a" hint-placeholder-count="5">
+            <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #ECEEF0;"><span>{{ a.name }}</span><span style="font-weight:600;color:{{ a.color }};">{{ a.time }}</span></div>
+          </sc-for>
+          <div style="font-size:9.5px;font-weight:600;letter-spacing:.2em;color:#8B929C;margin-top:6px;">PATRÓN DETECTADO</div>
+          <div style="background:#F7F8F9;border-radius:6px;padding:12px;">{{ avgPattern }}</div>
+        </sc-if>
+        <sc-if value="{{ show.channel }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:9.5px;font-weight:600;letter-spacing:.2em;color:#8B929C;">SALUD TÉCNICA</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div style="border:1px solid #ECEEF0;border-radius:6px;padding:10px 12px;"><div style="font-size:24px;font-weight:600;color:{{ dr.healthColor }};">{{ dr.health }}%</div><div style="font-size:11px;color:#8B929C;">Desempeño general</div></div>
+            <div style="border:1px solid #ECEEF0;border-radius:6px;padding:10px 12px;"><div style="font-size:15px;font-weight:700;letter-spacing:.06em;color:{{ dr.statusColor }};padding-top:5px;">{{ dr.status }}</div><div style="font-size:11px;color:#8B929C;margin-top:6px;">Estado del canal</div></div>
+          </div>
+          <div style="font-size:9.5px;font-weight:600;letter-spacing:.2em;color:#8B929C;margin-top:6px;">MÉTRICAS DE INFRAESTRUCTURA</div>
+          <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;">
+            <sc-for list="{{ dr.infra }}" as="i" hint-placeholder-count="3">
+              <div style="border:1px solid #ECEEF0;border-radius:6px;padding:9px 10px;"><div style="font-size:15px;font-weight:600;color:{{ i.color }};">{{ i.v }}</div><div style="font-size:10.5px;color:#8B929C;">{{ i.k }}</div></div>
+            </sc-for>
+          </div>
+          <div style="font-size:9.5px;font-weight:600;letter-spacing:.2em;color:#8B929C;margin-top:6px;">IMPACTO EN EL NEGOCIO</div>
+          <sc-for list="{{ dr.impact }}" as="l" hint-placeholder-count="2">
+            <div style="color:{{ l.color }};"><b>{{ l.strong }}</b> {{ l.text }}</div>
+          </sc-for>
+          <div><b>Tendencia:</b> {{ dr.trend }}</div>
+          <div style="font-size:9.5px;font-weight:600;letter-spacing:.2em;color:#8B929C;margin-top:6px;">CONCENTRACIÓN POR REGIÓN</div>
+          <sc-for list="{{ dr.regions }}" as="g" hint-placeholder-count="4">
+            <div style="display:grid;grid-template-columns:minmax(0,150px) minmax(0,1fr) 40px;gap:10px;align-items:center;font-size:12px;"><span>{{ g.name }}</span><span style="height:6px;background:#EEF0F2;border-radius:3px;overflow:hidden;display:block;"><span style="display:block;height:100%;width:{{ g.w }};background:{{ g.color }};"></span></span><span style="text-align:right;">{{ g.pct }}%</span></div>
+          </sc-for>
+          <div style="font-size:9.5px;font-weight:600;letter-spacing:.2em;color:#8B929C;margin-top:6px;">TRANSACCIÓN VINCULADA</div>
+          <div style="background:#F7F8F9;border-radius:6px;padding:12px;">{{ dr.linked }}</div>
+        </sc-if>
+        <sc-if value="{{ show.mood }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:9.5px;font-weight:600;letter-spacing:.2em;color:#8B929C;">DISTRIBUCIÓN DEL SENTIMIENTO</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div style="border:1px solid #ECEEF0;border-radius:6px;padding:10px 12px;"><div style="font-size:9px;font-weight:600;letter-spacing:.16em;color:#8B929C;">POSITIVO</div><div style="font-size:24px;font-weight:600;color:#3F8F4F;">{{ posPct }}%</div><div style="font-size:11px;color:#8B929C;">Satisfecho + Conforme + Feliz</div></div>
+            <div style="border:1px solid #ECEEF0;border-radius:6px;padding:10px 12px;"><div style="font-size:9px;font-weight:600;letter-spacing:.16em;color:#8B929C;">NEGATIVO</div><div style="font-size:24px;font-weight:600;color:#C4363C;">{{ negPct }}%</div><div style="font-size:11px;color:#8B929C;">Molesto + Insatisfecho</div></div>
+          </div>
+          <sc-for list="{{ moods }}" as="m" hint-placeholder-count="5">
+            <div style="display:grid;grid-template-columns:100px minmax(0,1fr) 40px;gap:10px;align-items:center;font-size:12px;"><span>{{ m.label }}</span><span style="height:6px;background:#EEF0F2;border-radius:3px;overflow:hidden;display:block;"><span style="display:block;height:100%;width:{{ m.w }};background:{{ m.color }};"></span></span><span style="text-align:right;">{{ m.pct }}%</span></div>
+          </sc-for>
+          <div style="font-size:9.5px;font-weight:600;letter-spacing:.2em;color:#8B929C;margin-top:6px;">QUÉ MUEVE EL SENTIMIENTO</div>
+          <div><b>↑ Positivo:</b> {{ posWhy }}</div>
+          <div><b>↓ Negativo:</b> {{ negWhy }}</div>
+          <div style="font-size:9.5px;font-weight:600;letter-spacing:.2em;color:#8B929C;margin-top:6px;">SEGMENTO</div>
+          <sc-for list="{{ segs }}" as="g" hint-placeholder-count="4">
+            <div style="display:grid;grid-template-columns:minmax(0,170px) minmax(0,1fr) 44px;gap:10px;align-items:center;font-size:12px;"><span>{{ g.n }}</span><span style="height:6px;background:#EEF0F2;border-radius:3px;overflow:hidden;display:block;"><span style="display:block;height:100%;width:{{ g.w }};background:#C4363C;"></span></span><span style="text-align:right;">{{ g.v }}% neg.</span></div>
+          </sc-for>
+        </sc-if>
+        <sc-if value="{{ show.asa }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#F7F8F9;border-radius:6px;padding:12px;"><b>Vista de flota.</b> Los agentes de IA son instancias, no personas: no hay historial individual. La identidad es el <b>build</b> y el desempeño se <b>comparte en toda la flota</b>.</div>
+          <div style="font-size:9.5px;font-weight:600;letter-spacing:.2em;color:#8B929C;margin-top:4px;">EN OPERACIÓN</div>
+          <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;">
+            <sc-for list="{{ asaKpis }}" as="k" hint-placeholder-count="3">
+              <div style="border:1px solid #ECEEF0;border-radius:6px;padding:9px 10px;"><div style="font-size:20px;font-weight:600;">{{ k.v }}</div><div style="font-size:9.5px;font-weight:600;letter-spacing:.14em;color:#8B929C;">{{ k.k }}</div></div>
+            </sc-for>
+          </div>
+          <sc-for list="{{ asaList }}" as="a" hint-placeholder-count="5">
+            <div style="border:1px solid #ECEEF0;border-radius:6px;">
+              <button onClick="{{ a.toggle }}" style="width:100%;display:grid;grid-template-columns:10px 96px 52px minmax(0,1fr) 34px 16px;gap:8px;align-items:center;padding:9px 10px;background:none;border:0;cursor:pointer;font:inherit;font-size:12px;text-align:left;">
+                <span style="width:7px;height:7px;border-radius:50%;background:{{ a.dot }};"></span><span style="font-weight:600;">{{ a.id }}</span><span style="color:#8B929C;">{{ a.build }}</span><span>{{ a.ch }}</span><span style="text-align:right;">{{ a.cap }}</span><i class="ti {{ a.chev }}" style="font-size:11px;"></i>
+              </button>
+              <sc-if value="{{ a.open }}" hint-placeholder-val="{{ false }}">
+                <div style="padding:0 10px 10px;display:flex;flex-direction:column;gap:8px;">
+                  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;">
+                    <sc-for list="{{ a.metrics }}" as="m" hint-placeholder-count="3"><div style="background:#F7F8F9;border-radius:5px;padding:7px 9px;"><div style="font-size:14px;font-weight:600;color:{{ m.color }};">{{ m.v }}</div><div style="font-size:10.5px;color:#8B929C;">{{ m.k }}</div></div></sc-for>
+                  </div>
+                  <div style="font-size:12px;"><b>Atiende:</b> {{ a.scope }}</div>
+                </div>
+              </sc-if>
+            </div>
+          </sc-for>
+          <div style="font-size:9.5px;font-weight:600;letter-spacing:.2em;color:#8B929C;margin-top:4px;">AGREGADO DE LA FLOTA</div>
+          <div style="background:#F7F8F9;border-radius:6px;padding:12px;">{{ fleetNote }}</div>
+        </sc-if>
+        <sc-if value="{{ show.themes }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:9.5px;font-weight:600;letter-spacing:.2em;color:#8B929C;">FRECUENCIA POR TEMA</div>
+          <sc-for list="{{ themeFreq }}" as="t" hint-placeholder-count="8">
+            <div style="display:grid;grid-template-columns:minmax(0,200px) minmax(0,1fr) 40px;gap:10px;align-items:center;font-size:12px;"><span>{{ t.name }} <i class="ti {{ t.arrow }}" style="font-size:11px;color:{{ t.arrowColor }};"></i></span><span style="height:6px;background:#EEF0F2;border-radius:3px;overflow:hidden;display:block;"><span style="display:block;height:100%;width:{{ t.w }};background:#141414;"></span></span><span style="text-align:right;font-weight:600;">{{ t.count }}</span></div>
+          </sc-for>
+          <div style="font-size:9.5px;font-weight:600;letter-spacing:.2em;color:#8B929C;margin-top:6px;">PATRÓN DETECTADO</div>
+          <div style="background:#F7F8F9;border-radius:6px;padding:12px;">{{ themesPattern }}</div>
+        </sc-if>
+        <sc-if value="{{ show.actionsFreq }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:9.5px;font-weight:600;letter-spacing:.2em;color:#8B929C;">FRECUENCIA POR ACCIÓN</div>
+          <sc-for list="{{ actionFreq }}" as="t" hint-placeholder-count="8">
+            <div style="display:grid;grid-template-columns:minmax(0,200px) minmax(0,1fr) 40px;gap:10px;align-items:center;font-size:12px;"><span>{{ t.name }} <i class="ti {{ t.arrow }}" style="font-size:11px;color:{{ t.arrowColor }};"></i></span><span style="height:6px;background:#EEF0F2;border-radius:3px;overflow:hidden;display:block;"><span style="display:block;height:100%;width:{{ t.w }};background:#141414;"></span></span><span style="text-align:right;font-weight:600;">{{ t.count }}</span></div>
+          </sc-for>
+          <div style="font-size:9.5px;font-weight:600;letter-spacing:.2em;color:#8B929C;margin-top:6px;">PATRÓN DETECTADO</div>
+          <div style="background:#F7F8F9;border-radius:6px;padding:12px;">{{ actionsPattern }}</div>
+        </sc-if>
+        <sc-if value="{{ show.nps }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:9.5px;font-weight:600;letter-spacing:.2em;color:#8B929C;">NPS PONDERADO · ESCALA 0–10</div>
+          <div style="display:flex;gap:16px;align-items:center;"><span style="font-size:40px;font-weight:600;">{{ nps }}</span><div style="display:flex;flex-direction:column;gap:3px;font-size:11.5px;"><div><b>H</b> Calificación del usuario · peso <b>4×</b></div><div><b>B</b> Calificación inferida por BOb · peso <b>1×</b></div><div style="color:#8B929C;">(Σ usuario×4 + Σ BOb×1) ÷ peso total</div></div></div>
+          <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;">
+            <sc-for list="{{ npsGroups }}" as="g" hint-placeholder-count="3"><div style="border:1px solid #ECEEF0;border-radius:6px;padding:9px 10px;"><div style="font-size:20px;font-weight:600;color:{{ g.color }};">{{ g.v }}</div><div style="font-size:10.5px;color:#8B929C;">{{ g.k }}</div></div></sc-for>
+          </div>
+          <div style="font-size:9.5px;font-weight:600;letter-spacing:.2em;color:#8B929C;margin-top:6px;">CALIFICACIONES RECIENTES</div>
+          <sc-for list="{{ npsEvents }}" as="e" hint-placeholder-count="8">
+            <div style="display:grid;grid-template-columns:42px 34px 28px minmax(0,1fr);gap:8px;align-items:center;font-size:12px;padding:5px 0;border-bottom:1px solid #F1F2F4;"><span style="color:#8B929C;">{{ e.time }}</span><span style="background:{{ e.srcBg }};color:{{ e.srcColor }};border-radius:3px;font-size:10px;font-weight:700;text-align:center;padding:1px 0;">{{ e.src }}</span><span style="font-weight:700;color:{{ e.scoreColor }};">{{ e.score }}</span><span><b style="font-weight:600;">{{ e.label }}</b> · {{ e.ctx }}</span></div>
+          </sc-for>
+        </sc-if>
+        <sc-if value="{{ show.list }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:9.5px;font-weight:600;letter-spacing:.2em;color:#8B929C;">{{ listTitle }}</div>
+          <sc-for list="{{ listItems }}" as="it" hint-placeholder-count="4">
+            <div style="border:1px solid #ECEEF0;border-radius:6px;padding:11px 12px;display:flex;flex-direction:column;gap:4px;">
+              <div style="display:flex;justify-content:space-between;gap:8px;font-size:9.5px;font-weight:600;letter-spacing:.12em;color:#8B929C;"><span style="display:flex;align-items:center;gap:6px;"><span style="width:6px;height:6px;border-radius:50%;background:{{ it.dot }};"></span>{{ it.tag }}</span><span style="letter-spacing:0;font-weight:500;">{{ it.time }}</span></div>
+              <div style="font-weight:600;font-size:13px;">{{ it.title }}</div>
+              <div style="color:#5C636D;">{{ it.desc }}</div>
+              <sc-if value="{{ it.hasCta }}" hint-placeholder-val="{{ false }}"><button onClick="{{ it.run }}" style="align-self:flex-start;margin-top:4px;background:{{ it.ctaBg }};color:{{ it.ctaColor }};border:1px solid #141414;border-radius:4px;padding:5px 12px;font-size:11.5px;font-weight:600;cursor:pointer;">{{ it.cta }}</button></sc-if>
+            </div>
+          </sc-for>
+        </sc-if>
+        <sc-if value="{{ show.bob }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:9.5px;font-weight:600;letter-spacing:.2em;color:#8B929C;">LECTURA DE BOB</div>
+          <sc-for list="{{ bobRead }}" as="p" hint-placeholder-count="3"><div style="font-size:13px;line-height:1.6;">{{ p }}</div></sc-for>
+          <div style="font-size:11px;color:#8B929C;border-top:1px solid #ECEEF0;padding-top:10px;">{{ bobBasis }}</div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1240,&quot;height&quot;:880},&quot;caso&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:0,&quot;min&quot;:0,&quot;max&quot;:1,&quot;tsType&quot;:&quot;number&quot;},&quot;paso&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:0,&quot;min&quot;:-1,&quot;max&quot;:5,&quot;tsType&quot;:&quot;number&quot;},&quot;liveUpdates&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;onUser&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;() =&gt; void&quot;}}">
+const B_RED = '#C4363C', B_GREEN = '#8FC79A', B_AMBER = '#C9A24A', B_MUTED = '#A3A9B1';
+const B_MOODS = [{ label: 'Molesto', h: [12, 42], orga: 2, meca: 1, color: B_RED }, { label: 'Insatisfecho', h: [40, 16], orga: 13, meca: 0, color: B_AMBER }, { label: 'Satisfecho', h: [150, 118], orga: 52, meca: 5, color: '#141414' }, { label: 'Conforme', h: [58, 82], orga: 19, meca: 3, color: '#B9E0BF' }, { label: 'Feliz', h: [18, 20], orga: 5, meca: 0, color: '#B9E0BF' }];
+const B_BASE = [3, 13, 57, 22, 5];
+const bFmtK = n => (n / 1000).toFixed(1).replace('.', ',') + 'K';
+const BOB_CASES = [
+  { name: 'PROVEEDORES Y CONTRATISTAS', seg: 'Abastecimiento', worst: 'correo', colA: 'Asesores', colC: 'Mesa de contratistas', colCIcon: 'ti-helmet', peak: '1,4K', peakNote: '08:00 – 08:30 · semana de pagos', avg7: '1,1K',
+    ch: [
+      { id: 'portal', name: 'Portal de proveedores', icon: 'ti-world-www', base: 412, health: 88, status: 'SALUDABLE', infra: [['520ms', 'Latencia', 0], ['3,1%', 'Tasa de error', 0], ['99,8%', 'Disponibilidad', 0]], trend: '→ Estable', extra: [['38%', 'de las sesiones terminan en un correo o una llamada por la misma pregunta.', 1]], regions: [['Bogotá D.C.', 36], ['Santander', 18], ['Meta', 12], ['Bolívar', 9]], linked: '126 sesiones consultaron el estado de una factura. 78 ya estaban pagadas: el soporte de pago no aparece en el portal.', sent: [3, 14, 55, 22, 6], avg: 3 },
+      { id: 'whatsapp', name: 'WhatsApp', icon: 'ti-brand-whatsapp', base: 268, health: 93, status: 'SALUDABLE', infra: [['610ms', 'Latencia', 0], ['1,8%', 'Tasa de error', 0], ['99,9%', 'Disponibilidad', 0]], trend: '↑ Mejorando', extra: [['', 'El agente de IA responde el estado del pago con la traza de la factura en el ERP.', 0]], regions: [['Meta', 24], ['Santander', 21], ['Casanare', 15], ['Bogotá D.C.', 14]], linked: '92 conversaciones vinculadas a facturas en trámite. 81 se resolvieron con el estado real (radicada, en revisión, programada, pagada) sin pasar a un asesor.', sent: [2, 10, 58, 24, 6], avg: 2 },
+      { id: 'correo', name: 'Correo de facturación', icon: 'ti-mail', base: 231, health: 64, status: 'DEGRADADO', infra: [['18 h', 'Primera respuesta', 1], ['860', 'Mensajes en cola', 1], ['99,9%', 'Disponibilidad', 0]], trend: '↓ En descenso', extra: [['7 de 10', 'son consultas que el portal ya puede responder.', 1], ['⚠', 'La cola del correo empuja a los proveedores a llamar a la línea de atención.', 1]], regions: [['Bogotá D.C.', 29], ['Santander', 22], ['Meta', 17], ['Casanare', 11]], linked: '312 correos piden el soporte de pago de facturas ya canceladas. Otros 141 preguntan por qué se devolvió una factura.', sent: [9, 22, 48, 17, 4], avg: 18, unit: 'h (1.ª respuesta)' },
+      { id: 'linea', name: 'Línea de atención', icon: 'ti-phone-call', base: 198, health: 71, status: 'EN ALERTA', infra: [['780ms', 'Latencia', 0], ['12,4%', 'Abandono', 1], ['99,5%', 'Disponibilidad', 0]], trend: '↓ En descenso', extra: [['9 min', 'de espera frente a una meta de 4.', 1], ['2×', 'duran las llamadas sobre retenciones.', 1]], regions: [['Bogotá D.C.', 33], ['Santander', 19], ['Antioquia', 11], ['Bolívar', 8]], linked: '64 llamadas preguntan por retenciones aplicadas. 41 corresponden a certificados que el sistema ya generó.', sent: [7, 19, 50, 20, 4], avg: 9 },
+      { id: 'campo', name: 'Mesa de contratistas en campo', icon: 'ti-helmet', base: 142, health: 90, status: 'SALUDABLE', infra: [['450ms', 'Latencia', 0], ['2,6%', 'Tasa de error', 0], ['99,7%', 'Disponibilidad', 0]], trend: '→ Estable', extra: [['23', 'consultas por carga de la planilla de seguridad social.', 0]], regions: [['Meta', 31], ['Casanare', 22], ['Santander', 18], ['Putumayo', 9]], linked: '23 contratistas no pueden cargar la planilla de seguridad social: el portal rechaza archivos de más de 5 MB.', sent: [4, 14, 56, 21, 5], avg: 5 }],
+    extra: [['Redes sociales', 58], ['Chat web BOb', 47]],
+    themes: [['Estado de pago', 1, 'up'], ['Radicación de facturas', 1, 'up'], ['Certificados tributarios', 0], ['Inscripción de proveedores', 0], ['Procesos de contratación', 0, 'down'], ['Retenciones', 0], ['Seguridad social', 0], ['Actualización de datos', 0]], themeCounts: [512, 338, 214, 186, 152, 131, 98, 74],
+    actions: [['Consulta estado de pago', 1, 'up'], ['Radica factura', 1, 'up'], ['Descarga certificado', 0], ['Actualiza documentos', 0], ['Consulta proceso abierto', 0], ['Reporta pago no recibido', 0, 'up'], ['Cambia cuenta bancaria', 0], ['Radica PQRS', 0]], actionCounts: [488, 341, 226, 190, 165, 142, 97, 72],
+    faq: [['¿Ya me pagaron la factura?', 402], ['¿Por qué me devolvieron la factura?', 176, 'up'], ['¿Dónde descargo el certificado de retención?', 139], ['¿Cómo actualizo mi RUT?', 61, 'down']],
+    words: [['pago', 644], ['factura', 512], ['orden de compra', 288, 'up'], ['certificado', 231], ['retención', 188, 'up'], ['RUT', 96], ['planilla', 71]],
+    alerts: [['Crítica', 'Correo de facturación', '860 mensajes sin respuesta y 18 h de primera respuesta', 'Afecta la percepción de pago a tiempo en pymes y proveedores locales.', 'hace 3 min'], ['Alta', 'Línea de atención', 'Espera de 9 min frente a una meta de 4', 'Pico por el cierre de pagos de la quincena.', 'hace 8 min'], ['Alta', 'Radicación', 'Devoluciones por orden de compra mal referenciada en 14%', 'Correlacionadas con 63 llamadas «¿por qué me devolvieron la factura?».', 'hace 12 min'], ['Media', 'Portal de proveedores', '38% de las sesiones repite la consulta por otro canal', 'El soporte de pago no se muestra para facturas canceladas.', 'hace 20 min']],
+    notifs: [['Reporte', 'Informe semanal de pagos a proveedores listo', 'Disponible para auditoría y seguimiento de plazos.', 'hace 15 min'], ['Abastecimiento', 'Nuevo proceso de contratación publicado', 'Mantenimiento de líneas de flujo · cierre en 6 días.', 'hace 42 min'], ['Configuración', 'Umbral de primera respuesta ajustado', 'Correo de facturación · alerta a partir de 8 h.', 'hace 1 h']],
+    acts: [['Publicar el soporte de pago en el portal y en WhatsApp', 'Responde en el primer contacto el 62% de las consultas por estado de pago.'], ['Activar respuesta automática en el correo de facturación', 'Contesta con el estado real de la factura y reduce la cola de 860 mensajes.'], ['Validar la orden de compra antes de radicar', 'Evita devoluciones por referencia incorrecta en el portal.']],
+    anom: [['Proveedor', 'Un mismo proveedor consulta 6 veces por el mismo pago', 'Pyme de Villavicencio · factura pagada el martes.', 'hace 5 min'], ['Región', 'Concentración inusual de consultas en Barrancabermeja', '2,8× el comportamiento habitual · cierre de contratos de mantenimiento.', 'hace 11 min'], ['Horario', 'Pico de radicaciones fuera de horario', '23:00 – 23:40 · 74 facturas radicadas antes del corte.', 'ayer']],
+    asa: [['ASA-WA-01', 'v4.2.1', 'WhatsApp', 3, 3, 'Estado de pagos, facturas y certificados.', ['66%', '0,2%', '5 s']], ['ASA-PORT-01', 'v4.2.1', 'Portal', 2, 2, 'Asistente del portal: radicación, documentos y procesos.', ['59%', '0,3%', '4 s']], ['ASA-MAIL-01', 'v3.9.4', 'Correo', 1, 2, 'Clasificación y respuesta de correos de facturación.', ['47%', '0,6%', '40 s']], ['ASA-VOZ-01', 'v3.9.4', 'Línea', 1, 1, 'IVR conversacional: estado de pago y retenciones.', ['38%', '0,8%', '12 s']], ['ASA-CAMPO-01', 'v4.1.8', 'Campo', 1, 1, 'Primer nivel para contratistas: acceso y planillas.', ['52%', '0,1%', '8 s']]],
+    fleetNote: 'Resueltas 61% · alucinación 0,3% · derivación a asesor 24% en 9 instancias aprovisionadas. Las consultas de estado de pago se responden con la traza de la factura en el ERP, no con texto generado.',
+    nps: [['10:52', 'H', 9, 'WhatsApp · estado de pago resuelto con soporte'], ['10:47', 'B', 6, 'Correo · sin respuesta en 18 h'], ['10:41', 'H', 5, 'Línea · espera de 11 min'], ['10:33', 'B', 8, 'Portal · factura radicada sin devolución'], ['10:28', 'H', 8, 'Mesa de campo · planilla cargada'], ['10:19', 'B', 4, 'Correo · factura devuelta sin explicación'], ['10:12', 'H', 7, 'Línea · certificado de retención enviado'], ['10:05', 'B', 9, 'WhatsApp · certificado descargado']],
+    statTop: [['Disponibles', 38, 8, 14], ['Tiempo de respuesta', '3 min', '6 s', '2 min'], ['Calidad de respuesta', 'Media', 'Alta', 'Alta']],
+    statRows: [['ti-circle-check', 'Resueltas', 100, '26%', '61%', '13%'], ['ti-phone-x', 'Abandonadas', 100, '79%', '16%', '5%', 1], ['ti-arrows-split-2', 'Desambiguación', 90, '31%', '55%', '14%'], ['ti-arrow-up-right', 'Escalamientos', 100, '49%', '24%', '27%'], ['ti-fingerprint', 'Alucinaciones', 3, '—', '100%', '—']],
+    sessionsPattern: 'El Portal de proveedores lidera el volumen, pero 1 de cada 3 sesiones pregunta por el estado de un pago y el 62% de esas facturas ya está pagada. La respuesta existe; el proveedor no la encuentra y vuelve por correo o por la línea.',
+    avgPattern: 'El Correo de facturación concentra la espera: 18 horas hasta la primera respuesta. La Línea de atención promedia 9 minutos frente a una meta de 4 y las llamadas sobre retenciones duran el doble.',
+    themesPattern: 'Estado de pago y Radicación de facturas suman el 30% de las conversaciones. Las menciones de devolución crecen con la quincena y coinciden con la alerta de órdenes de compra mal referenciadas.',
+    actionsPattern: 'Consultar el estado de un pago y radicar una factura suman el 48% de las acciones. «Reporta pago no recibido» sube: casi todos corresponden a pagos ya ejecutados sin soporte visible.',
+    posWhy: 'estado del pago resuelto en el primer contacto, factura radicada sin devolución, certificado descargado sin llamar.', negWhy: 'pagos que el proveedor no encuentra, correo sin respuesta en 18 h, devoluciones sin explicación.',
+    segs: [['Grandes contratistas', 18], ['Pymes', 31], ['Proveedores locales en regiones', 39]],
+    bobRead: ['Ecopetrol atiende hoy la semana de pagos a proveedores. El volumen sube en el portal y en WhatsApp, y el correo de facturación acumula 860 mensajes sin respuesta.', 'El origen probable está en el portal: las facturas pagadas no muestran el soporte de pago y el proveedor vuelve a preguntar por otro canal. Lo confirman 78 sesiones del portal y 312 correos.', 'Recomiendo publicar el soporte de pago en el portal y en WhatsApp antes de reforzar la línea. No tengo evidencia de retrasos reales en los pagos.'],
+    bobBasis: 'Basado en las sesiones del periodo, 4 alertas activas y 3 anomalías.' },
+  { name: 'PQRS Y COMUNIDADES', seg: 'Relacionamiento con el entorno', worst: 'redes', colA: 'Gestores sociales', colC: 'Oficinas de participación', colCIcon: 'ti-building-community', peak: '2,3K', peakNote: '18:00 – 19:00 · menciones sobre agua', avg7: '1,6K',
+    ch: [
+      { id: 'redes', name: 'Redes sociales', icon: 'ti-social', base: 610, health: 72, status: 'EN ALERTA', infra: [['182/h', 'Menciones', 1], ['3,4×', 'Agua · Meta', 1], ['100%', 'Captura', 0]], trend: '↑ En aumento', extra: [['3,4×', 'suben las menciones sobre agua en el Meta en 48 h.', 1], ['', 'La señal aparece en redes antes que en una PQRS formal.', 0]], regions: [['Meta', 38], ['Casanare', 21], ['Santander', 17], ['Putumayo', 9]], linked: '47 publicaciones mencionan turbidez del agua en dos veredas cercanas a una operación en el Meta. Ninguna tiene aún PQRS formal.', sent: [14, 24, 44, 15, 3], avg: 2, unit: 'h (respuesta)' },
+      { id: 'pqrs', name: 'Formulario web PQRS', icon: 'ti-file-alert', base: 520, health: 81, status: 'EN ALERTA', infra: [['4,2 días', 'Respuesta promedio', 1], ['9', 'Por vencer', 1], ['99,9%', 'Disponibilidad', 0]], trend: '→ Estable', extra: [['9', 'PQRS a 2 días de vencer el término legal.', 1]], regions: [['Casanare', 31], ['Meta', 28], ['Santander', 16], ['Bolívar', 8]], linked: '31 PQRS de empleo local pasan por tres áreas antes de responderse y tardan 8,6 días en promedio.', sent: [8, 22, 48, 18, 4], avg: 4, unit: 'días' },
+      { id: 'oficinas', name: 'Oficinas de participación', icon: 'ti-building-community', base: 340, health: 86, status: 'SALUDABLE', infra: [['12 min', 'Espera', 0], ['61%', 'Meta y Casanare', 0], ['6', 'Oficinas activas', 0]], trend: '↑ En aumento', extra: [['14', 'visitas sobre agua en la oficina de Acacías hoy.', 1]], regions: [['Meta', 34], ['Casanare', 27], ['Santander', 14], ['Putumayo', 8]], linked: '14 visitas presenciales sobre agua coinciden con las veredas que concentran las menciones en redes.', sent: [6, 18, 52, 20, 4], avg: 12 },
+      { id: 'linea', name: 'Línea gratuita', icon: 'ti-phone', base: 280, health: 70, status: 'DEGRADADO', infra: [['840ms', 'Latencia', 0], ['14,2%', 'Abandono', 1], ['99,3%', 'Disponibilidad', 0]], trend: '↓ En descenso', extra: [['71', 'llamadas hacen seguimiento a PQRS ya radicadas.', 1]], regions: [['Casanare', 29], ['Meta', 26], ['Santander', 18], ['Arauca', 7]], linked: '71 llamadas preguntan por PQRS radicadas: el ciudadano no recibe el estado de su solicitud.', sent: [9, 21, 47, 19, 4], avg: 6 },
+      { id: 'correo', name: 'Correo institucional', icon: 'ti-mail', base: 120, health: 90, status: 'SALUDABLE', infra: [['2,1 días', 'Primera respuesta', 0], ['38', 'Juntas y alcaldías', 0], ['99,9%', 'Disponibilidad', 0]], trend: '→ Estable', extra: [['38', 'mensajes de juntas de acción comunal y alcaldías.', 0]], regions: [['Meta', 27], ['Casanare', 24], ['Santander', 19], ['Bolívar', 10]], linked: 'Dos juntas de acción comunal del Meta solicitan reunión por el tema del agua.', sent: [5, 15, 56, 20, 4], avg: 2, unit: 'días' }],
+    extra: [['WhatsApp comunidades', 96], ['Visitas de campo', 41]],
+    themes: [['Empleo local', 1, 'up'], ['Movilidad y vías', 1], ['Agua y medio ambiente', 1, 'up'], ['Predios y servidumbres', 0], ['Inversión social', 0, 'down'], ['Seguridad', 0], ['Bienes y servicios locales', 0], ['Información de proyectos', 0]], themeCounts: [486, 336, 318, 241, 222, 118, 96, 73],
+    actions: [['Radica PQRS', 1, 'up'], ['Consulta estado de PQRS', 1], ['Reporta afectación ambiental', 0, 'up'], ['Pide información de vacantes', 0], ['Solicita reunión comunitaria', 0, 'up'], ['Reporta daño en vía', 0], ['Consulta servidumbre', 0], ['Pide certificado laboral', 0]], actionCounts: [452, 361, 288, 246, 174, 152, 101, 66],
+    faq: [['¿Cómo me postulo a las vacantes del proyecto?', 288], ['¿Qué pasó con el agua de la vereda?', 164, 'up'], ['¿Cuándo responden mi PQRS?', 141], ['¿Quién arregla la vía?', 88, 'down']],
+    words: [['empleo', 512], ['agua', 318, 'up'], ['vía', 266], ['carrotanque', 184, 'up'], ['servidumbre', 141], ['vacante', 120], ['polvo', 77]],
+    alerts: [['Crítica', 'Redes sociales', 'Menciones sobre agua en el Meta 3,4× sobre la línea base', 'Dos veredas cercanas a una operación · sin PQRS formal todavía.', 'hace 4 min'], ['Alta', 'PQRS', '9 PQRS a 2 días de vencer el término legal', 'Empleo local · Casanare y Meta.', 'hace 9 min'], ['Alta', 'Línea gratuita', 'Abandono en 14,2% (umbral 8%)', 'Llamadas de seguimiento a PQRS radicadas.', 'hace 15 min'], ['Media', 'Oficinas', '14 visitas sobre agua en la oficina de Acacías', 'Coincide con la señal en redes.', 'hace 22 min']],
+    notifs: [['Reporte', 'Informe mensual de PQRS listo', 'Disponible para el comité de relacionamiento.', 'hace 20 min'], ['Proyecto', 'Inicio de obra en un nuevo frente de Casanare', 'Se espera aumento de consultas por empleo local.', 'hace 1 h'], ['Configuración', 'Nueva categoría «Agua» en el clasificador', 'Separada de «Medio ambiente» a solicitud de HSE.', 'ayer']],
+    acts: [['Enviar equipo de HSE y relacionamiento a las dos veredas', 'La señal en redes y oficinas precede a una PQRS formal.'], ['Publicar un comunicado verificado en canales locales', 'Reduce la desinformación mientras se confirma la causa.'], ['Priorizar las 9 PQRS por vencer', 'Evita incumplir el término legal de respuesta.']],
+    anom: [['Vereda', 'Concentración inusual de menciones en dos veredas de Acacías', '3,4× el comportamiento de las últimas 4 semanas.', 'hace 6 min'], ['Canal', 'Pico de mensajes por WhatsApp comunidades', '22:00 – 23:00 · 38 mensajes sobre agua.', 'ayer'], ['Tema', 'Caída del sentimiento sobre inversión social en Casanare', '−12 pts en 7 días.', 'hace 2 h']],
+    asa: [['ASA-PQRS-01', 'v4.2.1', 'PQRS', 2, 2, 'Clasificación de PQRS y vínculo con el proyecto de origen.', ['86%', '0,0%', '3 s']], ['ASA-WA-01', 'v4.2.1', 'WhatsApp', 2, 2, 'Vacantes, estado de PQRS e información de proyectos.', ['54%', '0,2%', '6 s']], ['ASA-SOC-01', 'v4.1.8', 'Redes', 1, 1, 'Escucha y clasificación de menciones públicas.', ['—', '0,1%', '—']], ['ASA-VOZ-01', 'v3.9.4', 'Línea', 1, 2, 'IVR conversacional: seguimiento a PQRS radicadas.', ['41%', '0,6%', '11 s']]],
+    fleetNote: 'Resueltas 48% · alucinación 0,2% · derivación a gestor social 41% en 7 instancias aprovisionadas. Los temas sensibles, como agua o seguridad, se derivan siempre a una persona.',
+    nps: [['10:50', 'H', 8, 'Oficina Acacías · información de vacantes'], ['10:44', 'B', 3, 'Redes · agua turbia sin respuesta'], ['10:37', 'H', 6, 'Línea · seguimiento a PQRS'], ['10:30', 'B', 7, 'WhatsApp · estado de PQRS'], ['10:22', 'H', 9, 'Visita de campo · inversión social'], ['10:15', 'B', 4, 'Redes · tránsito de carrotanques'], ['10:08', 'H', 7, 'Correo · reunión con junta'], ['10:01', 'B', 8, 'WhatsApp · certificado laboral']],
+    statTop: [['Disponibles', 22, 6, 6], ['Tiempo de respuesta', '1 día', '8 s', '12 min'], ['Calidad de respuesta', 'Alta', 'Media', 'Alta']],
+    statRows: [['ti-circle-check', 'Resueltas', 100, '38%', '48%', '14%'], ['ti-phone-x', 'Abandonadas', 100, '72%', '21%', '7%', 1], ['ti-arrows-split-2', 'Desambiguación', 88, '29%', '57%', '14%'], ['ti-arrow-up-right', 'Escalamientos', 100, '44%', '41%', '15%'], ['ti-fingerprint', 'Alucinaciones', 2, '—', '100%', '—']],
+    sessionsPattern: 'Redes sociales lidera el volumen y adelanta lo que después llega como PQRS: las menciones sobre agua en el Meta subieron 3,4 veces en 48 horas, concentradas en dos veredas cercanas a una operación.',
+    avgPattern: 'El Formulario web PQRS responde en 4,2 días en promedio; las PQRS de empleo local tardan el doble porque pasan por tres áreas. La Línea gratuita recibe sobre todo seguimientos a PQRS ya radicadas.',
+    themesPattern: 'Empleo local es el tema más frecuente y estable. Agua y medio ambiente sube con fuerza en el Meta: aún no hay PQRS formal, la señal está en redes y en la oficina de participación.',
+    actionsPattern: 'Radicar y consultar PQRS suman el 44% de las acciones. «Reporta afectación ambiental» y «Solicita reunión comunitaria» suben en las mismas veredas.',
+    posWhy: 'respuesta en la primera visita, avances visibles en proyectos de inversión social, vacantes publicadas a tiempo.', negWhy: 'señales sobre agua sin respuesta, tránsito pesado en vías veredales, demoras en PQRS de empleo.',
+    segs: [['Meta', 47], ['Casanare', 33], ['Putumayo', 29], ['Santander', 21]],
+    bobRead: ['Las comunidades del Meta están hablando del agua. Las menciones en redes subieron 3,4 veces en 48 horas y la oficina de Acacías recibió 14 visitas sobre el mismo tema.', 'La señal se concentra en dos veredas cercanas a una operación. Todavía no hay una PQRS formal, lo que da una ventana para responder antes de que escale.', 'No tengo evidencia para atribuir la causa a la operación. Recomiendo enviar al equipo de HSE y relacionamiento a verificar y publicar información confirmada en canales locales.'],
+    bobBasis: 'Basado en las interacciones del periodo, 4 alertas activas y 3 anomalías.' }];
+
+class Component extends DCLogic {
+  state = { drawer: null, tab: 'activity', range: 'Ahora', faqTab: 'faq', off: {}, jit: {}, alerts: 4, done: {}, avgJ: 0, t: 0, asaOpen: null };
+  componentDidMount() {
+    this.applyStep();
+    this.iv = setInterval(() => {
+      if (this.props.liveUpdates === false) return;
+      const jit = {}; this.C().ch.forEach(c => { jit[c.id] = (this.state.jit[c.id] || 0) + Math.round(Math.random() * 4 - 1.6); });
+      this.setState(s => ({ jit, t: s.t + 1, avgJ: Math.max(-1, Math.min(2, s.avgJ + Math.round(Math.random() * 2 - 1))) }));
+    }, 3500);
+  }
+  componentDidUpdate(p) { if (p.paso !== this.props.paso || p.caso !== this.props.caso) this.applyStep(p.caso !== this.props.caso); }
+  componentWillUnmount() { clearInterval(this.iv); }
+  C() { return BOB_CASES[this.props.caso ?? 0] || BOB_CASES[0]; }
+  applyStep(reset) {
+    const p = this.props.paso ?? 0, c = this.C();
+    if (reset) this.setState({ off: {}, jit: {}, done: {}, asaOpen: null });
+    const m = { 0: [null, 'activity'], 1: [c.worst, 'activity'], 2: ['themes', 'activity'], 3: ['mood', 'activity'], 4: ['asa', 'activity'], 5: ['sessions', 'bob'] }[p];
+    if (m) this.setState({ drawer: m[0], tab: m[1], asaOpen: p === 4 ? c.asa[0][0] : this.state.asaOpen });
+  }
+  user = () => { if ((this.props.paso ?? 0) >= 0 && this.props.onUser) this.props.onUser(); };
+  renderVals() {
+    const s = this.state, c = this.C(), u = this.user;
+    const open = (drawer, tab = 'activity') => () => { u(); this.setState({ drawer, tab }); };
+    const CH = c.ch;
+    const counts = CH.map(x => Math.max(10, x.base + (s.jit[x.id] || 0)));
+    const extraTotal = c.extra.reduce((a, e) => a + e[1], 0);
+    const total = counts.reduce((a, b) => a + b, 0) + extraTotal;
+    const on = CH.map(x => !s.off[x.id]);
+    let w = 0; const agg = [0, 0, 0, 0, 0];
+    CH.forEach((x, i) => { if (on[i]) { w += counts[i]; x.sent.forEach((v, k) => agg[k] += v * counts[i]); } });
+    const pcts = w ? agg.map(v => Math.round(v / w)) : [0, 0, 0, 0, 0];
+    const wob = k => 1 + Math.sin(s.t * 0.9 + k * 1.7) * 0.04;
+    const moods = B_MOODS.map((m, k) => { const r = B_BASE[k] ? pcts[k] / B_BASE[k] : 0; return { ...m, pct: pcts[k], orgaH: Math.max(10, Math.min(240, m.h[0] * 1.4 * r * wob(k))) + 'px', mecaH: Math.max(10, Math.min(240, m.h[1] * 1.4 * r * wob(k + 2))) + 'px', divider: k < 4 ? '1px dashed #E0E2E5' : 'none', w: pcts[k] + '%' }; });
+    const avgMin = (c === BOB_CASES[0] ? 6 : 5) + s.avgJ;
+    const dId = s.drawer, ch = CH.find(x => x.id === dId);
+    let dr = { title: '', value: '', sub: 'ACCIONABLES' };
+    if (dId === 'actionsFreq') dr = { title: 'Acciones', value: '', sub: 'ACCIONABLES' };
+    if (dId === 'themes') dr = { title: 'Temas', value: '', sub: 'ACCIONABLES' };
+    if (dId === 'asa') dr = { title: 'Disponibles', value: c.asa.reduce((a, r) => a + r[3], 0), sub: 'AGENTES DE IA · BOB' };
+    if (dId === 'sessions') dr = { title: 'Sesiones', value: bFmtK(total), sub: 'ACCIONABLES' };
+    if (dId === 'avg') dr = { title: 'Tiempo promedio', value: avgMin + ' min', sub: 'ACCIONABLES' };
+    if (dId === 'mood') dr = { title: 'Ánimo y sentimiento', value: '', sub: 'ACCIONABLES' };
+    const npsScore = (() => { let a = 0, b = 0; c.nps.forEach(e => { const k = e[1] === 'H' ? 4 : 1; a += e[2] * k; b += k; }); return (a / b).toFixed(1).replace('.', ','); })();
+    if (dId === 'nps') dr = { title: 'NPS', value: npsScore, sub: 'ACCIONABLES' };
+    if (ch) {
+      const i = CH.indexOf(ch), bad = ch.status === 'DEGRADADO', warn = ch.status === 'EN ALERTA';
+      dr = { title: 'Desempeño ' + ch.name, value: ch.health + '%', sub: 'ACCIONABLES', health: ch.health, status: ch.status, healthColor: bad ? B_RED : '#141414', statusColor: bad ? B_RED : warn ? B_AMBER : '#3F8F4F',
+        infra: ch.infra.map(([v, k, b]) => ({ v, k, color: b ? B_RED : '#141414' })),
+        impact: [{ strong: counts[i], text: 'interacciones activas en este canal.', color: '#141414' }].concat(ch.extra.map(([st, tx, b]) => ({ strong: st, text: tx, color: b ? B_RED : '#141414' }))),
+        trend: ch.trend, linked: ch.linked, regions: ch.regions.map(([name, pct]) => ({ name, pct, w: Math.min(100, pct * 2.5) + '%', color: bad || warn ? B_RED : '#141414' })) };
+    }
+    const dotOf = sev => sev === 'Crítica' ? B_RED : sev === 'Alta' ? B_AMBER : B_MUTED;
+    const lists = {
+      alerts: ['ALERTAS ACTIVAS · ' + c.alerts.length + ' EN EL PERIODO', c.alerts.map(([sev, tag, title, desc, time]) => ({ tag: sev.toUpperCase() + ' · ' + tag.toUpperCase(), title, desc, time, dot: dotOf(sev), hasCta: false }))],
+      notifs: ['NOTIFICACIONES', c.notifs.map(([tag, title, desc, time]) => ({ tag: tag.toUpperCase(), title, desc, time, dot: B_MUTED, hasCta: false }))],
+      actions: ['ACCIONES RECOMENDADAS', c.acts.map(([title, desc], k) => ({ tag: 'SUGERIDA POR BOB', title, desc, time: '', dot: '#141414', hasCta: true, cta: s.done[k] ? 'En curso' : 'Ejecutar', ctaBg: s.done[k] ? '#FFFFFF' : '#141414', ctaColor: s.done[k] ? '#141414' : '#FFFFFF', run: () => { u(); this.setState(st => ({ done: { ...st.done, [k]: !st.done[k] } })); } }))],
+      anomalies: ['ANOMALÍAS DETECTADAS', c.anom.map(([tag, title, desc, time]) => ({ tag: tag.toUpperCase(), title, desc, time, dot: B_AMBER, hasCta: false }))] };
+    const isList = !!lists[s.tab];
+    const TABS = [['activity', 'Actividad', '', true], ['alerts', 'Alertas', 'ti-alert-triangle', false, c.alerts.length], ['notifs', 'Notificaciones', 'ti-bell', false], ['actions', 'Acciones', 'ti-bolt', false], ['anomalies', 'Anomalías', 'ti-bug', false], ['bob', 'BOb', 'ti-sparkles', false]];
+    const trendItem = (arr, k) => ({ n: k + 1, text: arr[0], weight: arr[1] ? 600 : 400, arrow: arr[2] ? 'ti-arrow-' + arr[2] : '', arrowColor: arr[2] === 'down' ? B_RED : B_GREEN });
+    const faqSrc = s.faqTab === 'faq' ? c.faq : c.words;
+    const ranges = ['Ahora', 'Última hora', 'Hoy', '7 días'];
+    const npsCounts = [0, 0, 0]; c.nps.forEach(e => npsCounts[e[2] >= 9 ? 0 : e[2] >= 7 ? 1 : 2]++);
+    return {
+      caseName: c.name, seg: c.seg, range: s.range, cycleRange: () => this.setState({ range: ranges[(ranges.indexOf(s.range) + 1) % ranges.length] }),
+      headerIcons: [
+        { icon: 'ti-bug', label: 'Anomalías', count: c.anom.length, open: open('sessions', 'anomalies') },
+        { icon: 'ti-alert-triangle', label: 'Alertas', count: c.alerts.length, open: open('sessions', 'alerts') },
+        { icon: 'ti-bell', label: 'Notificaciones', count: c.notifs.length, open: open('sessions', 'notifs') },
+        { icon: 'ti-bolt', label: 'Acciones', count: c.acts.length, open: open('sessions', 'actions') }],
+      totalFmt: bFmtK(total), openSessions: open('sessions'), openAvg: open('avg'), openMood: open('mood'), openNps: open('nps'), openThemes: open('themes'), openActions: open('actionsFreq'),
+      channels: CH.map((x, i) => ({ ...x, count: counts[i], divider: i < 4 ? '1px solid #ECEEF0' : 'none', iconColor: x.status === 'DEGRADADO' || x.status === 'EN ALERTA' || dId === x.id ? B_RED : '#141414', boxBg: on[i] ? '#141414' : '#FFFFFF', open: open(x.id), toggle: () => { u(); this.setState(st => ({ off: { ...st.off, [x.id]: !st.off[x.id] } })); } })),
+      avgMin, avgColor: avgMin > 4 ? B_RED : '#141414', avgArrow: s.avgJ >= 0 ? 'ti-arrow-up' : 'ti-arrow-down', avgArrowColor: s.avgJ >= 0 ? B_RED : B_GREEN,
+      nps: npsScore, moods,
+      themes: c.themes.map(trendItem), actions: c.actions.map(trendItem),
+      themeFreq: c.themes.map((t, k) => ({ name: t[0], count: c.themeCounts[k], w: Math.round(c.themeCounts[k] / c.themeCounts[0] * 100) + '%', arrow: t[2] ? 'ti-arrow-' + t[2] : '', arrowColor: t[2] === 'down' ? B_RED : B_GREEN })),
+      actionFreq: c.actions.map((t, k) => ({ name: t[0], count: c.actionCounts[k], w: Math.round(c.actionCounts[k] / c.actionCounts[0] * 100) + '%', arrow: t[2] ? 'ti-arrow-' + t[2] : '', arrowColor: t[2] === 'down' ? B_RED : B_GREEN })),
+      colA: c.colA, colC: c.colC, colCIcon: c.colCIcon,
+      statTop: c.statTop.map((r, k) => ({ label: r[0], dot: k === 0, a: r[1], b: r[2], c: r[3], w: k === 0 ? 600 : 400, aColor: k === 0 ? '#141414' : B_MUTED, bOpen: k === 0 ? open('asa') : () => {}, bDeco: k === 0 ? 'underline dotted' : 'none' })),
+      statRows: c.statRows.map((r, k) => ({ icon: r[0], label: r[1], total: r[2], a: r[3], b: r[4], c: r[5], aColor: r[6] ? B_RED : B_MUTED, aW: r[6] ? 600 : 400, border: k < 4 ? '1px solid #ECEEF0' : 'none' })),
+      faqW: s.faqTab === 'faq' ? 600 : 400, faqC: s.faqTab === 'faq' ? '#141414' : B_MUTED, wordsW: s.faqTab === 'words' ? 600 : 400, wordsC: s.faqTab === 'words' ? '#141414' : B_MUTED,
+      showFaq: () => this.setState({ faqTab: 'faq' }), showWords: () => this.setState({ faqTab: 'words' }),
+      faqList: faqSrc.map((q, k) => ({ text: q[0], count: q[1], arrow: q[2] ? 'ti-arrow-' + q[2] : '', arrowColor: q[2] === 'down' ? B_RED : B_GREEN, border: k < faqSrc.length - 1 ? '1px solid #ECEEF0' : 'none' })),
+      drawerOpen: !!dId, closeDrawer: () => { u(); this.setState({ drawer: null }); }, dr,
+      tabs: TABS.map(([id, label, icon, isText, badge]) => ({ label, icon, isText, hasBadge: !!badge, badge, border: s.tab === id ? '2px solid #141414' : '2px solid transparent', select: () => { u(); this.setState({ tab: id }); } })),
+      show: { sessions: s.tab === 'activity' && dId === 'sessions', avg: s.tab === 'activity' && dId === 'avg', mood: s.tab === 'activity' && dId === 'mood', channel: s.tab === 'activity' && !!ch, asa: s.tab === 'activity' && dId === 'asa', nps: s.tab === 'activity' && dId === 'nps', themes: s.tab === 'activity' && dId === 'themes', actionsFreq: s.tab === 'activity' && dId === 'actionsFreq', list: isList, bob: s.tab === 'bob' },
+      listTitle: isList ? lists[s.tab][0] : '', listItems: isList ? lists[s.tab][1] : [],
+      breakdown: (() => { const rows = CH.map((x, i) => [x.name, counts[i]]).concat(c.extra).sort((a, b) => b[1] - a[1]); const mx = rows[0][1]; return rows.map(([name, count]) => ({ name, count, w: Math.round(count / mx * 100) + '%' })); })(),
+      peak: c.peak, peakNote: c.peakNote, avg7: c.avg7, sessionsPattern: c.sessionsPattern, avgPattern: c.avgPattern, themesPattern: c.themesPattern, actionsPattern: c.actionsPattern,
+      avgRows: CH.map(x => ({ name: x.name, time: x.avg + ' ' + (x.unit || 'min'), color: (x.unit ? x.avg > 1 : x.avg > 4) ? B_RED : '#141414' })),
+      posPct: pcts[2] + pcts[3] + pcts[4], negPct: pcts[0] + pcts[1], posWhy: c.posWhy, negWhy: c.negWhy, segs: c.segs.map(([n, v]) => ({ n, v, w: Math.round(v / 50 * 100) + '%' })),
+      asaKpis: [{ v: c.asa.reduce((a, r) => a + r[3], 0), k: 'ACTIVOS' }, { v: c.asa.reduce((a, r) => a + r[4], 0), k: 'APROVISIONADOS' }, { v: c.asa.length, k: 'INSTANCIAS' }],
+      asaList: c.asa.map(r => { const isOpen = s.asaOpen === r[0]; return { id: r[0], build: r[1], ch: r[2], cap: r[3] + '/' + r[4], dot: r[3] ? '#141414' : B_MUTED, open: isOpen, chev: isOpen ? 'ti-chevron-down' : 'ti-player-play-filled', scope: r[5],
+        metrics: [{ v: r[6][0], k: 'Resueltas', color: '#141414' }, { v: r[6][1], k: 'Alucinación', color: parseFloat(r[6][1].replace(',', '.')) > 0.5 ? B_RED : '#141414' }, { v: r[6][2], k: 'T. respuesta', color: '#141414' }],
+        toggle: () => { u(); this.setState({ asaOpen: isOpen ? null : r[0] }); } }; }),
+      fleetNote: c.fleetNote,
+      npsGroups: [{ v: npsCounts[0], k: 'Promotores (9–10)', color: '#3F8F4F' }, { v: npsCounts[1], k: 'Pasivos (7–8)', color: '#9A7A2C' }, { v: npsCounts[2], k: 'Detractores (0–6)', color: B_RED }],
+      npsEvents: c.nps.map(([time, src, score, ctx]) => { const g = score >= 9 ? 0 : score >= 7 ? 1 : 2; return { time, src: src + ' ×' + (src === 'H' ? 4 : 1), srcBg: src === 'H' ? '#141414' : '#F2C230', srcColor: src === 'H' ? '#FFFFFF' : '#141414', score, ctx, label: ['Promotor', 'Pasivo', 'Detractor'][g], scoreColor: ['#3F8F4F', '#9A7A2C', B_RED][g] }; }),
+      bobRead: c.bobRead, bobBasis: c.bobBasis
+    };
+  }
+}
+</script>
+</body>
+</html>

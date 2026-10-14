@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wigilabs × Ecopetrol · Oportunidades tecnológicas</title>
+<link rel="stylesheet" href="_ds/wigi-design-system-ef477c14-3c6e-4d00-bd78-9401c685bc3b/colors_and_type.css">
+<link rel="stylesheet" href="_ds/wigi-design-system-ef477c14-3c6e-4d00-bd78-9401c685bc3b/styles.css">
+<script src="_ds/wigi-design-system-ef477c14-3c6e-4d00-bd78-9401c685bc3b/_ds_bundle.js"></script>
+<style>
+html{scroll-behavior:smooth}
+body{margin:0;background:#FFFFFF;color:#0A0A0A;font-family:'Inter',ui-sans-serif,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#0031EC;text-decoration:none}
+a:hover{color:#2944FF}
+button{font:inherit;color:inherit}
+*{box-sizing:border-box}
+</style>
+</helmet>
+<div style="min-height:100vh;background:#FFFFFF;">
+  <div style="height:4px;background:linear-gradient(90deg,#00E56B 0%,#0031EC 50%,#00D4FF 100%);"></div>
+  <header style="position:sticky;top:0;z-index:20;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(10,10,10,.08);">
+    <div style="max-width:1320px;margin:0 auto;padding:14px clamp(20px,4vw,40px);display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;">
+      <button onClick="{{ goHub }}" style="display:flex;align-items:center;gap:16px;background:none;border:none;padding:0;cursor:pointer;">
+        <span style="display:flex;align-items:center;gap:9px;">
+          <svg viewBox="0 0 240 163" style="height:18px;width:auto;display:block;"><path fill="#0A0A0A" d="M 240 0 L 197.034 0 L 167.305 105.096 L 136.34 0.012 L 103.684 0.012 L 70.295 105.096 L 42.906 0.012 L 0 0.012 L 47.167 163 L 88.657 163 L 119.13 68.568 L 147.754 163 L 189.46 163 L 240 0 Z"></path></svg>
+          <img src="assets/wigilabs-wordmark.png" alt="Wigilabs" style="height:15px;width:auto;display:block;">
+        </span>
+        <span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;color:#666;">×</span>
+        <img src="assets/ecopetrol-logo.png" alt="Ecopetrol" style="height:34px;width:auto;display:block;">
+      </button>
+      <nav style="display:flex;align-items:center;gap:4px;flex-wrap:wrap;">
+        <sc-for list="{{ nav }}" as="n" hint-placeholder-count="5">
+          <button onClick="{{ n.onClick }}" style="background:{{ n.bg }};color:{{ n.c }};border:none;border-radius:4px;padding:8px 12px;font-family:'Satoshi',sans-serif;font-weight:700;font-size:14px;letter-spacing:.01em;cursor:pointer;" style-hover="color:#0031EC">{{ n.l }}</button>
+        </sc-for>
+        <button onClick="{{ goContact }}" style="margin-left:8px;background:#0031EC;color:#FFFFFF;border:none;border-radius:4px;padding:10px 16px;font-family:'Satoshi',sans-serif;font-weight:700;font-size:14px;letter-spacing:.02em;cursor:pointer;" style-hover="background:#2944FF">Agendar sesión</button>
+      </nav>
+    </div>
+  </header>
+
+  <sc-if value="{{ isHub }}" hint-placeholder-val="{{ true }}">
+    <main data-screen-label="01 Mapa de oportunidades">
+      <section style="max-width:1320px;margin:0 auto;padding:clamp(48px,7vw,96px) clamp(20px,4vw,40px) 48px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:clamp(32px,5vw,72px);align-items:end;">
+        <div style="display:flex;flex-direction:column;gap:24px;">
+          <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:#0031EC;">Investigación interactiva · Grupo Ecopetrol · Octubre 2026</div>
+          <h1 style="margin:0;font-family:'Satoshi',sans-serif;font-weight:900;font-size:clamp(40px,5.4vw,76px);line-height:1;letter-spacing:-.035em;text-wrap:balance;">Dónde la tecnología protege y acelera la operación del Grupo</h1>
+          <p style="margin:0;max-width:620px;font-size:18px;line-height:1.6;color:#333333;text-wrap:pretty;">Un mapa de oportunidades a lo largo de la cadena de valor de Ecopetrol, construido con información pública y con capacidades que Wigilabs ya opera en organizaciones colombianas de gran escala. Cada oportunidad abre una explicación guiada y una demo explorable.</p>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;border-top:1px solid #0A0A0A;">
+          <sc-for list="{{ facts }}" as="f" hint-placeholder-count="4">
+            <div style="padding:20px 20px 20px 0;border-bottom:1px solid rgba(10,10,10,.12);display:flex;flex-direction:column;gap:6px;">
+              <div style="font-family:'Satoshi',sans-serif;font-weight:900;font-size:clamp(28px,3vw,40px);letter-spacing:-.03em;line-height:1;">{{ f.v }}</div>
+              <div style="font-size:14px;line-height:1.45;color:#666666;">{{ f.l }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+
+      <section style="max-width:1320px;margin:0 auto;padding:0 clamp(20px,4vw,40px) 96px;display:flex;flex-direction:column;gap:24px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;">
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <h2 style="margin:0;font-family:'Satoshi',sans-serif;font-weight:900;font-size:32px;letter-spacing:-.025em;">Mapa de oportunidades</h2>
+            <p style="margin:0;font-size:15px;color:#666666;">Cadena de valor × capacidad. Elige una oportunidad para abrir el caso.</p>
+          </div>
+          
+        </div>
+        <div style="overflow-x:auto;border-radius:12px;">
+          <div style="min-width:1080px;display:grid;grid-template-columns:210px repeat(4,minmax(0,1fr));gap:1px;background:rgba(10,10,10,.1);border:1px solid rgba(10,10,10,.1);border-radius:12px;overflow:hidden;">
+            <div style="background:#F5F5F5;padding:18px;display:flex;align-items:flex-end;">
+              <span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:#666666;">Capacidad ↓ · Eslabón →</span>
+            </div>
+            <sc-for list="{{ segs }}" as="sg" hint-placeholder-count="4">
+              <div style="background:#F5F5F5;padding:18px;display:flex;flex-direction:column;gap:4px;">
+                <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:#0031EC;">{{ sg.k }}</div>
+                <div style="font-family:'Satoshi',sans-serif;font-weight:700;font-size:17px;letter-spacing:-.01em;line-height:1.2;">{{ sg.n }}</div>
+                <div style="font-size:12px;color:#666666;">{{ sg.f }}</div>
+              </div>
+            </sc-for>
+            <sc-for list="{{ lanes }}" as="ln" hint-placeholder-count="4">
+              <div style="background:#FFFFFF;padding:18px;display:flex;flex-direction:column;gap:10px;">
+                <div style="width:28px;height:28px;border-radius:6px;background:{{ ln.grad }};"></div>
+                <div style="font-family:'Satoshi',sans-serif;font-weight:700;font-size:16px;line-height:1.2;">{{ ln.n }}</div>
+                <div style="font-size:12px;color:#666666;line-height:1.4;">{{ ln.s }}</div>
+              </div>
+              <sc-for list="{{ ln.cells }}" as="cell" hint-placeholder-count="4">
+                <div style="background:#FFFFFF;padding:12px;display:flex;flex-direction:column;gap:8px;min-height:120px;">
+                  <sc-for list="{{ cell.opps }}" as="o" hint-placeholder-count="1">
+                    <button onClick="{{ o.onClick }}" style="opacity:{{ o.op }};text-align:left;background:#FFFFFF;border:1px solid rgba(10,10,10,.14);border-radius:8px;padding:12px 14px;cursor:pointer;display:flex;flex-direction:column;gap:6px;transition:border-color .18s, opacity .26s, box-shadow .18s;" style-hover="border-color:#0031EC;box-shadow:0 4px 16px rgba(0,49,236,.10)">
+                      <span style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+                        <span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#0031EC;">{{ o.tag }}</span>
+                        <span style="font-size:14px;color:#0031EC;">→</span>
+                      </span>
+                      <span style="font-family:'Satoshi',sans-serif;font-weight:700;font-size:15px;line-height:1.25;color:#0A0A0A;text-wrap:pretty;">{{ o.t }}</span>
+                    </button>
+                  </sc-for>
+                  <sc-if value="{{ cell.empty }}" hint-placeholder-val="{{ false }}">
+                    <div style="flex:1;border:1px dashed rgba(10,10,10,.12);border-radius:8px;"></div>
+                  </sc-if>
+                </div>
+              </sc-for>
+            </sc-for>
+          </div>
+        </div>
+      </section>
+    </main>
+  </sc-if>
+
+  <sc-if value="{{ isObs }}" hint-placeholder-val="{{ false }}">
+    <main data-screen-label="02 Observabilidad de negocio" style="max-width:1320px;margin:0 auto;padding:40px clamp(20px,4vw,40px) 96px;display:flex;flex-direction:column;gap:40px;">
+      <div style="display:flex;flex-direction:column;gap:20px;max-width:860px;">
+        <button onClick="{{ goHub }}" style="align-self:flex-start;background:none;border:none;padding:0;cursor:pointer;font-size:14px;color:#0031EC;font-weight:500;" style-hover="color:#2944FF">← Mapa de oportunidades</button>
+        <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:#0031EC;">Observabilidad de negocio · En alianza con Boss.Technology</div>
+        <h1 style="margin:0;font-family:'Satoshi',sans-serif;font-weight:900;font-size:clamp(36px,4.6vw,64px);line-height:1;letter-spacing:-.035em;">Datos del ahora, no de ayer</h1>
+        <p style="margin:0;font-size:18px;line-height:1.6;color:#333333;text-wrap:pretty;">Business Observability correlaciona en tiempo real la telemetría técnica (sistemas, aplicaciones, infraestructura y canales) con los indicadores del negocio. La pregunta deja de ser qué pasó y pasa a ser qué está pasando y qué hacemos ya. Tres productos responden tres preguntas sobre la misma operación.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:12px;">
+        <sc-for list="{{ prods }}" as="p" hint-placeholder-count="3">
+          <button onClick="{{ p.onClick }}" style="text-align:left;background:{{ p.bg }};border:2px solid {{ p.bd }};border-radius:12px;padding:20px 22px;cursor:pointer;display:flex;flex-direction:column;gap:8px;transition:border-color .18s;" style-hover="border-color:#0031EC">
+            <span style="font-family:'Satoshi',sans-serif;font-weight:900;font-size:26px;letter-spacing:-.02em;color:#0A0A0A;">{{ p.n }}</span>
+            <span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#0031EC;">{{ p.sub }}</span>
+            <span style="font-size:15px;line-height:1.45;color:{{ p.qC }};">{{ p.q }}</span>
+          </button>
+        </sc-for>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div style="display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center;">
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <sc-for list="{{ obs.tabs }}" as="t" hint-placeholder-count="2">
+              <button onClick="{{ t.onClick }}" style="background:{{ t.bg }};color:{{ t.c }};border:1px solid {{ t.bd }};border-radius:999px;padding:9px 16px;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;">{{ t.l }}</button>
+            </sc-for>
+          </div>
+          <span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:#666666;">Explicación guiada · {{ obs.label }}</span>
+        </div>
+        <div style="background:#F5F5F5;border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:14px;">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;">
+            <sc-for list="{{ obs.steps }}" as="g" hint-placeholder-count="5">
+              <button onClick="{{ g.onClick }}" style="text-align:left;background:{{ g.bg }};border:1px solid {{ g.bd }};border-radius:8px;padding:10px 12px;display:flex;gap:10px;align-items:center;cursor:pointer;" style-hover="border-color:#0031EC">
+                <span style="flex:none;width:22px;height:22px;border-radius:999px;background:{{ g.numBg }};color:{{ g.numC }};display:flex;align-items:center;justify-content:center;font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:600;">{{ g.n }}</span>
+                <span style="font-family:'Satoshi',sans-serif;font-weight:700;font-size:14px;line-height:1.2;color:#0A0A0A;">{{ g.t }}</span>
+              </button>
+            </sc-for>
+          </div>
+          <div style="display:flex;justify-content:space-between;gap:16px;align-items:center;flex-wrap:wrap;padding:0 4px;">
+            <p style="margin:0;flex:1 1 420px;font-size:15px;line-height:1.55;color:#333333;text-wrap:pretty;">{{ obs.desc }}</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button onClick="{{ obs.onExplore }}" style="background:#FFFFFF;border:1px solid rgba(10,10,10,.2);border-radius:4px;padding:10px 16px;font-family:'Satoshi',sans-serif;font-weight:700;font-size:14px;cursor:pointer;white-space:nowrap;" style-hover="border-color:#0A0A0A">Explorar libremente</button>
+              <button onClick="{{ obs.onNext }}" style="background:#0031EC;color:#FFFFFF;border:none;border-radius:4px;padding:10px 18px;font-family:'Satoshi',sans-serif;font-weight:700;font-size:14px;letter-spacing:.02em;cursor:pointer;white-space:nowrap;" style-hover="background:#2944FF">{{ obs.nextLabel }}</button>
+            </div>
+          </div>
+        </div>
+        <div style="border:1px solid rgba(10,10,10,.12);border-radius:12px;overflow:hidden;box-shadow:0 16px 48px rgba(10,10,10,.08);background:#FFFFFF;">
+          <div style="height:34px;background:#F5F5F5;border-bottom:1px solid rgba(10,10,10,.08);display:flex;align-items:center;gap:8px;padding:0 14px;">
+            <span style="width:10px;height:10px;border-radius:999px;background:#D4D4D4;"></span><span style="width:10px;height:10px;border-radius:999px;background:#D4D4D4;"></span><span style="width:10px;height:10px;border-radius:999px;background:#D4D4D4;"></span>
+            <span style="margin-left:12px;font-size:12px;color:#666666;background:#FFFFFF;border-radius:6px;padding:3px 12px;white-space:nowrap;">{{ obs.url }}</span>
+          </div>
+          <div style="overflow-x:auto;">
+            <div style="min-width:1160px;">
+              <sc-if value="{{ isMom }}" hint-placeholder-val="{{ true }}"><dc-import name="Momentum Ecopetrol" caso="{{ momCase }}" paso="{{ momStep }}" on-user="{{ momUser }}" hint-size="100%,900px"></dc-import></sc-if>
+              <sc-if value="{{ isBob }}" hint-placeholder-val="{{ false }}"><dc-import name="BOb Ecopetrol" caso="{{ bobCase }}" paso="{{ bobStep }}" on-user="{{ bobUser }}" hint-size="100%,880px"></dc-import></sc-if>
+              <sc-if value="{{ isMap }}" hint-placeholder-val="{{ false }}"><dc-import name="MetaMAP Ecopetrol" caso="{{ mapCase }}" paso="{{ mapStep }}" on-user="{{ mapUser }}" hint-size="100%,760px"></dc-import></sc-if>
+            </div>
+          </div>
+        </div>
+        <sc-if value="{{ notes }}" hint-placeholder-val="{{ true }}"><span style="font-size:12px;color:#666666;">Ejemplos ilustrativos de Momentum, BOb y MetaMAP configurados sobre procesos de Ecopetrol. Nombres, ubicaciones y cifras son de referencia, no datos reales. Las tres demos responden a clics: abra etapas, canales, activos, alertas y acciones.</span></sc-if>
+      </div>
+    </main>
+  </sc-if>
+
+  <sc-if value="{{ isSec }}" hint-placeholder-val="{{ false }}">
+    <main data-screen-label="03 Ciberseguridad Xiid" style="max-width:1320px;margin:0 auto;padding:40px clamp(20px,4vw,40px) 96px;display:flex;flex-direction:column;gap:48px;">
+      <div style="display:flex;flex-direction:column;gap:20px;max-width:880px;">
+        <button onClick="{{ goHub }}" style="align-self:flex-start;background:none;border:none;padding:0;cursor:pointer;font-size:14px;color:#0031EC;font-weight:500;" style-hover="color:#2944FF">← Mapa de oportunidades</button>
+        <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:#0031EC;">Ciberseguridad Zero Trust IT / OT · Xiid</div>
+        <h1 style="margin:0;font-family:'Satoshi',sans-serif;font-weight:900;font-size:clamp(36px,4.6vw,64px);line-height:1;letter-spacing:-.035em;text-wrap:balance;">Lo que no se ve no se puede atacar</h1>
+        <p style="margin:0;font-size:18px;line-height:1.6;color:#333333;text-wrap:pretty;">Wigilabs es representante oficial de Xiid para América Latina. Terniion, su arquitectura de Túnel Sellado, elimina IP públicas, puertos expuestos y conexiones entrantes: cada proceso solo abre conexiones salientes, autenticadas criptográficamente, hacia destinos autorizados. Complementa la pila de seguridad actual del Grupo; no la reemplaza.</p>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:12px;">
+        <div style="background:#F5F5F5;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:14px;">
+          <span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:#666666;">Seguridad basada en detección</span>
+          <span style="font-family:'Satoshi',sans-serif;font-weight:700;font-size:22px;letter-spacing:-.01em;">Probabilística: responde después</span>
+          <div style="display:flex;flex-direction:column;gap:8px;font-size:15px;color:#333333;"><span>Despliegue complejo y costoso</span><span>Carrera de velocidad contra la IA del atacante</span><span>Alertas que el SOC debe perseguir</span><span>Respuesta posterior al compromiso</span></div>
+        </div>
+        <div style="background:#0A0A0A;color:#FAFAFA;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:14px;position:relative;overflow:hidden;">
+          <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 100% 0%,rgba(0,229,107,.30) 0%,rgba(0,49,236,.35) 45%,rgba(0,0,0,0) 75%);pointer-events:none;"></div>
+          <span style="position:relative;font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:#8AF3FF;">Seguridad determinista · Xiid</span>
+          <span style="position:relative;font-family:'Satoshi',sans-serif;font-weight:700;font-size:22px;letter-spacing:-.01em;">Determinista: impide antes</span>
+          <div style="position:relative;display:flex;flex-direction:column;gap:8px;font-size:15px;color:#C8C8C8;"><span>El activo deja de ser alcanzable</span><span>La IA del atacante se vuelve irrelevante</span><span>Sin señales falsas que perseguir</span><span>Sin ruta de ataque, con restricciones garantizadas</span></div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:20px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;">
+          <div style="display:flex;flex-direction:column;gap:6px;max-width:720px;">
+            <h2 style="margin:0;font-family:'Satoshi',sans-serif;font-weight:900;font-size:32px;letter-spacing:-.025em;">Cómo funciona el Túnel Sellado</h2>
+            <p style="margin:0;font-size:15px;line-height:1.55;color:#666666;">Dos procesos se comunican sin que ninguno quede expuesto. Toque un número para ver cada parte.</p>
+          </div>
+          <span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:#666666;white-space:nowrap;">Paso {{ xt.k }} de 4</span>
+        </div>
+        <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:stretch;">
+          <div style="flex:999 1 620px;min-width:0;background:#FFFFFF;border:1px solid rgba(10,10,10,.1);border-radius:12px;padding:clamp(12px,2vw,24px);">
+            <div style="position:relative;width:100%;aspect-ratio:2030/775;">
+              <img src="assets/xiid-sealedtunnel.png" alt="Arquitectura de Túnel Sellado de Xiid: el proceso cliente A y el proceso servidor B se conectan mediante STLink y un Connector central, solo con conexiones salientes; un actor malicioso encuentra todos los puertos de entrada cerrados." style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;">
+              <sc-for list="{{ xt.pins }}" as="pn" hint-placeholder-count="4">
+                <button onClick="{{ pn.onClick }}" title="{{ pn.t }}" style="position:absolute;left:{{ pn.x }};top:{{ pn.y }};transform:translate(-50%,-50%);width:{{ pn.sz }};height:{{ pn.sz }};border-radius:999px;background:{{ pn.bg }};color:{{ pn.c }};border:2px solid #FFFFFF;box-shadow:{{ pn.sh }};font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;">{{ pn.k }}</button>
+              </sc-for>
+            </div>
+          </div>
+          <div style="flex:1 1 300px;display:flex;flex-direction:column;gap:8px;">
+            <sc-for list="{{ xt.pins }}" as="pn" hint-placeholder-count="4">
+              <button onClick="{{ pn.onClick }}" style="text-align:left;background:{{ pn.cardBg }};border:1px solid {{ pn.cardBd }};border-radius:10px;padding:14px 16px;cursor:pointer;display:flex;gap:12px;align-items:flex-start;transition:all .2s;" style-hover="border-color:#0031EC">
+                <span style="flex:none;width:24px;height:24px;border-radius:999px;background:{{ pn.bg }};color:{{ pn.c }};display:flex;align-items:center;justify-content:center;font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:700;">{{ pn.k }}</span>
+                <span style="display:flex;flex-direction:column;gap:4px;">
+                  <span style="font-family:'Satoshi',sans-serif;font-weight:700;font-size:16px;color:#0A0A0A;">{{ pn.t }}</span>
+                  <span style="font-size:13.5px;line-height:1.5;color:{{ pn.dC }};">{{ pn.d }}</span>
+                </span>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+        <div style="background:#0A0A0A;color:#FAFAFA;border-radius:10px;padding:16px 20px;display:flex;gap:16px;align-items:center;flex-wrap:wrap;">
+          <span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:#8AF3FF;">En Ecopetrol</span>
+          <span style="flex:1 1 420px;font-family:'Satoshi',sans-serif;font-weight:500;font-size:16px;line-height:1.45;">{{ xt.eco }}</span>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:20px;">
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <h2 style="margin:0;font-family:'Satoshi',sans-serif;font-weight:900;font-size:32px;letter-spacing:-.025em;">Cuatro escenarios del Grupo, paso a paso</h2>
+          <p style="margin:0;font-size:15px;color:#666666;">Elige un escenario y compara la cadena de ataque hoy y con Túnel Sellado.</p>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:10px;">
+          <sc-for list="{{ sec.tabs }}" as="t" hint-placeholder-count="4">
+            <button onClick="{{ t.onClick }}" style="text-align:left;background:{{ t.bg }};color:{{ t.c }};border:1px solid {{ t.bd }};border-radius:10px;padding:16px;cursor:pointer;display:flex;flex-direction:column;gap:6px;">
+              <span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:.2em;color:{{ t.sc }};">{{ t.k }} · {{ t.seg }}</span>
+              <span style="font-family:'Satoshi',sans-serif;font-weight:700;font-size:17px;line-height:1.2;">{{ t.l }}</span>
+            </button>
+          </sc-for>
+        </div>
+        <div style="background:#F5F5F5;border:1px solid rgba(10,10,10,.08);border-radius:12px;padding:clamp(18px,3vw,28px);display:flex;flex-direction:column;gap:20px;">
+          <div style="display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:flex-start;">
+            <p style="margin:0;flex:1 1 420px;font-size:16px;line-height:1.6;color:#333333;text-wrap:pretty;">{{ sec.intro }}</p>
+            <div style="display:flex;background:#FFFFFF;border:1px solid rgba(10,10,10,.12);border-radius:999px;padding:4px;gap:4px;">
+              <button onClick="{{ sec.setHoy }}" style="background:{{ sec.hoyBg }};color:{{ sec.hoyC }};border:none;border-radius:999px;padding:9px 18px;font-family:'Satoshi',sans-serif;font-weight:700;font-size:14px;cursor:pointer;">Hoy</button>
+              <button onClick="{{ sec.setXi }}" style="background:{{ sec.xiBg }};color:{{ sec.xiC }};border:none;border-radius:999px;padding:9px 18px;font-family:'Satoshi',sans-serif;font-weight:700;font-size:14px;cursor:pointer;">Con Túnel Sellado</button>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px;">
+            <sc-for list="{{ sec.steps }}" as="st" hint-placeholder-count="5">
+              <div style="background:{{ st.bg }};border:1px solid {{ st.bd }};border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px;transition:background .26s,border-color .26s;">
+                <span style="height:3px;border-radius:999px;background:{{ st.line }};display:block;transition:background .26s;"></span>
+                <span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#666666;">{{ st.k }} · {{ st.st }}</span>
+                <span style="font-size:14px;line-height:1.5;color:#0A0A0A;flex:1;">{{ st.txt }}</span>
+                <span style="align-self:flex-start;background:{{ st.tagBg }};color:{{ st.tagC }};border-radius:999px;padding:4px 10px;font-size:12px;font-weight:600;white-space:nowrap;">{{ st.tag }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center;border-top:1px solid rgba(10,10,10,.1);padding-top:16px;">
+            <span style="flex:1 1 360px;font-family:'Satoshi',sans-serif;font-weight:700;font-size:18px;line-height:1.35;">{{ sec.resultTxt }}</span>
+            <sc-if value="{{ sec.isXi }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+                <span style="font-size:12px;color:#666666;">Componentes:</span>
+                <sc-for list="{{ sec.comps }}" as="c" hint-placeholder-count="3"><span style="border:1px solid rgba(10,10,10,.16);background:#FFFFFF;border-radius:999px;padding:4px 10px;font-size:12px;font-weight:500;">{{ c }}</span></sc-for>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:20px;">
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <h2 style="margin:0;font-family:'Satoshi',sans-serif;font-weight:900;font-size:32px;letter-spacing:-.025em;">Cubre la cadena de ataque completa</h2>
+          <p style="margin:0;font-size:15px;color:#666666;">Qué hace el Túnel Sellado en cada una de las siete etapas de un ataque.</p>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:1px;background:rgba(10,10,10,.1);border:1px solid rgba(10,10,10,.1);border-radius:12px;overflow:hidden;">
+          <div style="background:#FFFFFF;padding:16px;display:flex;flex-direction:column;gap:8px;"><span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:600;color:#0031EC;">01</span><span style="font-family:'Satoshi',sans-serif;font-weight:700;font-size:15px;">Reconocimiento</span><span style="font-size:13px;line-height:1.45;color:#333333;">Activos indescubribles, sin puertos de entrada</span></div>
+          <div style="background:#FFFFFF;padding:16px;display:flex;flex-direction:column;gap:8px;"><span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:600;color:#0031EC;">02</span><span style="font-family:'Satoshi',sans-serif;font-weight:700;font-size:15px;">Armamento</span><span style="font-size:13px;line-height:1.45;color:#333333;">Sin superficie, no hay cargas útiles que preparar</span></div>
+          <div style="background:#FFFFFF;padding:16px;display:flex;flex-direction:column;gap:8px;"><span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:600;color:#0031EC;">03</span><span style="font-family:'Satoshi',sans-serif;font-weight:700;font-size:15px;">Entrega</span><span style="font-size:13px;line-height:1.45;color:#333333;">Túneles de proceso a proceso borran las vías de brecha</span></div>
+          <div style="background:#FFFFFF;padding:16px;display:flex;flex-direction:column;gap:8px;"><span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:600;color:#0031EC;">04</span><span style="font-family:'Satoshi',sans-serif;font-weight:700;font-size:15px;">Explotación</span><span style="font-size:13px;line-height:1.45;color:#333333;">Microsegmentación: ningún movimiento lateral</span></div>
+          <div style="background:#FFFFFF;padding:16px;display:flex;flex-direction:column;gap:8px;"><span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:600;color:#0031EC;">05</span><span style="font-family:'Satoshi',sans-serif;font-weight:700;font-size:15px;">Instalación</span><span style="font-size:13px;line-height:1.45;color:#333333;">No se pueden plantar malware ni puertas traseras</span></div>
+          <div style="background:#FFFFFF;padding:16px;display:flex;flex-direction:column;gap:8px;"><span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:600;color:#0031EC;">06</span><span style="font-family:'Satoshi',sans-serif;font-weight:700;font-size:15px;">Mando y control</span><span style="font-size:13px;line-height:1.45;color:#333333;">Conexiones remotas no solicitadas bloqueadas</span></div>
+          <div style="background:#FFFFFF;padding:16px;display:flex;flex-direction:column;gap:8px;"><span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:600;color:#0031EC;">07</span><span style="font-family:'Satoshi',sans-serif;font-weight:700;font-size:15px;">Acciones sobre el objetivo</span><span style="font-size:13px;line-height:1.45;color:#333333;">Datos, IA y flujos CI/CD: no es posible robar datos</span></div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:24px;align-items:stretch;">
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <h2 style="margin:0;font-family:'Satoshi',sans-serif;font-weight:900;font-size:28px;letter-spacing:-.025em;">Componentes de Terniion</h2>
+          <div style="display:flex;flex-direction:column;border-top:1px solid #0A0A0A;">
+            <div style="display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;padding:14px 0;border-bottom:1px solid rgba(10,10,10,.12);"><span style="font-family:'Satoshi',sans-serif;font-weight:700;font-size:16px;">SealedTunnel</span><span style="font-size:14px;line-height:1.5;color:#333333;">Triple cifrado punto a punto: TLS 1.3, Kyber y Dilithium (NIST) y AES-256 GCM. Sin puertos de entrada ni «romper e inspeccionar».</span></div>
+            <div style="display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;padding:14px 0;border-bottom:1px solid rgba(10,10,10,.12);"><span style="font-family:'Satoshi',sans-serif;font-weight:700;font-size:16px;">STLink</span><span style="font-size:14px;line-height:1.5;color:#333333;">Conecta al usuario, humano o máquina, con el túnel y restringe qué aplicaciones y procesos pueden usarlo.</span></div>
+            <div style="display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;padding:14px 0;border-bottom:1px solid rgba(10,10,10,.12);"><span style="font-family:'Satoshi',sans-serif;font-weight:700;font-size:16px;">Connector</span><span style="font-size:14px;line-height:1.5;color:#333333;">Une ambas mitades del túnel en el medio, sin visibilidad de las conexiones.</span></div>
+            <div style="display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;padding:14px 0;border-bottom:1px solid rgba(10,10,10,.12);"><span style="font-family:'Satoshi',sans-serif;font-weight:700;font-size:16px;">Aclave</span><span style="font-size:14px;line-height:1.5;color:#333333;">Autenticación sin credenciales: sin contraseñas, sin secretos reutilizables, sin ataques de intermediario.</span></div>
+            <div style="display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;padding:14px 0;border-bottom:1px solid rgba(10,10,10,.12);"><span style="font-family:'Satoshi',sans-serif;font-weight:700;font-size:16px;">Commander</span><span style="font-size:14px;line-height:1.5;color:#333333;">Consola de gestión: visibilidad, orquestación y plano de control.</span></div>
+          </div>
+        </div>
+        <div style="background:#0031EC;color:#FFFFFF;border-radius:16px;padding:clamp(24px,3vw,36px);display:flex;flex-direction:column;justify-content:space-between;gap:24px;">
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:#FFFFFF;">Prueba de valor</span>
+            <span style="font-family:'Satoshi',sans-serif;font-weight:900;font-size:clamp(56px,7vw,96px);line-height:.9;letter-spacing:-.04em;">Hasta 90 días</span>
+            <span style="font-family:'Satoshi',sans-serif;font-weight:700;font-size:22px;line-height:1.25;">de piloto sin costo sobre un segmento crítico de la operación</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;font-size:15px;line-height:1.5;color:#FFFFFF;">
+            <span>Certificado por el Departamento de Defensa de EE. UU.: pruebas AFRL, ATO y cumplimiento NIST 800-207.</span>
+            <span>Se implementa sobre la infraestructura existente, en días, sin rediseñar la red.</span>
+          </div>
+          <button onClick="{{ goContact }}" style="align-self:flex-start;background:#FFFFFF;color:#0031EC;border:none;border-radius:4px;padding:12px 20px;font-family:'Satoshi',sans-serif;font-weight:700;font-size:15px;cursor:pointer;" style-hover="background:#F0F3FF">Definir el segmento del piloto</button>
+        </div>
+      </div>
+    </main>
+  </sc-if>
+
+  <sc-if value="{{ isIa }}" hint-placeholder-val="{{ false }}">
+    <main data-screen-label="04 Inteligencia artificial" style="max-width:1320px;margin:0 auto;padding:40px clamp(20px,4vw,40px) 96px;display:flex;flex-direction:column;gap:48px;">
+      <div style="display:flex;flex-direction:column;gap:20px;max-width:880px;">
+        <button onClick="{{ goHub }}" style="align-self:flex-start;background:none;border:none;padding:0;cursor:pointer;font-size:14px;color:#0031EC;font-weight:500;" style-hover="color:#2944FF">← Mapa de oportunidades</button>
+        <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:#0031EC;">Inteligencia artificial · IA Soberana + Wigi AI Gateway</div>
+        <h1 style="margin:0;font-family:'Satoshi',sans-serif;font-weight:900;font-size:clamp(36px,4.6vw,64px);line-height:1;letter-spacing:-.035em;text-wrap:balance;">Lo sensible se queda en casa. Lo demás, al mejor precio.</h1>
+        <p style="margin:0;font-size:18px;line-height:1.6;color:#333333;text-wrap:pretty;">Una arquitectura híbrida para la IA del Grupo. Los datos confidenciales y operativos se procesan con modelos abiertos dentro de la red de Ecopetrol. El resto de las tareas usa los mejores modelos comerciales a través de un solo gateway, con precio por volumen y consumo controlado por filial.</p>
+      </div>
+
+      <div style="background:#F5F5F5;border:1px solid rgba(10,10,10,.08);border-radius:12px;padding:clamp(18px,3vw,28px);display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start;">
+        <div style="flex:1 1 250px;max-width:380px;display:flex;flex-direction:column;gap:8px;">
+          <span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:#666666;padding-bottom:4px;">Elige una tarea</span>
+          <sc-for list="{{ ia.cases }}" as="c" hint-placeholder-count="8">
+            <button onClick="{{ c.onClick }}" style="text-align:left;background:{{ c.bg }};color:{{ c.c }};border:1px solid {{ c.bd }};border-radius:8px;padding:11px 14px;cursor:pointer;display:flex;flex-direction:column;gap:2px;">
+              <span style="font-size:14px;font-weight:500;line-height:1.35;">{{ c.n }}</span>
+              <span style="font-size:12px;color:{{ c.sc }};">{{ c.a }}</span>
+            </button>
+          </sc-for>
+        </div>
+        <div style="flex:999 1 520px;min-width:0;display:flex;flex-direction:column;gap:16px;">
+          <div style="display:grid;grid-template-columns:minmax(0,1fr) 56px minmax(0,1fr) 56px minmax(0,1.2fr);align-items:center;">
+            <div style="background:#FFFFFF;border:1px solid rgba(10,10,10,.12);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:8px;">
+              <span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:#666666;">Solicitud</span>
+              <span style="font-family:'Satoshi',sans-serif;font-weight:700;font-size:15px;line-height:1.3;">{{ ia.sel.n }}</span>
+            </div>
+            <div style="height:2px;background:#0031EC;"></div>
+            <div style="background:#0A0A0A;color:#FAFAFA;border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:8px;">
+              <span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:#8AF3FF;">Clasificación del dato</span>
+              <span style="align-self:flex-start;background:{{ ia.dataBg }};color:{{ ia.dataC }};border-radius:999px;padding:3px 10px;font-size:12px;font-weight:600;">{{ ia.sel.d }}</span>
+            </div>
+            <svg viewBox="0 0 56 120" preserveAspectRatio="none" style="width:56px;height:120px;display:block;">
+              <path d="M0 60 C 28 60, 28 14, 56 14" fill="none" stroke="{{ ia.lineSob }}" stroke-width="2"></path>
+              <path d="M0 60 C 28 60, 28 106, 56 106" fill="none" stroke="{{ ia.lineGw }}" stroke-width="2"></path>
+            </svg>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div style="background:{{ ia.sobBg }};border:1.5px solid {{ ia.sobBd }};opacity:{{ ia.sobOp }};border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:2px;transition:all .26s;">
+                <span style="font-family:'Satoshi',sans-serif;font-weight:700;font-size:15px;">IA Soberana</span>
+                <span style="font-size:12px;color:#333333;">Modelos abiertos en la red de Ecopetrol</span>
+              </div>
+              <div style="background:{{ ia.gwBg }};border:1.5px solid {{ ia.gwBd }};opacity:{{ ia.gwOp }};border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:2px;transition:all .26s;">
+                <span style="font-family:'Satoshi',sans-serif;font-weight:700;font-size:15px;">Wigi AI Gateway</span>
+                <span style="font-size:12px;color:#333333;">GPT, Claude, DeepSeek y más</span>
+              </div>
+            </div>
+          </div>
+          <div style="background:#FFFFFF;border:1px solid rgba(10,10,10,.08);border-radius:10px;padding:18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:16px;">
+            <div style="display:flex;flex-direction:column;gap:4px;"><span style="font-size:12px;color:#666666;">Ruta</span><span style="font-family:'Satoshi',sans-serif;font-weight:900;font-size:22px;color:#0031EC;">{{ ia.sel.dest }}</span><span style="font-size:13px;color:#333333;">{{ ia.sel.where }}</span></div>
+            <div style="display:flex;flex-direction:column;gap:4px;"><span style="font-size:12px;color:#666666;">Modelo sugerido</span><span style="font-family:'Satoshi',sans-serif;font-weight:700;font-size:18px;">{{ ia.sel.m }}</span></div>
+            <div style="display:flex;flex-direction:column;gap:4px;"><span style="font-size:12px;color:#666666;">Por qué</span><span style="font-size:14px;line-height:1.5;color:#0A0A0A;">{{ ia.sel.w }}</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:24px;">
+        <div style="border:1px solid rgba(10,10,10,.12);border-radius:16px;padding:clamp(22px,3vw,32px);display:flex;flex-direction:column;gap:20px;">
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:#0031EC;">Datos sensibles y OT</span>
+            <h2 style="margin:0;font-family:'Satoshi',sans-serif;font-weight:900;font-size:32px;letter-spacing:-.025em;">IA Soberana</h2>
+            <p style="margin:0;font-size:15px;line-height:1.6;color:#333333;">Wigilabs diseña, instala y pone a trabajar modelos abiertos, agentes y automatizaciones sobre la infraestructura del Grupo. Ningún dato sensible sale de la red, y Ecopetrol decide quién usa la IA, con qué datos y para qué.</p>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <div style="background:#F5F5F5;border-radius:8px;padding:12px 14px;display:grid;grid-template-columns:96px minmax(0,1fr);gap:12px;font-size:13px;line-height:1.45;"><span style="font-family:'Satoshi',sans-serif;font-weight:700;font-size:14px;">Aplicación</span><span style="color:#333333;">Agentes y orquestación: OpenWebUI, AnythingLLM, n8n, Activepieces</span></div>
+            <div style="background:#F5F5F5;border-radius:8px;padding:12px 14px;display:grid;grid-template-columns:96px minmax(0,1fr);gap:12px;font-size:13px;line-height:1.45;"><span style="font-family:'Satoshi',sans-serif;font-weight:700;font-size:14px;">Lógica</span><span style="color:#333333;">Modelos abiertos: Qwen 2.5, Llama 3.1, Gemma 2, elegidos según la tarea</span></div>
+            <div style="background:#F5F5F5;border-radius:8px;padding:12px 14px;display:grid;grid-template-columns:96px minmax(0,1fr);gap:12px;font-size:13px;line-height:1.45;"><span style="font-family:'Satoshi',sans-serif;font-weight:700;font-size:14px;">Base</span><span style="color:#333333;">GPU y motores de inferencia: vLLM, llama.cpp, Docker Model Runner</span></div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;border-top:1px solid rgba(10,10,10,.12);padding-top:16px;font-size:13px;line-height:1.45;color:#333333;">
+            <span><strong style="display:block;color:#0A0A0A;font-family:'Satoshi',sans-serif;font-size:15px;">Sin fuga</strong>Los modelos corren en servidores propios</span>
+            <span><strong style="display:block;color:#0A0A0A;font-family:'Satoshi',sans-serif;font-size:15px;">Sin licencias</strong>No hay costo por usuario</span>
+            <span><strong style="display:block;color:#0A0A0A;font-family:'Satoshi',sans-serif;font-size:15px;">Trazable</strong>Acceso por roles y registro completo</span>
+          </div>
+        </div>
+        <div style="border:1px solid rgba(10,10,10,.12);border-radius:16px;padding:clamp(22px,3vw,32px);display:flex;flex-direction:column;gap:20px;">
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:#0031EC;">Tareas generales de alto volumen</span>
+            <h2 style="margin:0;font-family:'Satoshi',sans-serif;font-weight:900;font-size:32px;letter-spacing:-.025em;">Wigi AI Gateway</h2>
+            <p style="margin:0;font-size:15px;line-height:1.6;color:#333333;">Una sola API para los modelos comerciales líderes, comprados por volumen a mejor precio. Ecopetrol consume con un solo contrato y factura local, y asigna consumo y presupuesto por filial y por equipo.</p>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <span style="font-size:12px;color:#666666;">Tokens procesados en la plataforma por familia de modelos</span>
+            <div style="display:grid;grid-template-columns:96px minmax(0,1fr) 64px;gap:12px;align-items:center;font-size:13px;"><span style="font-weight:600;">OpenAI</span><span style="height:10px;background:#EEEEEE;border-radius:2px;overflow:hidden;display:block;"><span style="display:block;height:100%;width:100%;background:#0031EC;"></span></span><span style="text-align:right;font-weight:600;">68,2 B</span></div>
+            <div style="font-size:12px;color:#666666;margin:-6px 0 0 108px;">GPT-5.5 · GPT-5.4 · GPT-5.3 Codex · GPT-5.2 · GPT-5 · GPT-4.1 · GPT-4o</div>
+            <div style="display:grid;grid-template-columns:96px minmax(0,1fr) 64px;gap:12px;align-items:center;font-size:13px;"><span style="font-weight:600;">Anthropic</span><span style="height:10px;background:#EEEEEE;border-radius:2px;overflow:hidden;display:block;"><span style="display:block;height:100%;width:34%;background:#0031EC;"></span></span><span style="text-align:right;font-weight:600;">23,4 B</span></div>
+            <div style="font-size:12px;color:#666666;margin:-6px 0 0 108px;">Claude Opus 5 · Sonnet 5 · Opus 4.8 · Opus 4.7 · Opus 4.6 · Sonnet 4.6 · Haiku 4.5</div>
+            <div style="display:grid;grid-template-columns:96px minmax(0,1fr) 64px;gap:12px;align-items:center;font-size:13px;"><span style="font-weight:600;">DeepSeek</span><span style="height:10px;background:#EEEEEE;border-radius:2px;overflow:hidden;display:block;"><span style="display:block;height:100%;width:3%;background:#0031EC;"></span></span><span style="text-align:right;font-weight:600;">1,6 B</span></div>
+            <div style="font-size:12px;color:#666666;margin:-6px 0 0 108px;">DeepSeek V4 Pro · V4 Flash</div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;border-top:1px solid rgba(10,10,10,.12);padding-top:16px;">
+            <span style="border:1px solid rgba(10,10,10,.16);border-radius:999px;padding:5px 12px;font-size:12px;font-weight:500;">Una sola API</span>
+            <span style="border:1px solid rgba(10,10,10,.16);border-radius:999px;padding:5px 12px;font-size:12px;font-weight:500;">Mejor precio por volumen</span>
+            <span style="border:1px solid rgba(10,10,10,.16);border-radius:999px;padding:5px 12px;font-size:12px;font-weight:500;">Presupuesto por filial</span>
+            <span style="border:1px solid rgba(10,10,10,.16);border-radius:999px;padding:5px 12px;font-size:12px;font-weight:500;">Facturación local</span>
+            <span style="border:1px solid rgba(10,10,10,.16);border-radius:999px;padding:5px 12px;font-size:12px;font-weight:500;">Híbrido con IA Soberana</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <h2 style="margin:0;font-family:'Satoshi',sans-serif;font-weight:900;font-size:28px;letter-spacing:-.025em;">Tres formas de comprar IA</h2>
+        <div style="overflow-x:auto;">
+          <div style="min-width:760px;display:grid;grid-template-columns:190px repeat(3,minmax(0,1fr));border-top:1px solid #0A0A0A;font-size:14px;line-height:1.45;">
+            <span style="padding:14px 12px 14px 0;border-bottom:1px solid rgba(10,10,10,.12);"></span>
+            <span style="padding:14px 12px;border-bottom:1px solid rgba(10,10,10,.12);font-family:'Satoshi',sans-serif;font-weight:700;font-size:16px;color:#666666;">API directa por proveedor</span>
+            <span style="padding:14px 12px;border-bottom:1px solid rgba(10,10,10,.12);font-family:'Satoshi',sans-serif;font-weight:700;font-size:16px;background:#F0F3FF;color:#0031EC;">Wigi AI Gateway</span>
+            <span style="padding:14px 12px;border-bottom:1px solid rgba(10,10,10,.12);font-family:'Satoshi',sans-serif;font-weight:700;font-size:16px;background:#F0F3FF;color:#0031EC;">IA Soberana</span>
+            <span style="padding:14px 12px 14px 0;border-bottom:1px solid rgba(10,10,10,.12);color:#666666;">Dónde se procesan los datos</span><span style="padding:14px 12px;border-bottom:1px solid rgba(10,10,10,.12);">Nube de cada proveedor</span><span style="padding:14px 12px;border-bottom:1px solid rgba(10,10,10,.12);background:#F0F3FF;">Nube del proveedor, por un solo punto controlado</span><span style="padding:14px 12px;border-bottom:1px solid rgba(10,10,10,.12);background:#F0F3FF;">Dentro de la red de Ecopetrol</span>
+            <span style="padding:14px 12px 14px 0;border-bottom:1px solid rgba(10,10,10,.12);color:#666666;">Precio</span><span style="padding:14px 12px;border-bottom:1px solid rgba(10,10,10,.12);">Tarifa de lista de cada proveedor</span><span style="padding:14px 12px;border-bottom:1px solid rgba(10,10,10,.12);background:#F0F3FF;">Mejor precio por volumen</span><span style="padding:14px 12px;border-bottom:1px solid rgba(10,10,10,.12);background:#F0F3FF;">Inversión en infraestructura, sin costo por token</span>
+            <span style="padding:14px 12px 14px 0;border-bottom:1px solid rgba(10,10,10,.12);color:#666666;">Modelos</span><span style="padding:14px 12px;border-bottom:1px solid rgba(10,10,10,.12);">Uno por contrato</span><span style="padding:14px 12px;border-bottom:1px solid rgba(10,10,10,.12);background:#F0F3FF;">GPT, Claude, DeepSeek y más con una sola API</span><span style="padding:14px 12px;border-bottom:1px solid rgba(10,10,10,.12);background:#F0F3FF;">Qwen, Llama y Gemma</span>
+            <span style="padding:14px 12px 14px 0;border-bottom:1px solid rgba(10,10,10,.12);color:#666666;">Control del consumo</span><span style="padding:14px 12px;border-bottom:1px solid rgba(10,10,10,.12);">Disperso entre áreas y filiales</span><span style="padding:14px 12px;border-bottom:1px solid rgba(10,10,10,.12);background:#F0F3FF;">Consumo y presupuesto por filial y equipo</span><span style="padding:14px 12px;border-bottom:1px solid rgba(10,10,10,.12);background:#F0F3FF;">Acceso por roles con trazabilidad completa</span>
+            <span style="padding:14px 12px 14px 0;border-bottom:1px solid rgba(10,10,10,.12);color:#666666;">Facturación</span><span style="padding:14px 12px;border-bottom:1px solid rgba(10,10,10,.12);">En dólares, un contrato por proveedor</span><span style="padding:14px 12px;border-bottom:1px solid rgba(10,10,10,.12);background:#F0F3FF;">Local, un solo contrato</span><span style="padding:14px 12px;border-bottom:1px solid rgba(10,10,10,.12);background:#F0F3FF;">Sin licencias por usuario</span>
+          </div>
+        </div>
+      </div>
+    </main>
+  </sc-if>
+
+  <sc-if value="{{ isAuto }}" hint-placeholder-val="{{ false }}">
+    <main data-screen-label="05 Automatización y software" style="max-width:1320px;margin:0 auto;padding:40px clamp(20px,4vw,40px) 96px;display:flex;flex-direction:column;gap:48px;">
+      <div style="display:flex;flex-direction:column;gap:20px;max-width:880px;">
+        <button onClick="{{ goHub }}" style="align-self:flex-start;background:none;border:none;padding:0;cursor:pointer;font-size:14px;color:#0031EC;font-weight:500;" style-hover="color:#2944FF">← Mapa de oportunidades</button>
+        <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:#0031EC;">Automatización de procesos · Pantera</div>
+        <h1 style="margin:0;font-family:'Satoshi',sans-serif;font-weight:900;font-size:clamp(36px,4.6vw,64px);line-height:1;letter-spacing:-.035em;text-wrap:balance;">Un trabajador digital, no un reemplazo</h1>
+        <p style="margin:0;font-size:18px;line-height:1.6;color:#333333;text-wrap:pretty;">Pantera combina RPA e inteligencia artificial para automatizar procesos manuales de alto volumen sin reemplazar los sistemas existentes. Trabaja junto al dueño del proceso, sigue las reglas del negocio de forma determinística y avanza por fases, empezando por los procesos de mayor impacto y menor complejidad de integración.</p>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <sc-for list="{{ pan.tabs }}" as="t" hint-placeholder-count="4">
+            <button onClick="{{ t.onClick }}" style="background:{{ t.bg }};color:{{ t.c }};border:1px solid {{ t.bd }};border-radius:999px;padding:9px 16px;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;">{{ t.l }}</button>
+          </sc-for>
+        </div>
+        <div style="background:#F5F5F5;border:1px solid rgba(10,10,10,.08);border-radius:12px;padding:clamp(18px,3vw,28px);display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start;">
+          <div style="flex:999 1 520px;min-width:0;display:flex;flex-direction:column;gap:8px;">
+            <sc-for list="{{ pan.steps }}" as="st" hint-placeholder-count="6">
+              <div style="background:#FFFFFF;border:1px solid rgba(10,10,10,.08);border-radius:8px;padding:12px 14px;display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:12px;align-items:center;">
+                <span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:600;color:#666666;">0{{ st.k }}</span>
+                <span style="font-size:14px;line-height:1.4;color:#0A0A0A;">{{ st.t }}</span>
+                <span style="display:flex;align-items:center;gap:6px;background:{{ st.bg }};color:{{ st.c }};border-radius:999px;padding:4px 10px;font-size:12px;font-weight:600;white-space:nowrap;"><span style="width:6px;height:6px;border-radius:999px;background:{{ st.dot }};"></span>{{ st.who }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="flex:1 1 260px;display:flex;flex-direction:column;gap:12px;">
+            <div style="background:#0A0A0A;color:#FAFAFA;border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:6px;">
+              <span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:#8AF3FF;">Horas al mes devueltas al equipo</span>
+              <span style="font-family:'Satoshi',sans-serif;font-weight:900;font-size:48px;letter-spacing:-.03em;line-height:1;">~{{ pan.sel.h }} h</span>
+              <span style="font-size:12px;color:#A3A3A3;">Estimación ilustrativa, a validar en el diagnóstico</span>
+            </div>
+            <div style="background:#FFFFFF;border:1px solid rgba(10,10,10,.08);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px;">
+              <span style="font-size:12px;color:#666666;">Error que se evita</span>
+              <span style="font-size:14px;line-height:1.45;font-weight:500;">{{ pan.sel.e }}</span>
+            </div>
+            <div style="background:#FFFFFF;border:1px solid rgba(10,10,10,.08);border-radius:10px;padding:16px;display:flex;gap:20px;">
+              <span style="display:flex;flex-direction:column;"><span style="font-family:'Satoshi',sans-serif;font-weight:900;font-size:24px;color:#0031EC;">{{ pan.autoN }}</span><span style="font-size:12px;color:#666666;">pasos con Pantera</span></span>
+              <span style="display:flex;flex-direction:column;"><span style="font-family:'Satoshi',sans-serif;font-weight:900;font-size:24px;">{{ pan.humN }}</span><span style="font-size:12px;color:#666666;">decisiones del dueño</span></span>
+            </div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:12px;">
+          <div style="border-top:2px solid #0A0A0A;padding-top:14px;display:flex;flex-direction:column;gap:6px;"><span style="font-family:'Satoshi',sans-serif;font-weight:700;font-size:18px;">Ayuda, no reemplaza</span><span style="font-size:14px;line-height:1.55;color:#333333;">Trabaja junto al dueño del proceso, sin quitarle el control.</span></div>
+          <div style="border-top:2px solid #0A0A0A;padding-top:14px;display:flex;flex-direction:column;gap:6px;"><span style="font-family:'Satoshi',sans-serif;font-weight:700;font-size:18px;">No alucina</span><span style="font-size:14px;line-height:1.55;color:#333333;">Sigue las reglas del negocio de forma determinística; no genera respuestas inventadas.</span></div>
+          <div style="border-top:2px solid #0A0A0A;padding-top:14px;display:flex;flex-direction:column;gap:6px;"><span style="font-family:'Satoshi',sans-serif;font-weight:700;font-size:18px;">Por fases</span><span style="font-size:14px;line-height:1.55;color:#333333;">Primero los procesos de mayor impacto y menor complejidad de integración.</span></div>
+        </div>
+      </div>
+
+      <div style="border:1px solid rgba(10,10,10,.12);border-radius:16px;padding:clamp(24px,4vw,48px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:32px;align-items:start;">
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:#0031EC;">Fábrica de Software</span>
+          <h2 style="margin:0;font-family:'Satoshi',sans-serif;font-weight:900;font-size:clamp(28px,3.4vw,44px);line-height:1.02;letter-spacing:-.03em;">Construir y modernizar, sin detener la operación</h2>
+          <p style="margin:0;font-size:16px;line-height:1.6;color:#333333;">El equipo de desarrollo de Wigilabs construye software nuevo y moderniza sistemas heredados con arquitecturas escalables, por fases iterativas que entregan valor desde las primeras semanas.</p>
+        </div>
+        <div style="display:flex;flex-direction:column;border-top:1px solid #0A0A0A;">
+          <div style="display:grid;grid-template-columns:40px minmax(0,1fr);gap:12px;padding:16px 0;border-bottom:1px solid rgba(10,10,10,.12);"><span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:600;color:#0031EC;">01</span><span style="font-size:15px;line-height:1.5;">Desarrollo a la medida y modernización de sistemas heredados</span></div>
+          <div style="display:grid;grid-template-columns:40px minmax(0,1fr);gap:12px;padding:16px 0;border-bottom:1px solid rgba(10,10,10,.12);"><span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:600;color:#0031EC;">02</span><span style="font-size:15px;line-height:1.5;">Entrega iterativa: valor visible desde las primeras semanas</span></div>
+          <div style="display:grid;grid-template-columns:40px minmax(0,1fr);gap:12px;padding:16px 0;border-bottom:1px solid rgba(10,10,10,.12);"><span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:600;color:#0031EC;">03</span><span style="font-size:15px;line-height:1.5;">Fábrica dedicada o equipos extendidos del área de TI</span></div>
+          <p style="margin:16px 0 0;font-size:14px;line-height:1.55;color:#333333;"><strong style="color:#0A0A0A;">Resultado esperado:</strong> menor dependencia de sistemas heredados frágiles y más velocidad para llevar a producción las iniciativas que la Dirección de TI ya tiene priorizadas.</p>
+        </div>
+      </div>
+    </main>
+  </sc-if>
+
+  <section ref="{{ contactRef }}" data-screen-label="Contacto" style="max-width:1320px;margin:0 auto;padding:0 clamp(20px,4vw,40px) 64px;">
+    <div style="position:relative;overflow:hidden;border-radius:20px;background:#0A0A0A;color:#FAFAFA;padding:clamp(32px,5vw,64px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:40px;align-items:end;">
+      <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 85% 0%,rgba(0,225,120,.35) 0%,rgba(0,49,236,.45) 40%,rgba(0,212,255,0) 75%);pointer-events:none;"></div>
+      <div style="position:relative;display:flex;flex-direction:column;gap:20px;">
+        <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:#8AF3FF;">El siguiente paso</div>
+        <h2 style="margin:0;font-family:'Satoshi',sans-serif;font-weight:900;font-size:clamp(32px,4vw,52px);line-height:1.02;letter-spacing:-.03em;text-wrap:balance;">Una sesión de 45 minutos con los equipos de TI, Ciberseguridad y Operaciones</h2>
+        <p style="margin:0;font-size:17px;line-height:1.6;color:#C8C8C8;max-width:560px;">Revisamos el estado actual de exposición, elegimos el segmento para la prueba con Xiid, de hasta 90 días, y priorizamos el primer caso de observabilidad o IA.</p>
+      </div>
+      <div style="position:relative;display:flex;flex-direction:column;gap:20px;">
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <a href="mailto:caolivo@wigilabs.com?subject=Sesi%C3%B3n%20Wigilabs%20%C3%97%20Ecopetrol" style="background:#0031EC;color:#FFFFFF;border-radius:4px;padding:14px 22px;font-family:'Satoshi',sans-serif;font-weight:700;font-size:15px;letter-spacing:.02em;" style-hover="background:#2944FF;color:#FFFFFF">Agendemos la reunión</a>
+          <a href="tel:+573102518824" style="border:1px solid #333333;color:#FAFAFA;border-radius:4px;padding:14px 22px;font-family:'Satoshi',sans-serif;font-weight:700;font-size:15px;letter-spacing:.02em;" style-hover="border-color:#FAFAFA;color:#FAFAFA">+57 310 251 8824</a>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;font-size:14px;color:#A3A3A3;">
+          <span style="color:#FAFAFA;font-weight:600;">Carlos J. Olivo — Wigilabs</span>
+          <span>caolivo@wigilabs.com · www.wigilabs.com</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;border-top:1px solid #333333;padding-top:20px;">
+          <div style="display:flex;flex-direction:column;gap:2px;"><span style="font-family:'Satoshi',sans-serif;font-weight:900;font-size:24px;">23</span><span style="font-size:12px;color:#A3A3A3;">años</span></div>
+          <div style="display:flex;flex-direction:column;gap:2px;"><span style="font-family:'Satoshi',sans-serif;font-weight:900;font-size:24px;">+500</span><span style="font-size:12px;color:#A3A3A3;">empresas</span></div>
+          <div style="display:flex;flex-direction:column;gap:2px;"><span style="font-family:'Satoshi',sans-serif;font-weight:900;font-size:24px;">+3.000</span><span style="font-size:12px;color:#A3A3A3;">proyectos</span></div>
+          <div style="display:flex;flex-direction:column;gap:2px;"><span style="font-family:'Satoshi',sans-serif;font-weight:900;font-size:24px;">+200</span><span style="font-size:12px;color:#A3A3A3;">productos</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer style="border-top:1px solid rgba(10,10,10,.08);">
+    <div style="max-width:1320px;margin:0 auto;padding:24px clamp(20px,4vw,40px) 40px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:12px;line-height:1.5;color:#666666;">
+      <span>Wigilabs · Representante oficial de Xiid para América Latina · En alianza con Boss.Technology</span>
+      <span>Preparado con información pública disponible a octubre de 2026. Las cifras de los demos son ilustrativas.</span>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;incidentTone&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;tacto&quot;,&quot;directo&quot;],&quot;default&quot;:&quot;tacto&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contenido&quot;},&quot;showIllustrativeNotes&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Contenido&quot;}}">
+class Component extends DCLogic {
+  state = { view: 'hub', aud: null, obsProduct: 'momentum',
+    momCase: 0, momStep: 0, momStage: null, momDone: {},
+    bobCase: 0, bobStep: 0, bobCh: 0, bobTp: 0, bobFocus: 'channel',
+    mapCase: 0, mapStep: 0, mapNode: null, mapDone: {},
+    secIdx: 0, secMode: 'hoy', xtPin: 0, iaIdx: 0, panIdx: 0 };
+  contactRef = React.createRef();
+  ST = { ok: { c: '#008840', bg: '#E7F4EC', l: 'Estable' }, warn: { c: '#B86E00', bg: '#FBF0DF', l: 'Atención' }, crit: { c: '#D6243A', bg: '#FCE9EB', l: 'Crítico' } };
+  HL = '0 0 0 2px #0031EC, 0 0 0 8px rgba(0,49,236,.12)';
+
+  componentDidMount() {
+    const v = (location.hash || '').replace('#', '');
+    if (['hub', 'obs', 'sec', 'ia', 'auto'].includes(v)) this.setState({ view: v });
+  }
+  go = (view, extra) => {
+    this.setState(Object.assign({ view }, extra || {}));
+    try { history.replaceState(null, '', '#' + view); } catch (e) {}
+    window.scrollTo(0, 0);
+  };
+  scrollContact = () => {
+    const el = this.contactRef.current; if (!el) return;
+    window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 90, behavior: 'smooth' });
+  };
+
+  // ───────── DATA ─────────
+  AUDS = [['all', 'Todos'], ['pres', 'Presidencia y Junta'], ['cio', 'CIO'], ['ciso', 'CISO'], ['ops', 'Operaciones'], ['fin', 'Finanzas y Abastecimiento']];
+  SEGS = [
+    { id: 'up', k: 'Upstream', n: 'Exploración y producción', f: 'Ecopetrol · Hocol' },
+    { id: 'mid', k: 'Midstream', n: 'Transporte y logística', f: 'Cenit · Ocensa' },
+    { id: 'down', k: 'Downstream', n: 'Refinación y comercialización', f: 'Reficar · Esenttia' },
+    { id: 'corp', k: 'Corporativo', n: 'TI, finanzas y relacionamiento', f: 'Todo el Grupo' }];
+  LANES = [
+    { id: 'obs', n: 'Observabilidad de negocio', s: 'Momentum · BOb · MetaMAP', grad: 'linear-gradient(135deg,#00D4FF 0%,#0031EC 100%)' },
+    { id: 'sec', n: 'Ciberseguridad IT / OT', s: 'Xiid · Túnel Sellado', grad: 'linear-gradient(135deg,#00E56B 0%,#0031EC 100%)' },
+    { id: 'ia', n: 'Inteligencia artificial', s: 'IA Soberana · Wigi AI Gateway', grad: 'linear-gradient(135deg,#00E56B 0%,#0031EC 50%,#00D4FF 100%)' },
+    { id: 'auto', n: 'Automatización y software', s: 'Pantera · Fábrica de Software', grad: 'linear-gradient(135deg,#D400FF 0%,#0031EC 100%)' }];
+  OPPS = [
+    { seg: 'up', lane: 'obs', tag: 'BOb', t: 'PQRS y comunidades en zonas de operación', aud: ['pres', 'ops'], go: ['obs', { obsProduct: 'bob', bobCase: 1, bobStep: 0, bobCh: 0, bobTp: 0, bobFocus: 'channel' }] },
+    { seg: 'up', lane: 'sec', tag: 'Xiid', t: 'Acceso remoto de contratistas a SCADA y OT', aud: ['ciso', 'ops'], go: ['sec', { secIdx: 1, secMode: 'hoy' }] },
+    { seg: 'up', lane: 'ia', tag: 'IA Soberana', t: 'Manuales y datos de campo consultados sin salir de la red', aud: ['cio', 'ops'], go: ['ia', { iaIdx: 1 }] },
+    { seg: 'up', lane: 'auto', tag: 'Pantera', t: 'Radicación regulatoria ante ANH y ANLA', aud: ['fin', 'ops'], go: ['auto', { panIdx: 2 }] },
+    { seg: 'mid', lane: 'obs', tag: 'Momentum', t: 'Nominación y transporte por oleoducto', aud: ['pres', 'ops', 'fin'], go: ['obs', { obsProduct: 'momentum', momCase: 1, momStep: 0, momStage: null }] },
+    { seg: 'mid', lane: 'obs', tag: 'MetaMAP', t: 'Red de oleoductos y estaciones', aud: ['pres', 'ops'], go: ['obs', { obsProduct: 'metamap', mapCase: 0, mapStep: 0, mapNode: null }] },
+    { seg: 'mid', lane: 'sec', tag: 'Xiid', t: 'Telemetría de campo y estaciones remotas', aud: ['ciso', 'ops'], go: ['sec', { secIdx: 2, secMode: 'hoy' }] },
+    { seg: 'mid', lane: 'ia', tag: 'IA Soberana', t: 'Interpretación de alarmas y datos SCADA', aud: ['ops', 'cio'], go: ['ia', { iaIdx: 2 }] },
+    { seg: 'mid', lane: 'auto', tag: 'Pantera', t: 'Conciliaciones del balance volumétrico', aud: ['fin', 'ops'], go: ['auto', { panIdx: 1 }] },
+    { seg: 'down', lane: 'obs', tag: 'Momentum', t: 'Despacho y venta de combustibles', aud: ['pres', 'ops', 'fin'], go: ['obs', { obsProduct: 'momentum', momCase: 0, momStep: 0, momStage: null }] },
+    { seg: 'down', lane: 'obs', tag: 'MetaMAP', t: 'Plantas de abastecimiento y estaciones de servicio', aud: ['ops', 'pres'], go: ['obs', { obsProduct: 'metamap', mapCase: 1, mapStep: 0, mapNode: null }] },
+    { seg: 'down', lane: 'sec', tag: 'Xiid', t: 'Soporte remoto a sistemas de control de refinería', aud: ['ciso', 'ops'], go: ['sec', { secIdx: 1, secMode: 'hoy' }] },
+    { seg: 'corp', lane: 'obs', tag: 'BOb', t: 'Atención a proveedores y contratistas', aud: ['fin', 'cio'], go: ['obs', { obsProduct: 'bob', bobCase: 0, bobStep: 0, bobCh: 0, bobTp: 0, bobFocus: 'channel' }] },
+    { seg: 'corp', lane: 'sec', tag: 'Xiid', t: 'Nube y accesos del Grupo', aud: ['ciso', 'cio', 'pres'], go: ['sec', { secIdx: 0, secMode: 'hoy' }] },
+    { seg: 'corp', lane: 'sec', tag: 'Xiid', t: 'Interconexión segura entre filiales', aud: ['ciso', 'cio'], go: ['sec', { secIdx: 3, secMode: 'hoy' }] },
+    { seg: 'corp', lane: 'ia', tag: 'IA Soberana', t: 'Contratos y datos sensibles dentro de casa', aud: ['cio', 'ciso', 'pres'], go: ['ia', { iaIdx: 0 }] },
+    { seg: 'corp', lane: 'ia', tag: 'Wigi AI Gateway', t: 'Todos los modelos, un solo contrato', aud: ['cio', 'fin'], go: ['ia', { iaIdx: 4 }] },
+    { seg: 'corp', lane: 'auto', tag: 'Pantera', t: 'Pagos a proveedores y contratistas', aud: ['fin'], go: ['auto', { panIdx: 0 }] },
+    { seg: 'corp', lane: 'auto', tag: 'Fábrica', t: 'Modernización de sistemas heredados', aud: ['cio'], go: ['auto', { panIdx: 0 }] }];
+
+  OBS = {
+    momentum: { url: 'momentum.ecopetrol · journey', cases: ['Despacho y venta de combustibles', 'Nominación y transporte por oleoducto'], steps: [
+      ['El tablero del journey', 'Cada hexágono es una etapa del proceso. El anillo amarillo muestra su salud de 0 a 100, calculada con telemetría técnica y resultados del negocio. Abajo están los resultados clave con su medidor de riesgo y el motor de respuestas.'],
+      ['La etapa que frena', 'Momentum abre la etapa en riesgo y explica por qué: qué touchpoints están en rojo, con qué peso y desde cuándo. Revise también las pestañas Touchpoints, Anomalías y BOBee.'],
+      ['Causa raíz', 'Alert Intelligence muestra qué cruzó el umbral, por cuánto y durante cuánto tiempo, reconoce patrones y propone la causa probable.'],
+      ['Acción', 'Action Intelligence ejecuta respuestas por API sobre los sistemas de Ecopetrol. Las de alto impacto esperan aprobación: apruébela desde la ventana.'],
+      ['Pregúntele a BOBee', 'BOBee explica el estado, recomienda acciones y predice qué pasará si no se actúa. También responde preguntas escritas en lenguaje natural.']] },
+    bob: { url: 'bob.ecopetrol · interacciones', cases: ['Proveedores y contratistas', 'PQRS y comunidades'], steps: [
+      ['El tablero de interacciones', 'BOb reúne en tiempo real las sesiones de todos los canales, el tiempo de atención, el ánimo de los usuarios y los temas y acciones más frecuentes. A la derecha, el rendimiento de asesores y agentes de IA.'],
+      ['Un canal en detalle', 'Cada canal muestra su salud técnica, el impacto en el negocio, la concentración por región y la transacción vinculada.'],
+      ['De qué se habla', 'La frecuencia por tema revela cambios de concentración antes de que se vuelvan quejas formales.'],
+      ['Cómo se siente', 'El sentimiento se separa en orgánico y mecánico, y BOb explica qué lo mueve en cada segmento.'],
+      ['Qué resuelve la IA', 'La flota de agentes de IA responde con la traza real de la solicitud. El desempeño se mide por build, no por persona.'],
+      ['Lectura de BOb', 'BOb resume la situación, propone el origen probable y dice qué evidencia le falta antes de recomendar.']] },
+    metamap: { url: 'metamap.ecopetrol · territorio', cases: ['Red de oleoductos y estaciones', 'Plantas y estaciones de servicio'], steps: [
+      ['Vista nacional', 'MetaMAP ubica cada activo con su estado operacional en vivo. La lista ordena primero lo que está peor y el mapa muestra los tramos afectados.'],
+      ['El activo en riesgo', 'El detalle muestra los indicadores del activo, su estado operacional ponderado por pesos y la acción recomendada.'],
+      ['Incidentes en el territorio', 'El registro cruza operación, integridad y entorno, incluidos los reportes de comunidad sin confirmar, y los marca como zonas en el mapa.'],
+      ['Inteligencia de alertas', 'Las reglas incumplidas se agrupan por activo, con patrones y análisis de causa raíz.'],
+      ['Qué hacemos ya', 'Las acciones de alto impacto esperan aprobación. Apruébela y MetaMAP la ejecuta y la deja registrada.']] } };
+
+  SEC = [
+    { tab: 'Nube y accesos del Grupo', seg: 'Corporativo · IT',
+      introT: 'En julio de 2026 el Grupo informó un acceso no autorizado a entornos de almacenamiento en la nube de cerca de 15 empresas. Los controles internos bloquearon el intento de cifrado. Este escenario recorre ese tipo de ataque, con y sin Túnel Sellado.',
+      introD: 'El 17 de julio de 2026 un actor externo accedió al almacenamiento en la nube de cerca de 15 empresas del Grupo, extrajo datos de unas 3.300 cuentas e intentó cifrar la información. El cifrado se bloqueó; la extracción y la extorsión, no. Este escenario muestra dónde se habría roto esa cadena.',
+      comps: ['Aclave', 'SealedTunnel', 'Commander'],
+      steps: [
+        ['Reconocimiento', 'Los servicios de acceso y almacenamiento tienen direcciones públicas que se pueden escanear desde internet.', 'Sin IP pública ni puerto de entrada: el servicio no aparece en ningún escaneo.'],
+        ['Acceso inicial', 'Una credencial válida, robada o reutilizada, abre la sesión.', 'Aclave autentica el proceso, no una contraseña. No hay credencial que robar.'],
+        ['Movimiento lateral', 'Desde una cuenta se alcanzan repositorios de varias filiales.', 'Pico-segmentación: cada proceso solo llega al destino que tiene autorizado.'],
+        ['Extracción', 'Descarga masiva de información hacia un destino externo.', 'Solo hay conexiones salientes hacia destinos autorizados. No existe ruta para sacar datos.'],
+        ['Impacto', 'Intento de cifrado y extorsión con la información extraída.', 'Sin acceso ni ruta de salida, no hay nada que cifrar ni publicar.']],
+      result: 'La cadena se rompe en el primer paso: lo que no se ve no se puede atacar.' },
+    { tab: 'Contratistas en SCADA y OT', seg: 'Upstream · Downstream · OT',
+      introT: 'Integradores y fabricantes necesitan entrar a HMI, PLC e historiadores de planta para soporte y mantenimiento. Hoy lo hacen, en general, por VPN o escritorio remoto.', introD: '',
+      comps: ['STLink', 'SealedTunnel', 'Commander'],
+      steps: [
+        ['Acceso', 'El contratista conecta una VPN que lo deja dentro de la red OT.', 'STLink en el equipo del contratista solo habilita la aplicación de soporte autorizada. No hay VPN.'],
+        ['Alcance', 'Desde la VPN se ven otras HMI, PLC y servidores de la red.', 'Túnel de proceso a proceso hacia una sola HMI. El resto de la planta no existe para esa sesión.'],
+        ['Persistencia', 'El acceso queda abierto después del mantenimiento.', 'Commander abre la ventana de acceso por el tiempo aprobado y la cierra sola.'],
+        ['Equipo comprometido', 'Si el portátil del contratista está infectado, el malware viaja por la VPN.', 'Sin conexiones entrantes no solicitadas: el malware no tiene por dónde entrar a la planta.'],
+        ['Impacto', 'Riesgo sobre un proceso físico que no puede detenerse.', 'El sistema de control nunca queda expuesto, ni siquiera durante el soporte.']],
+      result: 'El contratista hace su trabajo sin que la red OT quede abierta en ningún momento.' },
+    { tab: 'Telemetría de campo', seg: 'Midstream · OT',
+      introT: 'RTU, sensores y gateways en estaciones remotas envían datos al centro de control por enlaces celulares y satelitales, a menudo con protocolos industriales diseñados sin cifrado.', introD: '',
+      comps: ['SealedTunnel', 'Aclave', 'Connector'],
+      steps: [
+        ['Exposición', 'Gateways de campo con puertos abiertos para recibir consultas del centro de control.', 'El gateway solo abre conexiones salientes. No hay puerto que escanear en campo.'],
+        ['Intercepción', 'Protocolos como Modbus o DNP3 viajan en claro por el enlace.', 'Triple cifrado con algoritmos post-cuánticos sobre el mismo enlace, sin aumentar el tamaño de la carga útil.'],
+        ['Manipulación', 'Un dato alterado de presión o caudal puede disparar decisiones equivocadas.', 'Los datos no se pueden manipular en tránsito: cada conexión se verifica criptográficamente.'],
+        ['Suplantación', 'Un equipo falso puede hacerse pasar por una RTU.', 'Aclave autentica cada dispositivo sin secretos reutilizables.'],
+        ['Impacto', 'Operar a ciegas o con datos falsos en un tramo crítico.', 'El centro de control confía en lo que ve.']],
+      result: 'La telemetría llega cifrada, autenticada e intacta, por los mismos enlaces de hoy.' },
+    { tab: 'Interconexión entre filiales', seg: 'Corporativo · Grupo',
+      introT: 'Cada filial opera con sus propios sistemas y proveedores. Las conexiones entre ellas suelen ser VPN sitio a sitio con reglas de firewall acumuladas durante años.', introD: '',
+      comps: ['SealedTunnel', 'Commander', 'Connector'],
+      steps: [
+        ['Conexión', 'VPN sitio a sitio entre redes completas de distintas filiales.', 'Túneles sellados por aplicación: se conecta un sistema con otro, no una red con otra.'],
+        ['Reglas', 'Reglas de firewall que nadie se atreve a borrar.', 'Políticas centralizadas en Commander, visibles y auditables.'],
+        ['Propagación', 'Un compromiso en una filial alcanza a otra por la VPN.', 'Planos de control y datos separados: comprometer un componente no compromete el resto.'],
+        ['Integraciones', 'Cada nueva integración abre otro puerto.', 'Nuevas integraciones en días, sobre la infraestructura existente, sin abrir puertos.'],
+        ['Impacto', 'Un incidente local se vuelve un incidente del Grupo.', 'El incidente queda contenido en su origen.']],
+      result: 'Cada filial conserva sus sistemas; lo que cambia es que nada queda expuesto entre ellas.' }];
+
+  XT = [
+    { x: '17.8%', y: '18%', t: 'STLink en cada extremo', d: 'Un agente liviano junto al proceso cliente (A) y al proceso servidor (B). Decide qué aplicación puede usar el túnel; el resto del equipo no tiene acceso.', eco: 'El portátil de un contratista o la HMI de una planta solo pueden hablar con el proceso autorizado, nunca con la red completa.' },
+    { x: '38.3%', y: '41%', t: 'Solo conexiones salientes', d: 'Ambos lados abren conexiones hacia afuera, cifradas tres veces con algoritmos resistentes a computación cuántica. Ningún extremo escucha conexiones entrantes.', eco: 'Las estaciones remotas y los centros de datos del Grupo dejan de publicar puertos en internet, sin cambiar los enlaces que ya tienen.' },
+    { x: '57%', y: '30%', t: 'Connector en el medio', d: 'Une las dos mitades del túnel sin ver el contenido. SealedTunnel coordina la conexión desde un plano de control separado del plano de datos.', eco: 'Las filiales se conectan sistema a sistema. Si un componente se compromete, el resto de la arquitectura no queda expuesto.' },
+    { x: '50%', y: '80%', t: 'El atacante no encuentra nada', d: 'Con todos los puertos de entrada cerrados, no hay superficie que escanear ni explotar. El usuario legítimo mantiene su acceso; el actor malicioso queda bloqueado.', eco: 'Es el primer paso de la cadena de ataque: el reconocimiento que precede a incidentes como el de julio de 2026 no encuentra nada.' }];
+
+  IA = [
+    { n: 'Analizar contratos con proveedores', a: 'Abastecimiento', d: 'Confidencial', r: 'sob', m: 'Llama 3.1 70B', w: 'Cláusulas, precios y obligaciones contractuales no deben salir de la red.' },
+    { n: 'Consultar manuales de operación de planta', a: 'Operaciones', d: 'OT', r: 'sob', m: 'Qwen 2.5 14B + RAG', w: 'Documentación de procesos críticos e infraestructura OT.' },
+    { n: 'Interpretar alarmas y datos de SCADA', a: 'Operaciones', d: 'OT', r: 'sob', m: 'Qwen 2.5 32B', w: 'Datos operativos en vivo que se quedan dentro del perímetro.' },
+    { n: 'Preparar evidencia de cumplimiento', a: 'Cumplimiento', d: 'Confidencial', r: 'sob', m: 'Qwen 2.5 32B', w: 'Evidencia interna sobre controles y riesgos para Decreto 338 y SEC.' },
+    { n: 'Redactar comunicaciones y presentaciones', a: 'Corporativo', d: 'General', r: 'gw', m: 'Claude Sonnet 5', w: 'Sin datos sensibles: conviene el mejor modelo comercial al mejor precio.' },
+    { n: 'Asistente de código para la Fábrica de Software', a: 'TI', d: 'General', r: 'gw', m: 'GPT-5.3 Codex', w: 'Modelos de frontera para programación, con consumo medido por equipo.' },
+    { n: 'Resumir noticias y análisis de mercado', a: 'Estrategia', d: 'Pública', r: 'gw', m: 'DeepSeek V4 Flash', w: 'Alto volumen y bajo riesgo: el modelo más económico que cumple.' },
+    { n: 'Traducir documentos públicos al inglés', a: 'Relación con inversionistas', d: 'Pública', r: 'gw', m: 'GPT-5.5', w: 'Información ya divulgada: prima la calidad del idioma.' }];
+
+  PAN = [
+    { n: 'Pagos a proveedores y contratistas', h: '1.100', e: 'Pagos duplicados y retenciones mal aplicadas', steps: [['Recibir factura y soportes', 'p'], ['Validar contra orden de compra y entrada de almacén', 'p'], ['Revisar excepciones de precio o cantidad', 'h'], ['Aplicar retenciones y programar el pago', 'p'], ['Aprobar el lote de pago', 'h'], ['Notificar al proveedor por portal y WhatsApp', 'p']] },
+    { n: 'Conciliaciones financieras', h: '640', e: 'Partidas sin conciliar al cierre', steps: [['Descargar extractos bancarios', 'p'], ['Cruzar con registros contables', 'p'], ['Explicar partidas no conciliadas', 'h'], ['Generar asientos de ajuste', 'p'], ['Aprobar el cierre', 'h']] },
+    { n: 'Radicación regulatoria', h: '420', e: 'Radicaciones fuera de plazo ante ANH, ANLA y SICOM', steps: [['Reunir información de las fuentes internas', 'p'], ['Diligenciar formularios en los portales del regulador', 'p'], ['Validar el contenido técnico', 'h'], ['Radicar y guardar la constancia', 'p'], ['Hacer seguimiento a requerimientos', 'p']] },
+    { n: 'Reportes de cumplimiento', h: '380', e: 'Datos inconsistentes entre filiales', steps: [['Consolidar datos de las filiales', 'p'], ['Validar reglas y umbrales', 'p'], ['Revisar hallazgos', 'h'], ['Generar reporte y evidencia', 'p'], ['Firmar y enviar', 'h']] }];
+
+  renderVals() {
+    const s = this.state, ST = this.ST, HL = this.HL;
+    const aud = s.aud || this.props.defaultAudience || 'all';
+    const tone = this.props.incidentTone || 'tacto';
+    const notes = this.props.showIllustrativeNotes !== false;
+    const nav = [['hub', 'Mapa'], ['obs', 'Observabilidad'], ['sec', 'Ciberseguridad'], ['ia', 'IA'], ['auto', 'Automatización']].map(([k, l]) => ({ l, bg: s.view === k ? '#F0F3FF' : 'transparent', c: s.view === k ? '#0031EC' : '#0A0A0A', onClick: () => this.go(k) }));
+    const facts = [
+      { v: '88,5 %', l: 'participación de la Nación en Ecopetrol S.A.' },
+      { v: 'NYSE: EC', l: 'doble listado y doble marco regulatorio' },
+      { v: '10+', l: 'filiales y subsidiarias con sistemas propios' },
+      tone === 'directo' ? { v: '15', l: 'empresas del Grupo afectadas por el incidente del 17 de julio de 2026' } : { v: 'Jul 2026', l: 'incidente de ciberseguridad reportado en entornos de nube del Grupo' }];
+    const auds = this.AUDS.map(([k, l]) => ({ l, bg: aud === k ? '#0A0A0A' : 'transparent', c: aud === k ? '#FFFFFF' : '#333333', onClick: () => this.setState({ aud: k }) }));
+    const lanes = this.LANES.map(ln => ({ ...ln, cells: this.SEGS.map(sg => {
+      const opps = this.OPPS.filter(o => o.lane === ln.id && o.seg === sg.id).map(o => ({ tag: o.tag, t: o.t, op: 1, onClick: () => this.go(o.go[0], o.go[1]) }));
+      return { opps, empty: opps.length === 0 };
+    }) }));
+
+    // Observabilidad
+    const prods = [['momentum', 'Momentum', 'El journey del proceso crítico', '¿En qué etapa se frena, y por qué?'], ['bob', 'BOb', 'Las interacciones', '¿Qué están diciendo los canales de atención?'], ['metamap', 'MetaMAP', 'La red en el territorio', '¿Dónde está fallando y qué hacemos ya?']]
+      .map(([k, n, sub, q]) => { const on = s.obsProduct === k; return { n, sub, q, bg: on ? '#FFFFFF' : '#F5F5F5', bd: on ? '#0031EC' : 'transparent', qC: on ? '#0A0A0A' : '#333333', onClick: () => this.setState({ obsProduct: k }) }; });
+    const pk = s.obsProduct, O = this.OBS[pk];
+    const kmap = { momentum: ['momCase', 'momStep'], bob: ['bobCase', 'bobStep'], metamap: ['mapCase', 'mapStep'] }[pk];
+    const cur = s[kmap[1]], ncase = s[kmap[0]];
+    const setS = i => this.setState({ [kmap[1]]: i });
+    const obs = {
+      url: O.url,
+      tabs: O.cases.map((l, i) => ({ l, bg: ncase === i ? '#0A0A0A' : '#FFFFFF', c: ncase === i ? '#FFFFFF' : '#0A0A0A', bd: ncase === i ? '#0A0A0A' : 'rgba(10,10,10,.16)', onClick: () => this.setState({ [kmap[0]]: i, [kmap[1]]: 0 }) })),
+      steps: O.steps.map(([t], i) => { const on = cur === i; return { n: i + 1, t, bg: on ? '#FFFFFF' : 'transparent', bd: on ? '#0031EC' : 'rgba(10,10,10,.1)', numBg: on ? '#0031EC' : '#E8E8E8', numC: on ? '#FFFFFF' : '#0A0A0A', onClick: () => setS(i) }; }),
+      label: cur >= 0 ? 'Paso ' + (cur + 1) + ' de ' + O.steps.length : 'Modo exploración',
+      desc: cur >= 0 ? O.steps[cur][1] : 'Modo exploración: la demo responde a sus clics. Elija un paso para volver a la guía.',
+      nextLabel: cur < 0 ? 'Volver a la guía' : (cur < O.steps.length - 1 ? 'Siguiente paso →' : 'Volver al inicio'),
+      onNext: () => setS(cur < 0 ? 0 : (cur < O.steps.length - 1 ? cur + 1 : 0)),
+      onExplore: () => setS(-1)
+    };
+    const userFn = k => () => { if (this.state[k] !== -1) this.setState({ [k]: -1 }); };
+
+    // Ciberseguridad
+    const sc = this.SEC[s.secIdx];
+    const xi = s.secMode === 'xiid';
+    const sec = {
+      ...sc, intro: s.secIdx === 0 && tone === 'directo' ? sc.introD : sc.introT,
+      tabs: this.SEC.map((c, i) => ({ l: c.tab, seg: c.seg, k: '0' + (i + 1), bg: s.secIdx === i ? '#0A0A0A' : '#FFFFFF', c: s.secIdx === i ? '#FFFFFF' : '#0A0A0A', sc: s.secIdx === i ? '#A3A3A3' : '#666666', bd: s.secIdx === i ? '#0A0A0A' : 'rgba(10,10,10,.14)', onClick: () => this.setState({ secIdx: i, secMode: 'hoy' }) })),
+      hoyBg: !xi ? '#0A0A0A' : 'transparent', hoyC: !xi ? '#FFFFFF' : '#333333', xiBg: xi ? '#0031EC' : 'transparent', xiC: xi ? '#FFFFFF' : '#333333',
+      setHoy: () => this.setState({ secMode: 'hoy' }), setXi: () => this.setState({ secMode: 'xiid' }),
+      isXi: xi, isHoy: !xi,
+      steps: sc.steps.map(([st, h, x], i) => ({ k: '0' + (i + 1), st, txt: xi ? x : h,
+        tag: xi ? (i === 0 ? 'La cadena se rompe aquí' : 'Tampoco ocurre') : 'Expuesto',
+        tagBg: xi ? (i === 0 ? '#0031EC' : '#E7F4EC') : '#FCE9EB', tagC: xi ? (i === 0 ? '#FFFFFF' : '#008840') : '#D6243A',
+        bg: xi && i === 0 ? '#F0F3FF' : '#FFFFFF', bd: xi && i === 0 ? '#0031EC' : 'rgba(10,10,10,.12)', line: xi ? (i === 0 ? '#0031EC' : '#E5E5E5') : '#D6243A' })),
+      resultTxt: xi ? sc.result : 'Sin Túnel Sellado, el atacante completa los cinco pasos.'
+    };
+
+    const xt = { k: s.xtPin + 1, eco: this.XT[s.xtPin].eco, pins: this.XT.map((x, i) => { const on = s.xtPin === i; return { ...x, k: i + 1, bg: on ? '#0031EC' : '#0A0A0A', c: '#FFFFFF', sz: on ? '34px' : '28px', sh: on ? '0 0 0 6px rgba(0,49,236,.22), 0 6px 18px rgba(0,0,0,.25)' : '0 4px 12px rgba(0,0,0,.25)', cardBg: on ? '#F0F3FF' : '#FFFFFF', cardBd: on ? '#0031EC' : 'rgba(10,10,10,.12)', dC: on ? '#333333' : '#666666', onClick: () => this.setState({ xtPin: i }) }; }) };
+    // IA
+    const ic = this.IA[s.iaIdx];
+    const isSob = ic.r === 'sob';
+    const ia = {
+      cases: this.IA.map((c, i) => ({ ...c, bg: s.iaIdx === i ? '#0A0A0A' : '#FFFFFF', c: s.iaIdx === i ? '#FFFFFF' : '#0A0A0A', sc: s.iaIdx === i ? '#A3A3A3' : '#666666', bd: s.iaIdx === i ? '#0A0A0A' : 'rgba(10,10,10,.12)', onClick: () => this.setState({ iaIdx: i }) })),
+      sel: { ...ic, dest: isSob ? 'IA Soberana' : 'Wigi AI Gateway', where: isSob ? 'Dentro de la red de Ecopetrol' : 'Modelos comerciales vía un solo punto controlado' },
+      sobBd: isSob ? '#0031EC' : 'rgba(10,10,10,.12)', sobBg: isSob ? '#F0F3FF' : '#FFFFFF', sobOp: isSob ? 1 : 0.5,
+      gwBd: !isSob ? '#0031EC' : 'rgba(10,10,10,.12)', gwBg: !isSob ? '#F0F3FF' : '#FFFFFF', gwOp: !isSob ? 1 : 0.5,
+      lineSob: isSob ? '#0031EC' : '#D4D4D4', lineGw: !isSob ? '#0031EC' : '#D4D4D4',
+      dataC: ic.d === 'OT' || ic.d === 'Confidencial' ? '#D6243A' : '#008840', dataBg: ic.d === 'OT' || ic.d === 'Confidencial' ? '#FCE9EB' : '#E7F4EC'
+    };
+
+    // Pantera
+    const pc = this.PAN[s.panIdx];
+    const pan = {
+      tabs: this.PAN.map((p, i) => ({ l: p.n, bg: s.panIdx === i ? '#0A0A0A' : '#FFFFFF', c: s.panIdx === i ? '#FFFFFF' : '#0A0A0A', bd: s.panIdx === i ? '#0A0A0A' : 'rgba(10,10,10,.14)', onClick: () => this.setState({ panIdx: i }) })),
+      sel: pc,
+      steps: pc.steps.map(([t, w], i) => ({ k: i + 1, t, who: w === 'p' ? 'Pantera' : 'Dueño del proceso', bg: w === 'p' ? '#F0F3FF' : '#F5F5F5', c: w === 'p' ? '#0031EC' : '#333333', dot: w === 'p' ? '#0031EC' : '#0A0A0A' })),
+      autoN: pc.steps.filter(x => x[1] === 'p').length, humN: pc.steps.filter(x => x[1] === 'h').length
+    };
+
+    return {
+      nav, facts, auds, segs: this.SEGS, lanes, notes,
+      isHub: s.view === 'hub', isObs: s.view === 'obs', isSec: s.view === 'sec', isIa: s.view === 'ia', isAuto: s.view === 'auto',
+      goHub: () => this.go('hub'), goContact: this.scrollContact, contactRef: this.contactRef,
+      goObs: () => this.go('obs'), goSec: () => this.go('sec'), goIa: () => this.go('ia'), goAuto: () => this.go('auto'),
+      prods, isMom: s.obsProduct === 'momentum', isBob: s.obsProduct === 'bob', isMap: s.obsProduct === 'metamap',
+      obs, sec, xt, ia, pan, momCase: s.momCase, momStep: s.momStep, bobCase: s.bobCase, bobStep: s.bobStep, mapCase: s.mapCase, mapStep: s.mapStep,
+      momUser: userFn('momStep'), bobUser: userFn('bobStep'), mapUser: userFn('mapStep')
+    };
+  }
+}
+</script>
+</body>
+</html>
